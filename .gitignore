@@ -7,19 +7,75 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Dependencies
-node_modules
-frontend/node_modules
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage
+*.lcov
+.nyc_output
+
+# Dependency directories
+node_modules/
+frontend/node_modules/
+jspm_packages/
+bower_components/
+web_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional package manager/cache files
+.npm
+.eslintcache
+.stylelintcache
+.pnpm-store
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.yarn-integrity
+*.tgz
 
 # Build output
 dist
 dist-ssr
 frontend/dist
 frontend/dist-ssr
+build/Release
+out
+.output
 
 # Vite
-.vite
-frontend/.vite
+.vite/
+frontend/.vite/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Framework caches
+.cache
+.parcel-cache
+.next
+.nuxt
+.svelte-kit/
+.vuepress/dist
+.temp
+**/.vitepress/dist
+**/.vitepress/cache
+.docusaurus
+.serverless/
+.fusebox/
+.firebase/
+.dynamodb/
 
 # Env
 .env
@@ -30,10 +86,20 @@ frontend/.env.*
 !frontend/.env.example
 *.local
 
-# Python backend
-backend/.venv
-backend/__pycache__
+# Python / FastAPI
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+backend/.venv/
+backend/__pycache__/
 backend/*.log
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 
 # Local backups
 backup-before-*
@@ -41,6 +107,7 @@ backup-before-*
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+.vscode-test
 .idea
 .DS_Store
 *.suo
@@ -48,3 +115,10 @@ backup-before-*
 *.njsproj
 *.sln
 *.sw?
+
+# Misc
+lib-cov
+.grunt
+.lock-wscript
+node_repl_history
+.tern-port
