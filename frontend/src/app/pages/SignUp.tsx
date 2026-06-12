@@ -53,8 +53,6 @@ export function SignUp() {
             {[
               { key: "name" as const, label: "이름", type: "text", placeholder: "이름을 입력하세요" },
               { key: "email" as const, label: "이메일", type: "email", placeholder: "이메일을 입력하세요" },
-              { key: "phone" as const, label: "전화번호", type: "tel", placeholder: "전화번호를 입력하세요" },
-              { key: "address" as const, label: "주소", type: "text", placeholder: "주소를 입력하세요" },
             ].map((f) => (
               <div key={f.key}>
                 <p className="font-['Pretendard:Medium',sans-serif] text-[12px] text-[#888] mb-1.5 ml-1">{f.label}</p>
@@ -98,6 +96,23 @@ export function SignUp() {
                 style={inputStyle}
               />
             </div>
+
+            {[
+              { key: "phone" as const, label: "전화번호", type: "tel", placeholder: "전화번호를 입력하세요" },
+              { key: "address" as const, label: "주소", type: "text", placeholder: "주소를 입력하세요" },
+            ].map((f) => (
+              <div key={f.key}>
+                <p className="font-['Pretendard:Medium',sans-serif] text-[12px] text-[#888] mb-1.5 ml-1">{f.label}</p>
+                <input
+                  type={f.type}
+                  placeholder={f.placeholder}
+                  value={form[f.key]}
+                  onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
+                  className="w-full rounded-[16px] px-4 py-[14px] font-['Pretendard:Regular',sans-serif] text-[14px] text-[#111] placeholder:text-[#c8ccd0] outline-none transition-colors"
+                  style={inputStyle}
+                />
+              </div>
+            ))}
           </div>
 
           {error && <p className="font-['Pretendard:Medium',sans-serif] text-[12px] text-[#ff4c49] mb-4 ml-1">{error}</p>}
