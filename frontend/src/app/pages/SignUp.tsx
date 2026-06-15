@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
+import { registerUser } from "../api/user";
+import { setCurrentUserEmail } from "../utils/authSession";
 
 const airbrushBg = [
   "radial-gradient(ellipse 120% 55% at 50% -5%, rgba(255,190,140,0.22) 0%, transparent 70%)",
@@ -22,7 +24,7 @@ export function SignUp() {
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.name || !form.email || !form.phone || !form.address || !form.password || !form.confirm) {
       setError("모든 항목을 입력해주세요.");
       return;
@@ -31,9 +33,21 @@ export function SignUp() {
       setError("비밀번호가 일치하지 않습니다.");
       return;
     }
-    localStorage.setItem("signedUp", "true");
-    localStorage.removeItem("appLanguage");
-    navigate("/login");
+    try {
+      const response = await registerUser({
+        user_email: form.email,
+        password: form.password,
+        name: form.name,
+        phone: form.phone,
+        address: form.address,
+      });
+      setCurrentUserEmail(response.user.user_email ?? form.email);
+      localStorage.setItem("signedUp", "true");
+      localStorage.removeItem("appLanguage");
+      navigate("/login");
+    } catch {
+      setError("회원가입 정보를 저장하지 못했습니다.");
+    }
   };
 
   return (

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
+import { loginUser } from "../api/user";
+import { setCurrentUserEmail } from "../utils/authSession";
 
 const airbrushBg = [
   "radial-gradient(ellipse 120% 55% at 50% -5%, rgba(255,190,140,0.22) 0%, transparent 70%)",
@@ -22,15 +24,21 @@ export function Login() {
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.email || !form.password) {
       setError("이메일과 비밀번호를 입력해주세요.");
       return;
     }
-    localStorage.setItem("isLoggedIn", "true");
-    const langSet = localStorage.getItem("appLanguage");
-    if (!langSet) navigate("/setup/language");
-    else navigate("/");
+    try {
+      const response = await loginUser({ user_email: form.email, password: form.password });
+      setCurrentUserEmail(response.user.user_email ?? form.email);
+      localStorage.setItem("isLoggedIn", "true");
+      const langSet = localStorage.getItem("appLanguage");
+      if (!langSet) navigate("/setup/language");
+      else navigate("/");
+    } catch {
+      setError("이메일 또는 비밀번호를 확인해주세요.");
+    }
   };
 
   return (
