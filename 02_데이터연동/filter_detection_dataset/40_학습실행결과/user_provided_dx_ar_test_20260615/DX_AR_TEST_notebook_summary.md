@@ -1,0 +1,139 @@
+# User Provided DX_AR_TEST Notebook Summary
+
+- Imported from: DX_AR_TEST-20260615T073404Z-3-001.zip
+- Files are Jupyter notebooks without .ipynb extension in the original zip.
+- Actual best.pt weight files are not included in the zip.
+
+## aircon_filter_test.ipynb
+- cells: 22
+- code_cells: 14
+- Detected references:
+  - `YOLO(model_path)`
+  - `YOLO(str(best_path))`
+  - `best.pt`
+  - `epochs=50`
+  - `imgsz=640`
+  - `workspace("heninis-workspace-fzzwq").project("test_filter")`
+  - `project("test_filter")`
+- Output snippets:
+  - Creating new Ultralytics Settings v0.0.6 file  
+  - View Ultralytics Settings with 'yolo settings' or at '/root/.config/Ultralytics/settings.json'
+  - Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/quickstart/#ultralytics-settings.
+  - Ultralytics 8.4.67  Python-3.12.13 torch-2.11.0+cu128 CUDA:0 (Tesla T4, 14913MiB)
+  - [KDownloading https://ultralytics.com/assets/Arial.ttf to '/root/.config/Ultralytics/Arial.ttf': 100%  755.1KB 22.4MB/s 0.0s
+  -   0                  -1  1       464  ultralytics.nn.modules.conv.Conv             [3, 16, 3, 2]                 
+  -   1                  -1  1      4672  ultralytics.nn.modules.conv.Conv             [16, 32, 3, 2]                
+  -   2                  -1  1      6640  ultralytics.nn.modules.block.C3k2            [32, 64, 1, False, 0.25]      
+  -   3                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                
+  -   4                  -1  1     26080  ultralytics.nn.modules.block.C3k2            [64, 128, 1, False, 0.25]     
+  -   5                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              
+  -   6                  -1  2    180864  ultralytics.nn.modules.block.A2C2f           [128, 128, 2, True, 4]        
+  -   7                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]              
+  -   8                  -1  2    689408  ultralytics.nn.modules.block.A2C2f           [256, 256, 2, True, 1]        
+  -  10             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  11                  -1  1     86912  ultralytics.nn.modules.block.A2C2f           [384, 128, 1, False, -1]      
+  -  13             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  14                  -1  1     24000  ultralytics.nn.modules.block.A2C2f           [256, 64, 1, False, -1]       
+  -  15                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                
+  -  16            [-1, 11]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  17                  -1  1     74624  ultralytics.nn.modules.block.A2C2f           [192, 128, 1, False, -1]      
+  -  18                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              
+  -  19             [-1, 8]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  20                  -1  1    378880  ultralytics.nn.modules.block.C3k2            [384, 256, 1, True]           
+  -  21        [14, 17, 20]  1    430867  ultralytics.nn.modules.head.Detect           [1, 16, None, [64, 128, 256]] 
+  - [34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 3.5s/it 3.5s
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 9.6it/s 0.1s
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 6.4it/s 0.2s
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 7.4it/s 0.1s
+
+## aircon_test.ipynb
+- cells: 14
+- code_cells: 13
+- Detected references:
+  - `YOLO(model_path)`
+  - `YOLO(str(best_path))`
+  - `best.pt`
+  - `best.pt`
+  - `best.pt`
+  - `best.pt`
+  - `epochs=50`
+  - `imgsz=640`
+  - `workspace("heninis-workspace-fzzwq").project("aircon-owa3m-ugnuj")`
+  - `project("aircon-owa3m-ugnuj")`
+- Output snippets:
+  - Creating new Ultralytics Settings v0.0.6 file  
+  - View Ultralytics Settings with 'yolo settings' or at '/root/.config/Ultralytics/settings.json'
+  - Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/quickstart/#ultralytics-settings.
+  - Ultralytics 8.4.67  Python-3.12.13 torch-2.11.0+cu128 CUDA:0 (Tesla T4, 14913MiB)
+  - [KDownloading https://ultralytics.com/assets/Arial.ttf to '/root/.config/Ultralytics/Arial.ttf': 100%  755.1KB 24.3MB/s 0.0s
+  -   0                  -1  1       464  ultralytics.nn.modules.conv.Conv             [3, 16, 3, 2]                 
+  -   1                  -1  1      4672  ultralytics.nn.modules.conv.Conv             [16, 32, 3, 2]                
+  -   2                  -1  1      6640  ultralytics.nn.modules.block.C3k2            [32, 64, 1, False, 0.25]      
+  -   3                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                
+  -   4                  -1  1     26080  ultralytics.nn.modules.block.C3k2            [64, 128, 1, False, 0.25]     
+  -   5                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              
+  -   6                  -1  2    180864  ultralytics.nn.modules.block.A2C2f           [128, 128, 2, True, 4]        
+  -   7                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]              
+  -   8                  -1  2    689408  ultralytics.nn.modules.block.A2C2f           [256, 256, 2, True, 1]        
+  -  10             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  11                  -1  1     86912  ultralytics.nn.modules.block.A2C2f           [384, 128, 1, False, -1]      
+  -  13             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  14                  -1  1     24000  ultralytics.nn.modules.block.A2C2f           [256, 64, 1, False, -1]       
+  -  15                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                
+  -  16            [-1, 11]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  17                  -1  1     74624  ultralytics.nn.modules.block.A2C2f           [192, 128, 1, False, -1]      
+  -  18                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              
+  -  19             [-1, 8]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  20                  -1  1    378880  ultralytics.nn.modules.block.C3k2            [384, 256, 1, True]           
+  -  21        [14, 17, 20]  1    430867  ultralytics.nn.modules.head.Detect           [1, 16, None, [64, 128, 256]] 
+  - [34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 3.7s/it 3.7s
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 11.0it/s 0.1s
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 6.2it/s 0.2s
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 3.2it/s 0.3s
+
+## aircon_top_bottom_test.ipynb
+- cells: 20
+- code_cells: 13
+- Detected references:
+  - `YOLO(model_path)`
+  - `YOLO(str(best_path))`
+  - `best.pt`
+  - `best.pt`
+  - `best.pt`
+  - `epochs=50`
+  - `imgsz=640`
+  - `workspace("heninis-workspace-fzzwq").project("aircon_top_bottom")`
+  - `project("aircon_top_bottom")`
+- Output snippets:
+  - Creating new Ultralytics Settings v0.0.6 file  
+  - View Ultralytics Settings with 'yolo settings' or at '/root/.config/Ultralytics/settings.json'
+  - Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/quickstart/#ultralytics-settings.
+  - Ultralytics 8.4.67  Python-3.12.13 torch-2.11.0+cu128 CUDA:0 (Tesla T4, 14913MiB)
+  - [KDownloading https://ultralytics.com/assets/Arial.ttf to '/root/.config/Ultralytics/Arial.ttf': 100%  755.1KB 24.5MB/s 0.0s
+  -   0                  -1  1       464  ultralytics.nn.modules.conv.Conv             [3, 16, 3, 2]                 
+  -   1                  -1  1      4672  ultralytics.nn.modules.conv.Conv             [16, 32, 3, 2]                
+  -   2                  -1  1      6640  ultralytics.nn.modules.block.C3k2            [32, 64, 1, False, 0.25]      
+  -   3                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                
+  -   4                  -1  1     26080  ultralytics.nn.modules.block.C3k2            [64, 128, 1, False, 0.25]     
+  -   5                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              
+  -   6                  -1  2    180864  ultralytics.nn.modules.block.A2C2f           [128, 128, 2, True, 4]        
+  -   7                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]              
+  -   8                  -1  2    689408  ultralytics.nn.modules.block.A2C2f           [256, 256, 2, True, 1]        
+  -  10             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  11                  -1  1     86912  ultralytics.nn.modules.block.A2C2f           [384, 128, 1, False, -1]      
+  -  13             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  14                  -1  1     24000  ultralytics.nn.modules.block.A2C2f           [256, 64, 1, False, -1]       
+  -  15                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                
+  -  16            [-1, 11]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  17                  -1  1     74624  ultralytics.nn.modules.block.A2C2f           [192, 128, 1, False, -1]      
+  -  18                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              
+  -  19             [-1, 8]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+  -  20                  -1  1    378880  ultralytics.nn.modules.block.C3k2            [384, 256, 1, True]           
+  -  21        [14, 17, 20]  1    431062  ultralytics.nn.modules.head.Detect           [2, 16, None, [64, 128, 256]] 
+  - [34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 4.4s/it 4.4s
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 4.0it/s 0.3s
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 4.5it/s 0.2s
+  - [K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%  1/1 5.0it/s 0.2s

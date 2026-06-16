@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "smoke:ar-guide": "node scripts/smoke-arguide-detection.mjs"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

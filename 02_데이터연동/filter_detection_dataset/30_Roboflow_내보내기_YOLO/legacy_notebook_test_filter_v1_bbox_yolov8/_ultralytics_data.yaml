@@ -1,0 +1,7 @@
+﻿path: C:/Users/TAEHEE/Documents/2026 LGDX/프로젝트/lgdx_DX/07_개발단계/06_AR 가전케어 AI/02_데이터연동/filter_detection_dataset/30_Roboflow_내보내기_YOLO/legacy_notebook_test_filter_v1_bbox_yolov8
+train: train/images
+val: valid/images
+test: test/images
+nc: 1
+names:
+  - filter

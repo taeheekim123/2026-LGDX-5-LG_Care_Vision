@@ -27,3 +27,5 @@ AI 판단 결과
 - `risk_ceiling`을 초과하는 위험도는 사용하지 않는다.
 - `forbidden_actions`는 AR Guide 구성 prompt와 AR guide plan에 금지 조건으로 전달한다.
 - clean reference와 annotated overlay는 분리해야 한다.
+
+

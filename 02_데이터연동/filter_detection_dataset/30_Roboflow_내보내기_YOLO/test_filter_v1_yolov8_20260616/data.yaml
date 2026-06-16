@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['test-filter']
+
+roboflow:
+  workspace: s-workspace-fmrs3
+  project: test_filter-fhist
+  version: dataset
+  license: CC BY 4.0
+  url: https://app.roboflow.com/s-workspace-fmrs3/test_filter-fhist/dataset

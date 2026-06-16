@@ -1,0 +1,146 @@
+[
+  {
+    "export": "carevision_ar_reviewed_099_yolov8_20260616",
+    "names": [
+      "filter"
+    ],
+    "splits": {
+      "train": {
+        "images": 99,
+        "labels": 99,
+        "boxes": 108,
+        "empty_labels": 2
+      }
+    },
+    "total_images": 99,
+    "total_labels": 99,
+    "total_boxes": 108,
+    "empty_labels": 2,
+    "class_counts": {
+      "0": 108
+    },
+    "bad_count": 3,
+    "bad_examples": [
+      "train\\labels\\user_primary_filter_077_jpg.rf.8L580Qh9MnjQ133Tzbno.txt:1:cols=11",
+      "train\\labels\\user_primary_filter_077_jpg.rf.8L580Qh9MnjQ133Tzbno.txt:2:cols=9",
+      "train\\labels\\user_primary_filter_083_png.rf.yGbb266DjcQWEHtpK99h.txt:1:cols=9"
+    ]
+  },
+  {
+    "export": "test_filter_v1_yolov8_20260616",
+    "names": [
+      "test-filter"
+    ],
+    "splits": {
+      "train": {
+        "images": 48,
+        "labels": 48,
+        "boxes": 0,
+        "empty_labels": 0
+      },
+      "valid": {
+        "images": 12,
+        "labels": 12,
+        "boxes": 0,
+        "empty_labels": 0
+      },
+      "test": {
+        "images": 6,
+        "labels": 6,
+        "boxes": 0,
+        "empty_labels": 0
+      }
+    },
+    "total_images": 66,
+    "total_labels": 66,
+    "total_boxes": 0,
+    "empty_labels": 0,
+    "class_counts": {},
+    "bad_count": 66,
+    "bad_examples": [
+      "train\\labels\\그림10_jpg.rf.rWvK54VW7uNnsBjwu3IL.txt:1:cols=9",
+      "train\\labels\\그림12_jpg.rf.TzSsuuDuZa54SILwoL81.txt:1:cols=9",
+      "train\\labels\\그림13_jpg.rf.V90cmpSmvbHF7m4tkUzV.txt:1:cols=9",
+      "train\\labels\\그림14_jpg.rf.5jdknuTan71jv4T0t9c2.txt:1:cols=9",
+      "train\\labels\\그림16_png.rf.CcKgjpVcAWUe5myQ4emY.txt:1:cols=9"
+    ]
+  },
+  {
+    "export": "aircon_external_yolov8_20260616",
+    "names": [
+      "aircon"
+    ],
+    "splits": {
+      "train": {
+        "images": 53,
+        "labels": 53,
+        "boxes": 53,
+        "empty_labels": 0
+      },
+      "valid": {
+        "images": 10,
+        "labels": 10,
+        "boxes": 10,
+        "empty_labels": 0
+      },
+      "test": {
+        "images": 11,
+        "labels": 11,
+        "boxes": 11,
+        "empty_labels": 0
+      }
+    },
+    "total_images": 74,
+    "total_labels": 74,
+    "total_boxes": 74,
+    "empty_labels": 0,
+    "class_counts": {
+      "0": 74
+    },
+    "bad_count": 0,
+    "bad_examples": []
+  },
+  {
+    "export": "aircon_top_bottom_yolov8_20260616",
+    "names": [
+      "aircon-bottom",
+      "aircon-top"
+    ],
+    "splits": {
+      "train": {
+        "images": 64,
+        "labels": 64,
+        "boxes": 26,
+        "empty_labels": 0
+      },
+      "valid": {
+        "images": 19,
+        "labels": 19,
+        "boxes": 6,
+        "empty_labels": 0
+      },
+      "test": {
+        "images": 10,
+        "labels": 10,
+        "boxes": 7,
+        "empty_labels": 0
+      }
+    },
+    "total_images": 93,
+    "total_labels": 93,
+    "total_boxes": 39,
+    "empty_labels": 0,
+    "class_counts": {
+      "1": 38,
+      "0": 1
+    },
+    "bad_count": 146,
+    "bad_examples": [
+      "train\\labels\\wall_split_ac_022_jpg.rf.lf55oYYokRQBxmd79jhY.txt:1:cols=9",
+      "train\\labels\\wall_split_ac_022_jpg.rf.lf55oYYokRQBxmd79jhY.txt:2:cols=9",
+      "train\\labels\\wall_split_ac_023_jpg.rf.NYvwuJfsIXiaWYaw8tvQ.txt:1:cols=15",
+      "train\\labels\\wall_split_ac_023_jpg.rf.NYvwuJfsIXiaWYaw8tvQ.txt:2:cols=17",
+      "train\\labels\\wall_split_ac_025_jpg.rf.vBSPwMq3853bg48vyXb3.txt:1:cols=13"
+    ]
+  }
+]

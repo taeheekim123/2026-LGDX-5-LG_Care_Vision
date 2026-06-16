@@ -12,6 +12,7 @@ export interface Message {
   videoUrl?: string;
   guideButtons?: ("manual" | "ar" | "service")[];
   guideOptions?: ChatGuideOptions;
+  cardPolicy?: ChatCardPolicy | null;
   showDoneAsk?: boolean;
   showSchedule?: boolean;
   showServiceSummary?: ServiceInfo;
@@ -76,6 +77,18 @@ export interface AiChatResponse {
   needs_clarification?: boolean;
   missing_slots?: string[];
   guide_options?: ChatGuideOptions | null;
+  card_policy?: ChatCardPolicy | null;
+}
+
+export interface ChatCardPolicy {
+  card_type?: "clarification" | "service_route" | "safety_block" | "ar_start" | "manual_only" | "none";
+  title?: string;
+  description?: string;
+  primary_action?: string | null;
+  show_manual_button?: boolean;
+  show_ar_button?: boolean;
+  show_service_button?: boolean;
+  reason?: string;
 }
 
 export interface ServiceInfo {

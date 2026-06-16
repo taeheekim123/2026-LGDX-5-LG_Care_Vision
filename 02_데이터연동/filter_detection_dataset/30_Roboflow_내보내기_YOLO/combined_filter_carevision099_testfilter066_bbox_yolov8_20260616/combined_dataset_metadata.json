@@ -1,0 +1,55 @@
+﻿{
+  "created_at_utc": "2026-06-16T01:36:15.369252+00:00",
+  "target_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616",
+  "sources": [
+    {
+      "slug": "carevision099",
+      "path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\carevision_ar_reviewed_099_bbox_yolov8_20260616",
+      "splits": {
+        "train->train": {
+          "images": 99,
+          "labels": 99,
+          "boxes": 111
+        }
+      }
+    },
+    {
+      "slug": "testfilter066",
+      "path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\test_filter_v1_bbox_yolov8_20260616",
+      "splits": {
+        "train->train": {
+          "images": 48,
+          "labels": 48,
+          "boxes": 48
+        },
+        "valid->valid": {
+          "images": 12,
+          "labels": 12,
+          "boxes": 12
+        },
+        "test->test": {
+          "images": 6,
+          "labels": 6,
+          "boxes": 6
+        }
+      }
+    }
+  ],
+  "splits": {
+    "train": {
+      "images": 147,
+      "labels": 147,
+      "boxes": 159
+    },
+    "valid": {
+      "images": 12,
+      "labels": 12,
+      "boxes": 12
+    },
+    "test": {
+      "images": 6,
+      "labels": 6,
+      "boxes": 6
+    }
+  }
+}

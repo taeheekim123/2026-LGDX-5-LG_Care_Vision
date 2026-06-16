@@ -1,0 +1,5 @@
+﻿image_id,file_path,source_type,source_url,license,permission_status,contains_filter,split,notes
+fd_seed_0001,10_원천이미지_raw/00_로컬기준이미지/as_q24enxe_reference_closed.jpeg,local_reference,,project_internal,approved,false,review,closed AC reference; use mainly as negative/reference
+fd_seed_0002,10_원천이미지_raw/00_로컬기준이미지/as_q24enxe_reference_cover_open_filter_visible.png,local_reference,,project_internal,approved,true,review,open cover filter visible seed; bbox guideline candidate
+fd_seed_0003,10_원천이미지_raw/00_로컬기준이미지/as_q24enxe_reference_open.jpeg,local_reference,,project_internal,approved,true,review,open AC reference; check whether filter is visible enough
+fd_seed_0004,10_원천이미지_raw/00_로컬기준이미지/as_q24enxe_reference_open_cropped.jpeg,local_reference,,project_internal,approved,true,review,cropped open AC reference; bbox guideline candidate

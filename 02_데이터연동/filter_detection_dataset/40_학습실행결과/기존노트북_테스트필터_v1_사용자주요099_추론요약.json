@@ -1,0 +1,523 @@
+﻿{
+  "summary": {
+    "model_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\03_AI로직\\models\\filter_detection\\best.pt",
+    "image_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099\\images",
+    "images": 99,
+    "conf_threshold": 0.25,
+    "images_with_detection": 88,
+    "detection_rate": 0.8889,
+    "max_conf_min": 0.2642,
+    "max_conf_median": 0.6929,
+    "max_conf_mean": 0.6558,
+    "max_conf_max": 0.948,
+    "no_detection_examples": [
+      "user_primary_filter_003.jpg",
+      "user_primary_filter_007.jpg",
+      "user_primary_filter_010.png",
+      "user_primary_filter_016.png",
+      "user_primary_filter_020.jpg",
+      "user_primary_filter_060.jpg",
+      "user_primary_filter_076.jpg",
+      "user_primary_filter_077.jpg",
+      "user_primary_filter_083.png",
+      "user_primary_filter_095.jpg"
+    ]
+  },
+  "rows": [
+    {
+      "image": "user_primary_filter_001.jpg",
+      "detections": 1,
+      "max_conf": 0.5099698305130005
+    },
+    {
+      "image": "user_primary_filter_002.jpg",
+      "detections": 2,
+      "max_conf": 0.7342545986175537
+    },
+    {
+      "image": "user_primary_filter_003.jpg",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_004.jpg",
+      "detections": 1,
+      "max_conf": 0.3258189558982849
+    },
+    {
+      "image": "user_primary_filter_005.jpg",
+      "detections": 1,
+      "max_conf": 0.5518024563789368
+    },
+    {
+      "image": "user_primary_filter_006.jpg",
+      "detections": 2,
+      "max_conf": 0.6906681060791016
+    },
+    {
+      "image": "user_primary_filter_007.jpg",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_008.jpg",
+      "detections": 1,
+      "max_conf": 0.6537557244300842
+    },
+    {
+      "image": "user_primary_filter_009.png",
+      "detections": 1,
+      "max_conf": 0.8283472657203674
+    },
+    {
+      "image": "user_primary_filter_010.png",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_011.png",
+      "detections": 1,
+      "max_conf": 0.2726394236087799
+    },
+    {
+      "image": "user_primary_filter_012.jpg",
+      "detections": 1,
+      "max_conf": 0.8054611682891846
+    },
+    {
+      "image": "user_primary_filter_013.jpg",
+      "detections": 1,
+      "max_conf": 0.5294522047042847
+    },
+    {
+      "image": "user_primary_filter_014.png",
+      "detections": 1,
+      "max_conf": 0.7334454655647278
+    },
+    {
+      "image": "user_primary_filter_015.jpg",
+      "detections": 1,
+      "max_conf": 0.6504952311515808
+    },
+    {
+      "image": "user_primary_filter_016.png",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_017.jpg",
+      "detections": 1,
+      "max_conf": 0.7068203687667847
+    },
+    {
+      "image": "user_primary_filter_018.png",
+      "detections": 1,
+      "max_conf": 0.4014137089252472
+    },
+    {
+      "image": "user_primary_filter_019.jpg",
+      "detections": 1,
+      "max_conf": 0.7110761404037476
+    },
+    {
+      "image": "user_primary_filter_020.jpg",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_021.jpg",
+      "detections": 1,
+      "max_conf": 0.7383741736412048
+    },
+    {
+      "image": "user_primary_filter_022.jpg",
+      "detections": 1,
+      "max_conf": 0.5310792326927185
+    },
+    {
+      "image": "user_primary_filter_023.png",
+      "detections": 1,
+      "max_conf": 0.7734987735748291
+    },
+    {
+      "image": "user_primary_filter_024.jpg",
+      "detections": 1,
+      "max_conf": 0.6145505309104919
+    },
+    {
+      "image": "user_primary_filter_025.jpg",
+      "detections": 1,
+      "max_conf": 0.8834659457206726
+    },
+    {
+      "image": "user_primary_filter_026.jpg",
+      "detections": 1,
+      "max_conf": 0.8988152742385864
+    },
+    {
+      "image": "user_primary_filter_027.jpg",
+      "detections": 1,
+      "max_conf": 0.8160538673400879
+    },
+    {
+      "image": "user_primary_filter_028.jpg",
+      "detections": 1,
+      "max_conf": 0.42046377062797546
+    },
+    {
+      "image": "user_primary_filter_029.jpg",
+      "detections": 1,
+      "max_conf": 0.5171095728874207
+    },
+    {
+      "image": "user_primary_filter_030.jpg",
+      "detections": 1,
+      "max_conf": 0.5015329718589783
+    },
+    {
+      "image": "user_primary_filter_031.jpg",
+      "detections": 1,
+      "max_conf": 0.5389813184738159
+    },
+    {
+      "image": "user_primary_filter_032.jpg",
+      "detections": 2,
+      "max_conf": 0.8308688402175903
+    },
+    {
+      "image": "user_primary_filter_033.jpg",
+      "detections": 1,
+      "max_conf": 0.6490618586540222
+    },
+    {
+      "image": "user_primary_filter_034.jpg",
+      "detections": 1,
+      "max_conf": 0.3431335985660553
+    },
+    {
+      "image": "user_primary_filter_035.jpg",
+      "detections": 1,
+      "max_conf": 0.5882605314254761
+    },
+    {
+      "image": "user_primary_filter_036.jpg",
+      "detections": 1,
+      "max_conf": 0.7521987557411194
+    },
+    {
+      "image": "user_primary_filter_037.jpg",
+      "detections": 1,
+      "max_conf": 0.7163867950439453
+    },
+    {
+      "image": "user_primary_filter_038.png",
+      "detections": 1,
+      "max_conf": 0.7132562398910522
+    },
+    {
+      "image": "user_primary_filter_039.jpg",
+      "detections": 1,
+      "max_conf": 0.8074888586997986
+    },
+    {
+      "image": "user_primary_filter_040.jpg",
+      "detections": 1,
+      "max_conf": 0.8668841123580933
+    },
+    {
+      "image": "user_primary_filter_041.jpg",
+      "detections": 1,
+      "max_conf": 0.9060925841331482
+    },
+    {
+      "image": "user_primary_filter_042.jpg",
+      "detections": 1,
+      "max_conf": 0.2706768214702606
+    },
+    {
+      "image": "user_primary_filter_043.jpg",
+      "detections": 1,
+      "max_conf": 0.7833107709884644
+    },
+    {
+      "image": "user_primary_filter_044.jpg",
+      "detections": 1,
+      "max_conf": 0.9056714773178101
+    },
+    {
+      "image": "user_primary_filter_045.jpg",
+      "detections": 1,
+      "max_conf": 0.554021954536438
+    },
+    {
+      "image": "user_primary_filter_046.jpg",
+      "detections": 1,
+      "max_conf": 0.7735456824302673
+    },
+    {
+      "image": "user_primary_filter_047.jpg",
+      "detections": 1,
+      "max_conf": 0.9480286836624146
+    },
+    {
+      "image": "user_primary_filter_048.jpg",
+      "detections": 1,
+      "max_conf": 0.9278199672698975
+    },
+    {
+      "image": "user_primary_filter_049.jpg",
+      "detections": 1,
+      "max_conf": 0.8211904168128967
+    },
+    {
+      "image": "user_primary_filter_050.jpg",
+      "detections": 1,
+      "max_conf": 0.7153476476669312
+    },
+    {
+      "image": "user_primary_filter_051.jpg",
+      "detections": 1,
+      "max_conf": 0.768475353717804
+    },
+    {
+      "image": "user_primary_filter_052.jpg",
+      "detections": 1,
+      "max_conf": 0.6044604778289795
+    },
+    {
+      "image": "user_primary_filter_053.jpg",
+      "detections": 1,
+      "max_conf": 0.779731035232544
+    },
+    {
+      "image": "user_primary_filter_054.jpg",
+      "detections": 1,
+      "max_conf": 0.7503045797348022
+    },
+    {
+      "image": "user_primary_filter_055.jpg",
+      "detections": 1,
+      "max_conf": 0.6719240546226501
+    },
+    {
+      "image": "user_primary_filter_056.jpg",
+      "detections": 1,
+      "max_conf": 0.4646168053150177
+    },
+    {
+      "image": "user_primary_filter_057.jpg",
+      "detections": 1,
+      "max_conf": 0.5389673709869385
+    },
+    {
+      "image": "user_primary_filter_058.jpg",
+      "detections": 1,
+      "max_conf": 0.6398465037345886
+    },
+    {
+      "image": "user_primary_filter_059.jpg",
+      "detections": 1,
+      "max_conf": 0.7147416472434998
+    },
+    {
+      "image": "user_primary_filter_060.jpg",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_061.jpg",
+      "detections": 1,
+      "max_conf": 0.6336727738380432
+    },
+    {
+      "image": "user_primary_filter_062.jpg",
+      "detections": 1,
+      "max_conf": 0.5894914269447327
+    },
+    {
+      "image": "user_primary_filter_063.jpg",
+      "detections": 1,
+      "max_conf": 0.5632085204124451
+    },
+    {
+      "image": "user_primary_filter_064.jpg",
+      "detections": 1,
+      "max_conf": 0.7941956520080566
+    },
+    {
+      "image": "user_primary_filter_065.jpg",
+      "detections": 1,
+      "max_conf": 0.4700302481651306
+    },
+    {
+      "image": "user_primary_filter_066.jpg",
+      "detections": 1,
+      "max_conf": 0.7386235594749451
+    },
+    {
+      "image": "user_primary_filter_067.jpg",
+      "detections": 1,
+      "max_conf": 0.805743932723999
+    },
+    {
+      "image": "user_primary_filter_068.jpg",
+      "detections": 1,
+      "max_conf": 0.3832016587257385
+    },
+    {
+      "image": "user_primary_filter_069.jpg",
+      "detections": 1,
+      "max_conf": 0.3896109163761139
+    },
+    {
+      "image": "user_primary_filter_070.jpg",
+      "detections": 2,
+      "max_conf": 0.42706912755966187
+    },
+    {
+      "image": "user_primary_filter_071.jpg",
+      "detections": 1,
+      "max_conf": 0.26419514417648315
+    },
+    {
+      "image": "user_primary_filter_072.jpg",
+      "detections": 1,
+      "max_conf": 0.8806348443031311
+    },
+    {
+      "image": "user_primary_filter_073.jpg",
+      "detections": 1,
+      "max_conf": 0.8840250968933105
+    },
+    {
+      "image": "user_primary_filter_074.jpg",
+      "detections": 1,
+      "max_conf": 0.6951768398284912
+    },
+    {
+      "image": "user_primary_filter_075.jpg",
+      "detections": 1,
+      "max_conf": 0.6097519993782043
+    },
+    {
+      "image": "user_primary_filter_076.jpg",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_077.jpg",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_078.png",
+      "detections": 1,
+      "max_conf": 0.730048418045044
+    },
+    {
+      "image": "user_primary_filter_079.jpg",
+      "detections": 1,
+      "max_conf": 0.7929137945175171
+    },
+    {
+      "image": "user_primary_filter_080.jpg",
+      "detections": 1,
+      "max_conf": 0.8013577461242676
+    },
+    {
+      "image": "user_primary_filter_081.jpg",
+      "detections": 1,
+      "max_conf": 0.664750337600708
+    },
+    {
+      "image": "user_primary_filter_082.png",
+      "detections": 1,
+      "max_conf": 0.9163726568222046
+    },
+    {
+      "image": "user_primary_filter_083.png",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_084.png",
+      "detections": 1,
+      "max_conf": 0.49024564027786255
+    },
+    {
+      "image": "user_primary_filter_085.png",
+      "detections": 1,
+      "max_conf": 0.9114200472831726
+    },
+    {
+      "image": "user_primary_filter_086.jpg",
+      "detections": 1,
+      "max_conf": 0.3571494519710541
+    },
+    {
+      "image": "user_primary_filter_087.jpg",
+      "detections": 1,
+      "max_conf": 0.4257647693157196
+    },
+    {
+      "image": "user_primary_filter_088.jpg",
+      "detections": 1,
+      "max_conf": 0.5604197978973389
+    },
+    {
+      "image": "user_primary_filter_089.png",
+      "detections": 1,
+      "max_conf": 0.5119116306304932
+    },
+    {
+      "image": "user_primary_filter_090.jpg",
+      "detections": 1,
+      "max_conf": 0.4647311866283417
+    },
+    {
+      "image": "user_primary_filter_091.jpg",
+      "detections": 1,
+      "max_conf": 0.6557111740112305
+    },
+    {
+      "image": "user_primary_filter_092.jpg",
+      "detections": 1,
+      "max_conf": 0.8033262491226196
+    },
+    {
+      "image": "user_primary_filter_093.jpg",
+      "detections": 1,
+      "max_conf": 0.7119187116622925
+    },
+    {
+      "image": "user_primary_filter_094.jpg",
+      "detections": 1,
+      "max_conf": 0.46741774678230286
+    },
+    {
+      "image": "user_primary_filter_095.jpg",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_096.jpg",
+      "detections": 1,
+      "max_conf": 0.7881942391395569
+    },
+    {
+      "image": "user_primary_filter_097.jpg",
+      "detections": 1,
+      "max_conf": 0.8451310992240906
+    },
+    {
+      "image": "user_primary_filter_098.jpg",
+      "detections": 0,
+      "max_conf": null
+    },
+    {
+      "image": "user_primary_filter_099.jpg",
+      "detections": 1,
+      "max_conf": 0.5362311005592346
+    }
+  ]
+}

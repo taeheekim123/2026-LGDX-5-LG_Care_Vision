@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 2
+names: ['aircon-bottom', 'aircon-top']
+
+roboflow:
+  workspace: s-workspace-fmrs3
+  project: aircon_top_bottom-euv9v
+  version: dataset
+  license: CC BY 4.0
+  url: https://app.roboflow.com/s-workspace-fmrs3/aircon_top_bottom-euv9v/dataset

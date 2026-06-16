@@ -1,0 +1,2023 @@
+﻿{
+  "summary": {
+    "created_at_utc": "2026-06-16T00:38:49.547985+00:00",
+    "source_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099\\images",
+    "output_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8",
+    "model_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\03_AI로직\\models\\filter_detection\\best.pt",
+    "confidence_threshold": 0.25,
+    "iou_threshold": 0.4,
+    "max_detections": 3,
+    "images": 99,
+    "labels": 99,
+    "images_with_detection": 88,
+    "images_without_detection": 11,
+    "total_boxes": 92
+  },
+  "rows": [
+    {
+      "image": "user_primary_filter_001.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_001.jpg",
+      "label": "user_primary_filter_001.txt",
+      "image_width": 1200,
+      "image_height": 636,
+      "detections": 1,
+      "max_confidence": 0.50997,
+      "boxes": [
+        {
+          "xyxy": [
+            131.009,
+            192.613,
+            1188.559,
+            362.399
+          ],
+          "confidence": 0.50997
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_002.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_002.jpg",
+      "label": "user_primary_filter_002.txt",
+      "image_width": 4000,
+      "image_height": 2252,
+      "detections": 2,
+      "max_confidence": 0.734255,
+      "boxes": [
+        {
+          "xyxy": [
+            459.281,
+            591.079,
+            2203.294,
+            1367.985
+          ],
+          "confidence": 0.734255
+        },
+        {
+          "xyxy": [
+            2631.875,
+            526.95,
+            3204.44,
+            1202.158
+          ],
+          "confidence": 0.264094
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_003.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_003.jpg",
+      "label": "user_primary_filter_003.txt",
+      "image_width": 3974,
+      "image_height": 2077,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_004.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_004.jpg",
+      "label": "user_primary_filter_004.txt",
+      "image_width": 1128,
+      "image_height": 516,
+      "detections": 1,
+      "max_confidence": 0.325819,
+      "boxes": [
+        {
+          "xyxy": [
+            134.908,
+            95.868,
+            990.049,
+            261.489
+          ],
+          "confidence": 0.325819
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_005.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_005.jpg",
+      "label": "user_primary_filter_005.txt",
+      "image_width": 3800,
+      "image_height": 1542,
+      "detections": 1,
+      "max_confidence": 0.551802,
+      "boxes": [
+        {
+          "xyxy": [
+            80.762,
+            309.606,
+            3323.052,
+            914.415
+          ],
+          "confidence": 0.551802
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_006.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_006.jpg",
+      "label": "user_primary_filter_006.txt",
+      "image_width": 1230,
+      "image_height": 490,
+      "detections": 2,
+      "max_confidence": 0.690668,
+      "boxes": [
+        {
+          "xyxy": [
+            145.759,
+            122.223,
+            906.156,
+            290.784
+          ],
+          "confidence": 0.690668
+        },
+        {
+          "xyxy": [
+            2.522,
+            0.0,
+            521.147,
+            59.549
+          ],
+          "confidence": 0.254882
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_007.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_007.jpg",
+      "label": "user_primary_filter_007.txt",
+      "image_width": 1204,
+      "image_height": 548,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_008.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_008.jpg",
+      "label": "user_primary_filter_008.txt",
+      "image_width": 952,
+      "image_height": 680,
+      "detections": 1,
+      "max_confidence": 0.653756,
+      "boxes": [
+        {
+          "xyxy": [
+            331.934,
+            193.446,
+            762.848,
+            437.703
+          ],
+          "confidence": 0.653756
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_009.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_009.png",
+      "label": "user_primary_filter_009.txt",
+      "image_width": 1231,
+      "image_height": 550,
+      "detections": 1,
+      "max_confidence": 0.828347,
+      "boxes": [
+        {
+          "xyxy": [
+            102.047,
+            121.491,
+            872.677,
+            379.493
+          ],
+          "confidence": 0.828347
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_010.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_010.png",
+      "label": "user_primary_filter_010.txt",
+      "image_width": 946,
+      "image_height": 465,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_011.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_011.png",
+      "label": "user_primary_filter_011.txt",
+      "image_width": 1252,
+      "image_height": 463,
+      "detections": 1,
+      "max_confidence": 0.272639,
+      "boxes": [
+        {
+          "xyxy": [
+            61.682,
+            47.301,
+            975.503,
+            247.675
+          ],
+          "confidence": 0.272639
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_012.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_012.jpg",
+      "label": "user_primary_filter_012.txt",
+      "image_width": 1106,
+      "image_height": 606,
+      "detections": 1,
+      "max_confidence": 0.805461,
+      "boxes": [
+        {
+          "xyxy": [
+            104.612,
+            162.427,
+            810.399,
+            379.843
+          ],
+          "confidence": 0.805461
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_013.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_013.jpg",
+      "label": "user_primary_filter_013.txt",
+      "image_width": 1240,
+      "image_height": 449,
+      "detections": 1,
+      "max_confidence": 0.529452,
+      "boxes": [
+        {
+          "xyxy": [
+            185.534,
+            75.796,
+            949.793,
+            253.629
+          ],
+          "confidence": 0.529452
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_014.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_014.png",
+      "label": "user_primary_filter_014.txt",
+      "image_width": 1164,
+      "image_height": 360,
+      "detections": 1,
+      "max_confidence": 0.733445,
+      "boxes": [
+        {
+          "xyxy": [
+            77.489,
+            9.181,
+            996.24,
+            279.016
+          ],
+          "confidence": 0.733445
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_015.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_015.jpg",
+      "label": "user_primary_filter_015.txt",
+      "image_width": 1272,
+      "image_height": 468,
+      "detections": 1,
+      "max_confidence": 0.650495,
+      "boxes": [
+        {
+          "xyxy": [
+            165.571,
+            80.724,
+            942.909,
+            282.642
+          ],
+          "confidence": 0.650495
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_016.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_016.png",
+      "label": "user_primary_filter_016.txt",
+      "image_width": 1092,
+      "image_height": 676,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_017.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_017.jpg",
+      "label": "user_primary_filter_017.txt",
+      "image_width": 1266,
+      "image_height": 462,
+      "detections": 1,
+      "max_confidence": 0.70682,
+      "boxes": [
+        {
+          "xyxy": [
+            188.94,
+            108.043,
+            958.607,
+            281.663
+          ],
+          "confidence": 0.70682
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_018.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_018.png",
+      "label": "user_primary_filter_018.txt",
+      "image_width": 1278,
+      "image_height": 457,
+      "detections": 1,
+      "max_confidence": 0.401414,
+      "boxes": [
+        {
+          "xyxy": [
+            185.992,
+            134.458,
+            998.421,
+            231.616
+          ],
+          "confidence": 0.401414
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_019.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_019.jpg",
+      "label": "user_primary_filter_019.txt",
+      "image_width": 1222,
+      "image_height": 514,
+      "detections": 1,
+      "max_confidence": 0.711076,
+      "boxes": [
+        {
+          "xyxy": [
+            166.206,
+            111.925,
+            963.399,
+            306.793
+          ],
+          "confidence": 0.711076
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_020.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_020.jpg",
+      "label": "user_primary_filter_020.txt",
+      "image_width": 1192,
+      "image_height": 482,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_021.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_021.jpg",
+      "label": "user_primary_filter_021.txt",
+      "image_width": 1220,
+      "image_height": 478,
+      "detections": 1,
+      "max_confidence": 0.738374,
+      "boxes": [
+        {
+          "xyxy": [
+            71.889,
+            92.72,
+            943.717,
+            276.008
+          ],
+          "confidence": 0.738374
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_022.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_022.jpg",
+      "label": "user_primary_filter_022.txt",
+      "image_width": 1228,
+      "image_height": 519,
+      "detections": 1,
+      "max_confidence": 0.531079,
+      "boxes": [
+        {
+          "xyxy": [
+            173.247,
+            129.386,
+            897.405,
+            288.099
+          ],
+          "confidence": 0.531079
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_023.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_023.png",
+      "label": "user_primary_filter_023.txt",
+      "image_width": 1266,
+      "image_height": 570,
+      "detections": 1,
+      "max_confidence": 0.773499,
+      "boxes": [
+        {
+          "xyxy": [
+            155.313,
+            148.428,
+            1156.327,
+            407.126
+          ],
+          "confidence": 0.773499
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_024.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_024.jpg",
+      "label": "user_primary_filter_024.txt",
+      "image_width": 1184,
+      "image_height": 558,
+      "detections": 1,
+      "max_confidence": 0.614551,
+      "boxes": [
+        {
+          "xyxy": [
+            8.112,
+            143.971,
+            1104.534,
+            403.107
+          ],
+          "confidence": 0.614551
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_025.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_025.jpg",
+      "label": "user_primary_filter_025.txt",
+      "image_width": 926,
+      "image_height": 694,
+      "detections": 1,
+      "max_confidence": 0.883466,
+      "boxes": [
+        {
+          "xyxy": [
+            329.44,
+            172.615,
+            781.763,
+            601.516
+          ],
+          "confidence": 0.883466
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_026.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_026.jpg",
+      "label": "user_primary_filter_026.txt",
+      "image_width": 964,
+      "image_height": 723,
+      "detections": 1,
+      "max_confidence": 0.898815,
+      "boxes": [
+        {
+          "xyxy": [
+            240.14,
+            165.96,
+            801.738,
+            465.159
+          ],
+          "confidence": 0.898815
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_027.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_027.jpg",
+      "label": "user_primary_filter_027.txt",
+      "image_width": 1135,
+      "image_height": 602,
+      "detections": 1,
+      "max_confidence": 0.816054,
+      "boxes": [
+        {
+          "xyxy": [
+            98.805,
+            139.021,
+            841.276,
+            377.038
+          ],
+          "confidence": 0.816054
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_028.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_028.jpg",
+      "label": "user_primary_filter_028.txt",
+      "image_width": 1126,
+      "image_height": 606,
+      "detections": 1,
+      "max_confidence": 0.420464,
+      "boxes": [
+        {
+          "xyxy": [
+            70.656,
+            229.402,
+            854.429,
+            381.526
+          ],
+          "confidence": 0.420464
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_029.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_029.jpg",
+      "label": "user_primary_filter_029.txt",
+      "image_width": 1222,
+      "image_height": 608,
+      "detections": 1,
+      "max_confidence": 0.51711,
+      "boxes": [
+        {
+          "xyxy": [
+            57.849,
+            286.749,
+            769.079,
+            432.229
+          ],
+          "confidence": 0.51711
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_030.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_030.jpg",
+      "label": "user_primary_filter_030.txt",
+      "image_width": 1272,
+      "image_height": 510,
+      "detections": 1,
+      "max_confidence": 0.501533,
+      "boxes": [
+        {
+          "xyxy": [
+            99.202,
+            54.5,
+            1018.869,
+            256.379
+          ],
+          "confidence": 0.501533
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_031.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_031.jpg",
+      "label": "user_primary_filter_031.txt",
+      "image_width": 800,
+      "image_height": 533,
+      "detections": 1,
+      "max_confidence": 0.538981,
+      "boxes": [
+        {
+          "xyxy": [
+            34.53,
+            169.045,
+            781.604,
+            332.389
+          ],
+          "confidence": 0.538981
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_032.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_032.jpg",
+      "label": "user_primary_filter_032.txt",
+      "image_width": 876,
+      "image_height": 492,
+      "detections": 2,
+      "max_confidence": 0.830869,
+      "boxes": [
+        {
+          "xyxy": [
+            97.502,
+            127.948,
+            484.55,
+            300.423
+          ],
+          "confidence": 0.830869
+        },
+        {
+          "xyxy": [
+            577.237,
+            117.499,
+            703.089,
+            262.53
+          ],
+          "confidence": 0.264399
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_033.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_033.jpg",
+      "label": "user_primary_filter_033.txt",
+      "image_width": 1062,
+      "image_height": 456,
+      "detections": 1,
+      "max_confidence": 0.649062,
+      "boxes": [
+        {
+          "xyxy": [
+            323.959,
+            208.63,
+            847.819,
+            314.437
+          ],
+          "confidence": 0.649062
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_034.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_034.jpg",
+      "label": "user_primary_filter_034.txt",
+      "image_width": 1046,
+      "image_height": 526,
+      "detections": 1,
+      "max_confidence": 0.343134,
+      "boxes": [
+        {
+          "xyxy": [
+            214.629,
+            176.823,
+            763.035,
+            287.535
+          ],
+          "confidence": 0.343134
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_035.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_035.jpg",
+      "label": "user_primary_filter_035.txt",
+      "image_width": 865,
+      "image_height": 598,
+      "detections": 1,
+      "max_confidence": 0.588261,
+      "boxes": [
+        {
+          "xyxy": [
+            42.587,
+            287.126,
+            688.037,
+            445.979
+          ],
+          "confidence": 0.588261
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_036.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_036.jpg",
+      "label": "user_primary_filter_036.txt",
+      "image_width": 961,
+      "image_height": 536,
+      "detections": 1,
+      "max_confidence": 0.752199,
+      "boxes": [
+        {
+          "xyxy": [
+            113.615,
+            241.978,
+            696.503,
+            375.362
+          ],
+          "confidence": 0.752199
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_037.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_037.jpg",
+      "label": "user_primary_filter_037.txt",
+      "image_width": 800,
+      "image_height": 600,
+      "detections": 1,
+      "max_confidence": 0.716387,
+      "boxes": [
+        {
+          "xyxy": [
+            6.921,
+            201.475,
+            625.482,
+            362.97
+          ],
+          "confidence": 0.716387
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_038.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_038.png",
+      "label": "user_primary_filter_038.txt",
+      "image_width": 1002,
+      "image_height": 440,
+      "detections": 1,
+      "max_confidence": 0.713256,
+      "boxes": [
+        {
+          "xyxy": [
+            58.974,
+            159.132,
+            847.632,
+            432.258
+          ],
+          "confidence": 0.713256
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_039.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_039.jpg",
+      "label": "user_primary_filter_039.txt",
+      "image_width": 952,
+      "image_height": 546,
+      "detections": 1,
+      "max_confidence": 0.807489,
+      "boxes": [
+        {
+          "xyxy": [
+            203.428,
+            147.737,
+            467.785,
+            350.364
+          ],
+          "confidence": 0.807489
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_040.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_040.jpg",
+      "label": "user_primary_filter_040.txt",
+      "image_width": 800,
+      "image_height": 600,
+      "detections": 1,
+      "max_confidence": 0.866884,
+      "boxes": [
+        {
+          "xyxy": [
+            161.185,
+            141.838,
+            602.349,
+            315.399
+          ],
+          "confidence": 0.866884
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_041.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_041.jpg",
+      "label": "user_primary_filter_041.txt",
+      "image_width": 1070,
+      "image_height": 675,
+      "detections": 1,
+      "max_confidence": 0.906093,
+      "boxes": [
+        {
+          "xyxy": [
+            198.183,
+            168.173,
+            747.791,
+            453.847
+          ],
+          "confidence": 0.906093
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_042.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_042.jpg",
+      "label": "user_primary_filter_042.txt",
+      "image_width": 828,
+      "image_height": 517,
+      "detections": 1,
+      "max_confidence": 0.270677,
+      "boxes": [
+        {
+          "xyxy": [
+            129.303,
+            255.291,
+            588.303,
+            347.549
+          ],
+          "confidence": 0.270677
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_043.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_043.jpg",
+      "label": "user_primary_filter_043.txt",
+      "image_width": 870,
+      "image_height": 590,
+      "detections": 1,
+      "max_confidence": 0.783311,
+      "boxes": [
+        {
+          "xyxy": [
+            80.272,
+            251.957,
+            639.113,
+            429.63
+          ],
+          "confidence": 0.783311
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_044.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_044.jpg",
+      "label": "user_primary_filter_044.txt",
+      "image_width": 953,
+      "image_height": 471,
+      "detections": 1,
+      "max_confidence": 0.905671,
+      "boxes": [
+        {
+          "xyxy": [
+            248.0,
+            97.769,
+            871.131,
+            369.612
+          ],
+          "confidence": 0.905671
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_045.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_045.jpg",
+      "label": "user_primary_filter_045.txt",
+      "image_width": 1201,
+      "image_height": 600,
+      "detections": 1,
+      "max_confidence": 0.554022,
+      "boxes": [
+        {
+          "xyxy": [
+            76.171,
+            267.131,
+            942.218,
+            449.802
+          ],
+          "confidence": 0.554022
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_046.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_046.jpg",
+      "label": "user_primary_filter_046.txt",
+      "image_width": 1116,
+      "image_height": 467,
+      "detections": 1,
+      "max_confidence": 0.773546,
+      "boxes": [
+        {
+          "xyxy": [
+            15.074,
+            43.024,
+            922.028,
+            275.506
+          ],
+          "confidence": 0.773546
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_047.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_047.jpg",
+      "label": "user_primary_filter_047.txt",
+      "image_width": 800,
+      "image_height": 600,
+      "detections": 1,
+      "max_confidence": 0.948029,
+      "boxes": [
+        {
+          "xyxy": [
+            2.845,
+            7.701,
+            765.917,
+            487.926
+          ],
+          "confidence": 0.948029
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_048.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_048.jpg",
+      "label": "user_primary_filter_048.txt",
+      "image_width": 1042,
+      "image_height": 613,
+      "detections": 1,
+      "max_confidence": 0.92782,
+      "boxes": [
+        {
+          "xyxy": [
+            81.062,
+            64.802,
+            1040.205,
+            444.452
+          ],
+          "confidence": 0.92782
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_049.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_049.jpg",
+      "label": "user_primary_filter_049.txt",
+      "image_width": 1142,
+      "image_height": 606,
+      "detections": 1,
+      "max_confidence": 0.82119,
+      "boxes": [
+        {
+          "xyxy": [
+            41.28,
+            62.899,
+            879.915,
+            374.442
+          ],
+          "confidence": 0.82119
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_050.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_050.jpg",
+      "label": "user_primary_filter_050.txt",
+      "image_width": 958,
+      "image_height": 520,
+      "detections": 1,
+      "max_confidence": 0.715348,
+      "boxes": [
+        {
+          "xyxy": [
+            25.242,
+            75.256,
+            626.608,
+            276.305
+          ],
+          "confidence": 0.715348
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_051.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_051.jpg",
+      "label": "user_primary_filter_051.txt",
+      "image_width": 1011,
+      "image_height": 584,
+      "detections": 1,
+      "max_confidence": 0.768475,
+      "boxes": [
+        {
+          "xyxy": [
+            170.208,
+            131.013,
+            740.508,
+            289.132
+          ],
+          "confidence": 0.768475
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_052.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_052.jpg",
+      "label": "user_primary_filter_052.txt",
+      "image_width": 857,
+      "image_height": 482,
+      "detections": 1,
+      "max_confidence": 0.60446,
+      "boxes": [
+        {
+          "xyxy": [
+            34.013,
+            201.176,
+            703.553,
+            339.15
+          ],
+          "confidence": 0.60446
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_053.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_053.jpg",
+      "label": "user_primary_filter_053.txt",
+      "image_width": 1170,
+      "image_height": 484,
+      "detections": 1,
+      "max_confidence": 0.779731,
+      "boxes": [
+        {
+          "xyxy": [
+            49.245,
+            146.302,
+            858.687,
+            337.971
+          ],
+          "confidence": 0.779731
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_054.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_054.jpg",
+      "label": "user_primary_filter_054.txt",
+      "image_width": 1108,
+      "image_height": 485,
+      "detections": 1,
+      "max_confidence": 0.750305,
+      "boxes": [
+        {
+          "xyxy": [
+            158.582,
+            105.285,
+            889.45,
+            283.041
+          ],
+          "confidence": 0.750305
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_055.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_055.jpg",
+      "label": "user_primary_filter_055.txt",
+      "image_width": 948,
+      "image_height": 483,
+      "detections": 1,
+      "max_confidence": 0.671924,
+      "boxes": [
+        {
+          "xyxy": [
+            121.401,
+            217.677,
+            726.852,
+            341.347
+          ],
+          "confidence": 0.671924
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_056.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_056.jpg",
+      "label": "user_primary_filter_056.txt",
+      "image_width": 1182,
+      "image_height": 538,
+      "detections": 1,
+      "max_confidence": 0.464617,
+      "boxes": [
+        {
+          "xyxy": [
+            181.041,
+            212.599,
+            907.753,
+            336.332
+          ],
+          "confidence": 0.464617
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_057.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_057.jpg",
+      "label": "user_primary_filter_057.txt",
+      "image_width": 1056,
+      "image_height": 524,
+      "detections": 1,
+      "max_confidence": 0.538967,
+      "boxes": [
+        {
+          "xyxy": [
+            220.087,
+            226.158,
+            742.918,
+            336.312
+          ],
+          "confidence": 0.538967
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_058.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_058.jpg",
+      "label": "user_primary_filter_058.txt",
+      "image_width": 1006,
+      "image_height": 522,
+      "detections": 1,
+      "max_confidence": 0.639847,
+      "boxes": [
+        {
+          "xyxy": [
+            142.687,
+            177.878,
+            849.67,
+            348.765
+          ],
+          "confidence": 0.639847
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_059.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_059.jpg",
+      "label": "user_primary_filter_059.txt",
+      "image_width": 1112,
+      "image_height": 532,
+      "detections": 1,
+      "max_confidence": 0.714742,
+      "boxes": [
+        {
+          "xyxy": [
+            106.634,
+            129.711,
+            741.534,
+            310.997
+          ],
+          "confidence": 0.714742
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_060.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_060.jpg",
+      "label": "user_primary_filter_060.txt",
+      "image_width": 800,
+      "image_height": 600,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_061.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_061.jpg",
+      "label": "user_primary_filter_061.txt",
+      "image_width": 1069,
+      "image_height": 510,
+      "detections": 1,
+      "max_confidence": 0.633673,
+      "boxes": [
+        {
+          "xyxy": [
+            115.019,
+            123.868,
+            854.575,
+            293.941
+          ],
+          "confidence": 0.633673
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_062.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_062.jpg",
+      "label": "user_primary_filter_062.txt",
+      "image_width": 956,
+      "image_height": 504,
+      "detections": 1,
+      "max_confidence": 0.589491,
+      "boxes": [
+        {
+          "xyxy": [
+            131.532,
+            145.794,
+            707.828,
+            286.559
+          ],
+          "confidence": 0.589491
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_063.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_063.jpg",
+      "label": "user_primary_filter_063.txt",
+      "image_width": 996,
+      "image_height": 451,
+      "detections": 1,
+      "max_confidence": 0.563209,
+      "boxes": [
+        {
+          "xyxy": [
+            71.209,
+            95.348,
+            775.808,
+            247.568
+          ],
+          "confidence": 0.563209
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_064.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_064.jpg",
+      "label": "user_primary_filter_064.txt",
+      "image_width": 1098,
+      "image_height": 510,
+      "detections": 1,
+      "max_confidence": 0.794196,
+      "boxes": [
+        {
+          "xyxy": [
+            196.716,
+            211.253,
+            769.704,
+            333.814
+          ],
+          "confidence": 0.794196
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_065.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_065.jpg",
+      "label": "user_primary_filter_065.txt",
+      "image_width": 1059,
+      "image_height": 606,
+      "detections": 1,
+      "max_confidence": 0.47003,
+      "boxes": [
+        {
+          "xyxy": [
+            103.76,
+            93.283,
+            885.531,
+            240.302
+          ],
+          "confidence": 0.47003
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_066.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_066.jpg",
+      "label": "user_primary_filter_066.txt",
+      "image_width": 1118,
+      "image_height": 475,
+      "detections": 1,
+      "max_confidence": 0.738624,
+      "boxes": [
+        {
+          "xyxy": [
+            109.023,
+            157.991,
+            924.2,
+            330.222
+          ],
+          "confidence": 0.738624
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_067.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_067.jpg",
+      "label": "user_primary_filter_067.txt",
+      "image_width": 1024,
+      "image_height": 562,
+      "detections": 1,
+      "max_confidence": 0.805744,
+      "boxes": [
+        {
+          "xyxy": [
+            95.073,
+            134.621,
+            760.31,
+            347.371
+          ],
+          "confidence": 0.805744
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_068.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_068.jpg",
+      "label": "user_primary_filter_068.txt",
+      "image_width": 1187,
+      "image_height": 429,
+      "detections": 1,
+      "max_confidence": 0.383202,
+      "boxes": [
+        {
+          "xyxy": [
+            108.667,
+            114.436,
+            894.837,
+            249.806
+          ],
+          "confidence": 0.383202
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_069.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_069.jpg",
+      "label": "user_primary_filter_069.txt",
+      "image_width": 1150,
+      "image_height": 516,
+      "detections": 1,
+      "max_confidence": 0.389611,
+      "boxes": [
+        {
+          "xyxy": [
+            237.553,
+            196.591,
+            836.279,
+            312.784
+          ],
+          "confidence": 0.389611
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_070.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_070.jpg",
+      "label": "user_primary_filter_070.txt",
+      "image_width": 1144,
+      "image_height": 537,
+      "detections": 2,
+      "max_confidence": 0.427069,
+      "boxes": [
+        {
+          "xyxy": [
+            72.931,
+            155.933,
+            886.65,
+            327.282
+          ],
+          "confidence": 0.427069
+        },
+        {
+          "xyxy": [
+            976.621,
+            155.541,
+            1144.0,
+            302.001
+          ],
+          "confidence": 0.306007
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_071.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_071.jpg",
+      "label": "user_primary_filter_071.txt",
+      "image_width": 1120,
+      "image_height": 532,
+      "detections": 1,
+      "max_confidence": 0.264195,
+      "boxes": [
+        {
+          "xyxy": [
+            215.548,
+            178.628,
+            892.093,
+            265.039
+          ],
+          "confidence": 0.264195
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_072.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_072.jpg",
+      "label": "user_primary_filter_072.txt",
+      "image_width": 1020,
+      "image_height": 602,
+      "detections": 1,
+      "max_confidence": 0.880635,
+      "boxes": [
+        {
+          "xyxy": [
+            204.182,
+            138.18,
+            771.422,
+            355.456
+          ],
+          "confidence": 0.880635
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_073.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_073.jpg",
+      "label": "user_primary_filter_073.txt",
+      "image_width": 884,
+      "image_height": 664,
+      "detections": 1,
+      "max_confidence": 0.884025,
+      "boxes": [
+        {
+          "xyxy": [
+            251.17,
+            102.73,
+            736.052,
+            423.136
+          ],
+          "confidence": 0.884025
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_074.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_074.jpg",
+      "label": "user_primary_filter_074.txt",
+      "image_width": 800,
+      "image_height": 501,
+      "detections": 1,
+      "max_confidence": 0.695177,
+      "boxes": [
+        {
+          "xyxy": [
+            8.183,
+            78.717,
+            789.728,
+            367.368
+          ],
+          "confidence": 0.695177
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_075.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_075.jpg",
+      "label": "user_primary_filter_075.txt",
+      "image_width": 921,
+      "image_height": 632,
+      "detections": 1,
+      "max_confidence": 0.609752,
+      "boxes": [
+        {
+          "xyxy": [
+            318.307,
+            189.08,
+            736.577,
+            414.238
+          ],
+          "confidence": 0.609752
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_076.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_076.jpg",
+      "label": "user_primary_filter_076.txt",
+      "image_width": 1128,
+      "image_height": 548,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_077.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_077.jpg",
+      "label": "user_primary_filter_077.txt",
+      "image_width": 1206,
+      "image_height": 542,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_078.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_078.png",
+      "label": "user_primary_filter_078.txt",
+      "image_width": 1118,
+      "image_height": 569,
+      "detections": 1,
+      "max_confidence": 0.730048,
+      "boxes": [
+        {
+          "xyxy": [
+            55.497,
+            129.321,
+            1001.749,
+            429.889
+          ],
+          "confidence": 0.730048
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_079.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_079.jpg",
+      "label": "user_primary_filter_079.txt",
+      "image_width": 1130,
+      "image_height": 528,
+      "detections": 1,
+      "max_confidence": 0.792914,
+      "boxes": [
+        {
+          "xyxy": [
+            90.58,
+            55.411,
+            1061.13,
+            342.568
+          ],
+          "confidence": 0.792914
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_080.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_080.jpg",
+      "label": "user_primary_filter_080.txt",
+      "image_width": 1011,
+      "image_height": 640,
+      "detections": 1,
+      "max_confidence": 0.801358,
+      "boxes": [
+        {
+          "xyxy": [
+            103.467,
+            180.849,
+            890.663,
+            406.849
+          ],
+          "confidence": 0.801358
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_081.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_081.jpg",
+      "label": "user_primary_filter_081.txt",
+      "image_width": 1075,
+      "image_height": 512,
+      "detections": 1,
+      "max_confidence": 0.66475,
+      "boxes": [
+        {
+          "xyxy": [
+            132.032,
+            113.095,
+            724.174,
+            351.113
+          ],
+          "confidence": 0.66475
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_082.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_082.png",
+      "label": "user_primary_filter_082.txt",
+      "image_width": 951,
+      "image_height": 559,
+      "detections": 1,
+      "max_confidence": 0.916373,
+      "boxes": [
+        {
+          "xyxy": [
+            90.202,
+            55.47,
+            781.931,
+            441.723
+          ],
+          "confidence": 0.916373
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_083.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_083.png",
+      "label": "user_primary_filter_083.txt",
+      "image_width": 1039,
+      "image_height": 575,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_084.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_084.png",
+      "label": "user_primary_filter_084.txt",
+      "image_width": 1137,
+      "image_height": 504,
+      "detections": 1,
+      "max_confidence": 0.490246,
+      "boxes": [
+        {
+          "xyxy": [
+            122.769,
+            198.401,
+            868.49,
+            404.539
+          ],
+          "confidence": 0.490246
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_085.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_085.png",
+      "label": "user_primary_filter_085.txt",
+      "image_width": 979,
+      "image_height": 547,
+      "detections": 1,
+      "max_confidence": 0.91142,
+      "boxes": [
+        {
+          "xyxy": [
+            13.914,
+            90.312,
+            825.822,
+            431.096
+          ],
+          "confidence": 0.91142
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_086.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_086.jpg",
+      "label": "user_primary_filter_086.txt",
+      "image_width": 1070,
+      "image_height": 578,
+      "detections": 1,
+      "max_confidence": 0.357149,
+      "boxes": [
+        {
+          "xyxy": [
+            138.882,
+            186.535,
+            927.328,
+            338.968
+          ],
+          "confidence": 0.357149
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_087.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_087.jpg",
+      "label": "user_primary_filter_087.txt",
+      "image_width": 1010,
+      "image_height": 620,
+      "detections": 1,
+      "max_confidence": 0.425765,
+      "boxes": [
+        {
+          "xyxy": [
+            120.291,
+            166.396,
+            861.94,
+            319.87
+          ],
+          "confidence": 0.425765
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_088.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_088.jpg",
+      "label": "user_primary_filter_088.txt",
+      "image_width": 1080,
+      "image_height": 554,
+      "detections": 1,
+      "max_confidence": 0.56042,
+      "boxes": [
+        {
+          "xyxy": [
+            166.136,
+            223.258,
+            813.116,
+            369.026
+          ],
+          "confidence": 0.56042
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_089.png",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_089.png",
+      "label": "user_primary_filter_089.txt",
+      "image_width": 1167,
+      "image_height": 620,
+      "detections": 1,
+      "max_confidence": 0.511912,
+      "boxes": [
+        {
+          "xyxy": [
+            183.097,
+            262.271,
+            1078.158,
+            493.697
+          ],
+          "confidence": 0.511912
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_090.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_090.jpg",
+      "label": "user_primary_filter_090.txt",
+      "image_width": 1110,
+      "image_height": 622,
+      "detections": 1,
+      "max_confidence": 0.464731,
+      "boxes": [
+        {
+          "xyxy": [
+            77.174,
+            343.231,
+            544.522,
+            439.764
+          ],
+          "confidence": 0.464731
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_091.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_091.jpg",
+      "label": "user_primary_filter_091.txt",
+      "image_width": 1087,
+      "image_height": 604,
+      "detections": 1,
+      "max_confidence": 0.655711,
+      "boxes": [
+        {
+          "xyxy": [
+            61.956,
+            199.938,
+            1049.919,
+            434.713
+          ],
+          "confidence": 0.655711
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_092.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_092.jpg",
+      "label": "user_primary_filter_092.txt",
+      "image_width": 946,
+      "image_height": 612,
+      "detections": 1,
+      "max_confidence": 0.803326,
+      "boxes": [
+        {
+          "xyxy": [
+            95.24,
+            137.018,
+            917.386,
+            434.277
+          ],
+          "confidence": 0.803326
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_093.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_093.jpg",
+      "label": "user_primary_filter_093.txt",
+      "image_width": 1116,
+      "image_height": 514,
+      "detections": 1,
+      "max_confidence": 0.711919,
+      "boxes": [
+        {
+          "xyxy": [
+            138.841,
+            151.083,
+            819.617,
+            319.104
+          ],
+          "confidence": 0.711919
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_094.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_094.jpg",
+      "label": "user_primary_filter_094.txt",
+      "image_width": 1076,
+      "image_height": 526,
+      "detections": 1,
+      "max_confidence": 0.467418,
+      "boxes": [
+        {
+          "xyxy": [
+            98.756,
+            264.585,
+            774.106,
+            370.074
+          ],
+          "confidence": 0.467418
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_095.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_095.jpg",
+      "label": "user_primary_filter_095.txt",
+      "image_width": 1122,
+      "image_height": 526,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_096.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_096.jpg",
+      "label": "user_primary_filter_096.txt",
+      "image_width": 800,
+      "image_height": 600,
+      "detections": 1,
+      "max_confidence": 0.788194,
+      "boxes": [
+        {
+          "xyxy": [
+            2.742,
+            127.251,
+            774.026,
+            416.186
+          ],
+          "confidence": 0.788194
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_097.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_097.jpg",
+      "label": "user_primary_filter_097.txt",
+      "image_width": 1005,
+      "image_height": 670,
+      "detections": 1,
+      "max_confidence": 0.845131,
+      "boxes": [
+        {
+          "xyxy": [
+            137.304,
+            168.256,
+            706.728,
+            432.624
+          ],
+          "confidence": 0.845131
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    },
+    {
+      "image": "user_primary_filter_098.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_098.jpg",
+      "label": "user_primary_filter_098.txt",
+      "image_width": 892,
+      "image_height": 500,
+      "detections": 0,
+      "max_confidence": "",
+      "boxes": [],
+      "review_status": "manual_label_required_no_model_detection"
+    },
+    {
+      "image": "user_primary_filter_099.jpg",
+      "target_image_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\20_Roboflow_업로드패키지\\lg_wall_mounted_filter_user_primary_099_model_prelabel_yolov8\\images\\user_primary_filter_099.jpg",
+      "label": "user_primary_filter_099.txt",
+      "image_width": 800,
+      "image_height": 600,
+      "detections": 1,
+      "max_confidence": 0.536231,
+      "boxes": [
+        {
+          "xyxy": [
+            11.794,
+            148.682,
+            701.378,
+            280.377
+          ],
+          "confidence": 0.536231
+        }
+      ],
+      "review_status": "model_prelabel_review_required"
+    }
+  ]
+}

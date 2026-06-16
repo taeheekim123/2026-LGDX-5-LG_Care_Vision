@@ -74,6 +74,23 @@ const KNOWN_GUIDE_STEPS: Record<string, string[]> = {
   ],
 };
 
+const AR_GUIDE_STEP_TITLES: Record<string, string[]> = {
+  filter_cleaning: ["전원 차단", "커버 열기", "필터 분리", "세척 및 건조", "재장착"],
+  no_cooling_self_check: ["온도 설정 확인", "필터 상태 확인", "실외기 통풍 확인", "실내 환경 확인", "전문 A/S 신청"],
+  noise_self_check: ["위험 신호 확인", "커버 상태 확인", "주변 물건 확인", "기울어짐 확인", "저풍량 확인", "분해 금지", "전문 A/S 신청"],
+  power_troubleshooting: ["위험 신호 확인", "표시창 확인", "전원 연결 확인", "차단기 확인", "전문 A/S 신청"],
+};
+
+const arGuideStepsFromOptions = (guideOptions?: ChatGuideOptions) => {
+  const procedureType = guideOptions?.procedure_type;
+  const manual = guideOptions?.manual_guides?.[0];
+  const titles = procedureType ? AR_GUIDE_STEP_TITLES[procedureType] : undefined;
+  return extractGuideSteps(manual, procedureType).map((desc, index) => ({
+    title: titles?.[index] || `STEP ${index + 1}`,
+    desc,
+  }));
+};
+
 const getProcedureLabel = (procedure?: string) =>
   (procedure && PROCEDURE_LABELS[procedure]) || "가이드";
 
@@ -189,6 +206,7 @@ export function Chat() {
 
   const statusFromAiResponse = (response: AiChatResponse): Message["status"] => {
     if (response.needs_clarification) return "needs_clarification";
+    if (response.card_policy?.card_type === "safety_block") return "blocked";
     if (response.service_flow_type === "expert_as" || response.risk_level === "high") return "blocked";
     if ((response.guide_options?.ar_guides?.length ?? 0) > 0) return "ar_ready";
     if (response.guide_options) return "evidence_found";
@@ -196,6 +214,9 @@ export function Chat() {
   };
 
   const guideButtonsFromAiResponse = (response: AiChatResponse): Message["guideButtons"] | undefined => {
+    if (response.card_policy?.card_type === "safety_block") {
+      return response.card_policy.show_service_button ? ["service"] : undefined;
+    }
     if (response.service_flow_type === "expert_as" || response.risk_level === "high") return ["service"];
     if (!response.guide_options || response.needs_clarification) return undefined;
     return ["manual", "ar"];
@@ -241,6 +262,7 @@ export function Chat() {
                 status: statusFromAiResponse(response),
                 guideButtons: guideButtonsFromAiResponse(response),
                 guideOptions: response.needs_clarification ? undefined : response.guide_options ?? undefined,
+                cardPolicy: response.card_policy ?? undefined,
               }
             : message,
         ),
@@ -262,7 +284,14 @@ export function Chat() {
 
   const handleArGuideClick = (message: Message) => {
     if (!message.guideOptions || (message.guideOptions.ar_guides?.length ?? 0) > 0) {
-      navigate("/ar-guide", { state: { from: "/chat" } });
+      navigate("/ar-guide", {
+        state: {
+          from: "/chat",
+          procedureType: message.guideOptions?.procedure_type,
+          guideTitle: getProcedureLabel(message.guideOptions?.procedure_type),
+          guideSteps: arGuideStepsFromOptions(message.guideOptions),
+        },
+      });
       return;
     }
 
@@ -538,6 +567,20 @@ export function Chat() {
                         {option}
                       </button>
                     ))}
+                  </div>
+                )}
+
+                {/* 공식자료 no-match 차단 안내 */}
+                {message.cardPolicy?.card_type === "safety_block" && (
+                  <div className="mt-3 pl-1 max-w-[290px]">
+                    <div className="bg-white rounded-[15px] px-4 py-3 w-full shadow-sm border border-[#ffd7d7]">
+                      <p className="font-['Pretendard:SemiBold',sans-serif] text-[13px] text-[#ff4c49] mb-1">
+                        {message.cardPolicy.title || "공식자료 확인 불가"}
+                      </p>
+                      <p className="font-['Pretendard:Regular',sans-serif] text-[12px] text-[#444] leading-[18px]">
+                        {message.cardPolicy.description || "공식 근거가 확인되지 않아 AR 자가 안내를 시작하지 않습니다."}
+                      </p>
+                    </div>
                   </div>
                 )}
 

@@ -8,6 +8,8 @@ import { getUserProfile } from "../api/user";
 import chatbotGif from "../../imports/LG______.gif";
 import acImage from "../../imports/제품페이지관리/47f735f974d0900368394246ff236d4a45df2a58.png";
 
+const HOME_ENVIRONMENT_POLL_INTERVAL_MS = 60 * 60 * 1000;
+
 const devices = [
   { id: 1, name: "에어컨", Icon: AirVent, score: 82, climate: 35, usage: 28, care: 19 },
   { id: 2, name: "세탁기", Icon: RotateCcw, score: 61, climate: 18, usage: 24, care: 19 },
@@ -195,6 +197,7 @@ export function Home() {
 
   useEffect(() => {
     let active = true;
+    let intervalId: number | undefined;
 
     async function loadHomeData() {
       try {
@@ -214,9 +217,13 @@ export function Home() {
     }
 
     loadHomeData();
+    intervalId = window.setInterval(loadHomeData, HOME_ENVIRONMENT_POLL_INTERVAL_MS);
 
     return () => {
       active = false;
+      if (intervalId !== undefined) {
+        window.clearInterval(intervalId);
+      }
     };
   }, []);
 
@@ -373,11 +380,7 @@ export function Home() {
               <div>
                 <p className="font-['Pretendard:Medium',sans-serif] text-[11px] text-[#888]">대기질</p>
                 <p className="font-['Pretendard:SemiBold',sans-serif] text-[17px] text-[#111] leading-tight">
-
                   <span className="font-['Pretendard:Medium',sans-serif] text-[11px] text-[#aaa]">AQI</span> {aqi}
-
-                  <span className="font-['Pretendard:Medium',sans-serif] text-[11px] text-[#aaa]">AQI</span> 10
-
                 </p>
               </div>
             </div>
@@ -394,10 +397,7 @@ export function Home() {
               <div>
                 <p className="font-['Pretendard:Medium',sans-serif] text-[11px] text-[#888]">미세 먼지</p>
                 <p className="font-['Pretendard:SemiBold',sans-serif] text-[17px] text-[#111] leading-tight">
-
                   <span className="font-['Pretendard:Medium',sans-serif] text-[11px] text-[#aaa]">pm</span> {pmValue}
-                  <span className="font-['Pretendard:Medium',sans-serif] text-[11px] text-[#aaa]">pm</span> 10
-
                 </p>
               </div>
             </div>
