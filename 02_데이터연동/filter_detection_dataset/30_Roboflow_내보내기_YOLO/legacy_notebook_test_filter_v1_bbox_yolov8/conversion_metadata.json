@@ -1,0 +1,30 @@
+﻿{
+  "created_at_utc": "2026-06-15T11:17:20.177589+00:00",
+  "source_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\legacy_notebook_test_filter_v1_yolov8",
+  "target_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\legacy_notebook_test_filter_v1_bbox_yolov8",
+  "class_name": "filter",
+  "splits": {
+    "train": {
+      "images": 48,
+      "labels": 48,
+      "boxes": 48,
+      "dropped_label_lines": 0
+    },
+    "valid": {
+      "images": 12,
+      "labels": 12,
+      "boxes": 12,
+      "dropped_label_lines": 0
+    },
+    "test": {
+      "images": 6,
+      "labels": 6,
+      "boxes": 6,
+      "dropped_label_lines": 0
+    }
+  },
+  "total_images": 66,
+  "total_labels": 66,
+  "total_boxes": 66,
+  "dropped_label_lines": 0
+}

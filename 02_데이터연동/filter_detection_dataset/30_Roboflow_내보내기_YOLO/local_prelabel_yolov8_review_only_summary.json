@@ -1,0 +1,39 @@
+﻿{
+  "summary": {
+    "root": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\local_prelabel_yolov8_review_only",
+    "data_yaml": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\local_prelabel_yolov8_review_only\\data.yaml",
+    "names": [
+      "filter"
+    ],
+    "splits": {
+      "train": {
+        "images_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\local_prelabel_yolov8_review_only\\train\\images",
+        "labels_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\local_prelabel_yolov8_review_only\\train\\labels",
+        "image_count": 88,
+        "label_count": 88,
+        "box_count": 88,
+        "missing_labels": []
+      },
+      "valid": {
+        "images_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\local_prelabel_yolov8_review_only\\valid\\images",
+        "labels_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\local_prelabel_yolov8_review_only\\valid\\labels",
+        "image_count": 7,
+        "label_count": 7,
+        "box_count": 7,
+        "missing_labels": []
+      },
+      "test": {
+        "images_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\local_prelabel_yolov8_review_only\\test\\images",
+        "labels_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\local_prelabel_yolov8_review_only\\test\\labels",
+        "image_count": 4,
+        "label_count": 4,
+        "box_count": 4,
+        "missing_labels": []
+      }
+    },
+    "total_images": 99,
+    "total_labels": 99,
+    "total_boxes": 99
+  },
+  "errors": []
+}

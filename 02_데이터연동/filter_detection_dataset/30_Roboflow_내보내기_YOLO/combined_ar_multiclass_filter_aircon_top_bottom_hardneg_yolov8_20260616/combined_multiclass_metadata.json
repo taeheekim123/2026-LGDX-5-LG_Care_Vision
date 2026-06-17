@@ -1,0 +1,150 @@
+{
+  "created_at_utc": "2026-06-16T03:21:08.011288+00:00",
+  "target_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\combined_ar_multiclass_filter_aircon_top_bottom_hardneg_yolov8_20260616",
+  "target_names": [
+    "filter",
+    "aircon",
+    "aircon-top",
+    "aircon-bottom"
+  ],
+  "sources": [
+    {
+      "slug": "filter",
+      "source_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616",
+      "class_map": {
+        "0": 0
+      },
+      "splits": {
+        "train": {
+          "images": 147,
+          "labels": 147,
+          "boxes": 159,
+          "dropped_lines": 0
+        },
+        "valid": {
+          "images": 12,
+          "labels": 12,
+          "boxes": 12,
+          "dropped_lines": 0
+        },
+        "test": {
+          "images": 6,
+          "labels": 6,
+          "boxes": 6,
+          "dropped_lines": 0
+        }
+      },
+      "images": 165,
+      "labels": 165,
+      "boxes": 177,
+      "dropped_lines": 0
+    },
+    {
+      "slug": "aircon",
+      "source_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\aircon_external_yolov8_20260616",
+      "class_map": {
+        "0": 1
+      },
+      "splits": {
+        "train": {
+          "images": 53,
+          "labels": 53,
+          "boxes": 53,
+          "dropped_lines": 0
+        },
+        "valid": {
+          "images": 10,
+          "labels": 10,
+          "boxes": 10,
+          "dropped_lines": 0
+        },
+        "test": {
+          "images": 11,
+          "labels": 11,
+          "boxes": 11,
+          "dropped_lines": 0
+        }
+      },
+      "images": 74,
+      "labels": 74,
+      "boxes": 74,
+      "dropped_lines": 0
+    },
+    {
+      "slug": "aircontopbottom",
+      "source_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\aircon_top_bottom_bbox_yolov8_20260616",
+      "class_map": {
+        "0": 3,
+        "1": 2
+      },
+      "splits": {
+        "train": {
+          "images": 64,
+          "labels": 64,
+          "boxes": 127,
+          "dropped_lines": 0
+        },
+        "valid": {
+          "images": 19,
+          "labels": 19,
+          "boxes": 38,
+          "dropped_lines": 0
+        },
+        "test": {
+          "images": 10,
+          "labels": 10,
+          "boxes": 20,
+          "dropped_lines": 0
+        }
+      },
+      "images": 93,
+      "labels": 93,
+      "boxes": 185,
+      "dropped_lines": 0
+    },
+    {
+      "slug": "hard_negative",
+      "source_dirs": [
+        "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\10_원천이미지_raw\\90_하드네거티브_공개이미지_20260616",
+        "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\10_원천이미지_raw\\91_하드네거티브_합성이미지_20260616"
+      ],
+      "images": 88,
+      "labels": 88,
+      "boxes": 0,
+      "splits": {
+        "train": {
+          "images": 70,
+          "labels": 70,
+          "boxes": 0
+        },
+        "valid": {
+          "images": 9,
+          "labels": 9,
+          "boxes": 0
+        },
+        "test": {
+          "images": 9,
+          "labels": 9,
+          "boxes": 0
+        }
+      }
+    }
+  ],
+  "splits": {
+    "train": {
+      "images": 334,
+      "labels": 334,
+      "boxes": 339
+    },
+    "valid": {
+      "images": 50,
+      "labels": 50,
+      "boxes": 60
+    },
+    "test": {
+      "images": 36,
+      "labels": 36,
+      "boxes": 37
+    }
+  }
+}

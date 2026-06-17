@@ -1,0 +1,44 @@
+﻿{
+  "created_at_utc": "2026-06-16T01:34:51.719857+00:00",
+  "source_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\aircon_top_bottom_yolov8_20260616",
+  "target_dir": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\02_데이터연동\\filter_detection_dataset\\30_Roboflow_내보내기_YOLO\\aircon_top_bottom_bbox_yolov8_20260616",
+  "source_names": [
+    "aircon-bottom",
+    "aircon-top"
+  ],
+  "target_names": [
+    "aircon-bottom",
+    "aircon-top"
+  ],
+  "source_to_target": {
+    "0": 0,
+    "1": 1
+  },
+  "splits": {
+    "train": {
+      "images": 64,
+      "labels": 64,
+      "boxes": 127,
+      "dropped_lines": 0,
+      "missing_labels": []
+    },
+    "valid": {
+      "images": 19,
+      "labels": 19,
+      "boxes": 38,
+      "dropped_lines": 0,
+      "missing_labels": []
+    },
+    "test": {
+      "images": 10,
+      "labels": 10,
+      "boxes": 20,
+      "dropped_lines": 0,
+      "missing_labels": []
+    }
+  },
+  "total_images": 93,
+  "total_labels": 93,
+  "total_boxes": 185,
+  "total_dropped_lines": 0
+}

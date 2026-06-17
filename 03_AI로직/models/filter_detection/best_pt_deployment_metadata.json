@@ -1,0 +1,54 @@
+{
+  "deployed_at_utc": "2026-06-16T02:27:54.923752+00:00",
+  "source_export_dir": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\datasets\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616",
+  "source_best_pt": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\runs\\filter_detection_yolo\\yolo12n_filter_carevision099_testfilter066_50e_ascii\\weights\\best.pt",
+  "deploy_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\03_AI로직\\models\\filter_detection\\best.pt",
+  "backup_path": "C:\\Users\\TAEHEE\\Documents\\2026 LGDX\\프로젝트\\lgdx_DX\\07_개발단계\\06_AR 가전케어 AI\\03_AI로직\\models\\filter_detection\\best_20260616_112754_backup.pt",
+  "training_args": {
+    "model": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\weights\\yolo12n.pt",
+    "epochs": 50,
+    "imgsz": 640,
+    "batch": 4,
+    "project": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\runs\\filter_detection_yolo",
+    "name": "yolo12n_filter_carevision099_testfilter066_50e_ascii",
+    "planned_best_pt": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\runs\\filter_detection_yolo\\yolo12n_filter_carevision099_testfilter066_50e_ascii\\weights\\best.pt",
+    "data_yaml": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\datasets\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616\\_ultralytics_data.yaml"
+  },
+  "export_summary": {
+    "root": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\datasets\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616",
+    "data_yaml": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\datasets\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616\\data.yaml",
+    "names": [
+      "filter"
+    ],
+    "splits": {
+      "train": {
+        "images_dir": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\datasets\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616\\train\\images",
+        "labels_dir": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\datasets\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616\\train\\labels",
+        "image_count": 147,
+        "label_count": 147,
+        "box_count": 159,
+        "missing_labels": []
+      },
+      "valid": {
+        "images_dir": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\datasets\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616\\valid\\images",
+        "labels_dir": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\datasets\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616\\valid\\labels",
+        "image_count": 12,
+        "label_count": 12,
+        "box_count": 12,
+        "missing_labels": []
+      },
+      "test": {
+        "images_dir": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\datasets\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616\\test\\images",
+        "labels_dir": "C:\\Users\\TAEHEE\\lgdx_ar_yolo_work\\datasets\\combined_filter_carevision099_testfilter066_bbox_yolov8_20260616\\test\\labels",
+        "image_count": 6,
+        "label_count": 6,
+        "box_count": 6,
+        "missing_labels": []
+      }
+    },
+    "total_images": 165,
+    "total_labels": 165,
+    "total_boxes": 177
+  },
+  "review_only_export": false
+}

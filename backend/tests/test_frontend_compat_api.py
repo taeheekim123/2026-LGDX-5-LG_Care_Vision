@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime, timedelta, timezone
+
 from fastapi.testclient import TestClient
 
 from app.dependencies import get_service
@@ -29,6 +31,47 @@ class FrontendCompatService:
     def __init__(self) -> None:
         self.repo = FrontendCompatRepo()
         self.last_chat_payload: dict | None = None
+
+    def get_device_care_history(
+        self,
+        user_id: str,
+        device_id: str,
+        service_flow_type: str | None = None,
+        limit: int = 50,
+    ) -> dict:
+        now = datetime.now(timezone.utc)
+        return {
+            "user_id": user_id,
+            "device_id": device_id,
+            "summary": {
+                "self_care_count": 5,
+                "self_as_count": 2,
+                "total_care_count": 7,
+            },
+            "items": [
+                {
+                    "history_id": "101",
+                    "service_flow_type": "self_care",
+                    "procedure_type": "filter_cleaning",
+                    "title": "filter_cleaning",
+                    "completed_at": (now - timedelta(days=2)).isoformat(),
+                },
+                {
+                    "history_id": "102",
+                    "service_flow_type": "self_as",
+                    "procedure_type": "remote_pairing",
+                    "title": "remote_pairing",
+                    "completed_at": (now - timedelta(days=7)).isoformat(),
+                },
+                {
+                    "history_id": "103",
+                    "service_flow_type": "self_care",
+                    "procedure_type": "outdoor_unit_visual_check",
+                    "title": "outdoor_unit_visual_check",
+                    "completed_at": (now - timedelta(days=14)).isoformat(),
+                },
+            ][:limit],
+        }
 
     def process_chat_message(self, payload: dict) -> dict:
         self.last_chat_payload = payload
@@ -77,9 +120,26 @@ def test_frontend_user_and_devices_contracts() -> None:
 
         devices_response = client.get("/api/devices")
         assert devices_response.status_code == 200
-        assert devices_response.json() == [
-            {"id": "D001", "name": "거실 에어컨", "model": "AS-Q24ENXE"}
+        devices = devices_response.json()
+        assert devices[0]["id"] == "D001"
+        assert devices[0]["name"] == "거실 에어컨"
+        assert devices[0]["model"] == "AS-Q24ENXE"
+        assert devices[0]["care_summary"] == {
+            "self_care_count": 5,
+            "self_as_count": 2,
+            "total_care_count": 7,
+            "recent_title": "에어컨 필터 청소",
+            "recent_date": "2일 전",
+        }
+        assert devices[0]["recent_history"] == [
+            {"id": "101", "type": "Self Care", "title": "에어컨 필터 청소", "date": "2일 전"},
+            {"id": "102", "type": "Self A/S", "title": "리모컨 페어링", "date": "1주 전"},
+            {"id": "103", "type": "Self Care", "title": "실외기 외관 점검", "date": "2주 전"},
         ]
+
+        device_detail_response = client.get("/api/devices/D001")
+        assert device_detail_response.status_code == 200
+        assert device_detail_response.json()["care_summary"]["self_as_count"] == 2
     finally:
         app.dependency_overrides.clear()
 

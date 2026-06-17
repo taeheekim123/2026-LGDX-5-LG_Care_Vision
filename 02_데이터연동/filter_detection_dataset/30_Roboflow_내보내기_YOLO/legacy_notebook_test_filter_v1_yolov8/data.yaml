@@ -1,0 +1,12 @@
+names:
+- test-filter
+nc: 1
+roboflow:
+  license: CC BY 4.0
+  project: test_filter
+  url: https://universe.roboflow.com/heninis-workspace-fzzwq/test_filter/dataset/1
+  version: 1
+  workspace: heninis-workspace-fzzwq
+test: ../test/images
+train: ../train/images
+val: ../valid/images

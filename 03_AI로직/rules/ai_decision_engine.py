@@ -15,17 +15,14 @@ OUTPUT_DIR = PROJECT_DIR / "06_산출물" / "decision_demo"
 OUTPUT_PATH = OUTPUT_DIR / "ar_decision_demo_results.json"
 
 
-def _find_fastapi_backend_dir() -> Path:
-    github_backend = PROJECT_DIR / "backend"
-    if (github_backend / "app").exists():
-        return github_backend
-    for path in PROJECT_DIR.iterdir():
-        if path.name.startswith("04_") and (path / "app").exists():
+def find_fastapi_backend_dir(project_dir: Path) -> Path:
+    for path in project_dir.iterdir():
+        if (path.name.startswith("04_") or path.name == "backend") and (path / "app").exists():
             return path
-    raise FileNotFoundError("FastAPI backend app directory was not found.")
+    raise FileNotFoundError(f"FastAPI backend directory not found under {project_dir}")
 
 
-FASTAPI_BACKEND_DIR = _find_fastapi_backend_dir()
+FASTAPI_BACKEND_DIR = find_fastapi_backend_dir(PROJECT_DIR)
 sys.path.insert(0, str(FASTAPI_BACKEND_DIR))
 sys.path.insert(0, str(DB_DIR))
 

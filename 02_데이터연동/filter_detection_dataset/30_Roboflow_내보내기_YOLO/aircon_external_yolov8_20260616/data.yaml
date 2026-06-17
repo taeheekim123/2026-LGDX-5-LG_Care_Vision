@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['aircon']
+
+roboflow:
+  workspace: s-workspace-fmrs3
+  project: aircon-owa3m-k9paa
+  version: dataset
+  license: CC BY 4.0
+  url: https://app.roboflow.com/s-workspace-fmrs3/aircon-owa3m-k9paa/dataset

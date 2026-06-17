@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -39,12 +40,106 @@ def _frontend_user_profile(raw: dict[str, Any] | None) -> dict[str, str]:
     }
 
 
-def _frontend_device_option(raw: dict[str, Any] | None, fallback_id: str) -> dict[str, str]:
+def _frontend_device_option(raw: dict[str, Any] | None, fallback_id: str) -> dict[str, Any]:
     raw = raw or {}
     device_id = raw.get("device_id") or fallback_id
     name = raw.get("display_name") or raw.get("nickname") or raw.get("product_name") or "거실 에어컨"
     model = raw.get("model_name") or raw.get("model") or "AS-Q24ENXE"
     return {"id": str(device_id), "name": str(name), "model": str(model)}
+
+
+def _parse_datetime(value: Any) -> datetime | None:
+    if not value:
+        return None
+    if isinstance(value, datetime):
+        return value if value.tzinfo else value.replace(tzinfo=timezone.utc)
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+
+
+def _relative_date_label(value: Any) -> str:
+    parsed = _parse_datetime(value)
+    if not parsed:
+        return ""
+    now = datetime.now(timezone.utc)
+    days = max(0, int((now - parsed.astimezone(timezone.utc)).total_seconds() // 86400))
+    if days <= 0:
+        return "오늘"
+    if days < 7:
+        return f"{days}일 전"
+    weeks = days // 7
+    if weeks < 5:
+        return f"{weeks}주 전"
+    months = days // 30
+    return f"{max(months, 1)}개월 전"
+
+
+def _care_history_title(item: dict[str, Any]) -> str:
+    raw_title = item.get("title")
+    procedure = item.get("procedure_type") or raw_title
+    labels = {
+        "ar_guide": "에어컨 필터 청소",
+        "filter_cleaning": "에어컨 필터 청소",
+        "remote_pairing": "리모컨 페어링",
+        "remote_operation": "리모컨 사용 점검",
+        "outdoor_unit_visual_check": "실외기 외관 점검",
+        "power_troubleshooting": "전원 자가점검",
+        "no_cooling_self_check": "냉방/바람 약함 자가점검",
+        "noise_self_check": "소음/진동 자가점검",
+        "odor_self_check": "냄새 자가점검",
+        "water_leak_monsoon": "누수 자가점검",
+    }
+    return labels.get(str(procedure), str(raw_title or procedure or "관리 이력"))
+
+
+def _frontend_care_history_item(item: dict[str, Any]) -> dict[str, str]:
+    completed_at = item.get("completed_at") or item.get("started_at")
+    service_flow_type = item.get("service_flow_type") or "self_care"
+    return {
+        "id": str(item.get("history_id") or ""),
+        "type": "Self A/S" if service_flow_type == "self_as" else "Self Care",
+        "title": _care_history_title(item),
+        "date": _relative_date_label(completed_at),
+    }
+
+
+def _frontend_device_care_payload(
+    service: CareShotBackendService,
+    user_id: str,
+    device_id: str,
+) -> dict[str, Any]:
+    care_history = service.get_device_care_history(user_id=user_id, device_id=device_id, limit=3)
+    if not care_history:
+        return {
+            "care_summary": {
+                "self_care_count": 0,
+                "self_as_count": 0,
+                "total_care_count": 0,
+                "recent_title": "",
+                "recent_date": "",
+            },
+            "recent_history": [],
+        }
+
+    items = [_frontend_care_history_item(item) for item in care_history.get("items", [])]
+    summary = care_history.get("summary") or {}
+    first = items[0] if items else {}
+    return {
+        "care_summary": {
+            "self_care_count": int(summary.get("self_care_count") or 0),
+            "self_as_count": int(summary.get("self_as_count") or 0),
+            "total_care_count": int(summary.get("total_care_count") or 0),
+            "recent_title": first.get("title", ""),
+            "recent_date": first.get("date", ""),
+        },
+        "recent_history": items,
+    }
 
 
 def _message_from_payload(payload: dict[str, Any]) -> str:
@@ -295,14 +390,30 @@ def update_frontend_user(
 
 @router.get("/devices")
 def get_frontend_devices(
+    user_id: str = "U001",
     service: CareShotBackendService = Depends(get_service),
-) -> list[dict[str, str]]:
+) -> list[dict[str, Any]]:
     primary = service.repo.get_device_context("D001")
     if primary:
-        return [_frontend_device_option(primary, "D001")]
-    return [
-        {"id": "D001", "name": "거실 에어컨", "model": "AS-Q24ENXE"},
-    ]
+        device = _frontend_device_option(primary, "D001")
+    else:
+        device = {"id": "D001", "name": "거실 에어컨", "model": "AS-Q24ENXE"}
+    device.update(_frontend_device_care_payload(service, user_id, str(device["id"])))
+    return [device]
+
+
+@router.get("/devices/{device_id}")
+def get_frontend_device_detail(
+    device_id: str,
+    user_id: str = "U001",
+    service: CareShotBackendService = Depends(get_service),
+) -> dict[str, Any]:
+    primary = service.repo.get_device_context(device_id)
+    if not primary:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="device not found")
+    device = _frontend_device_option(primary, device_id)
+    device.update(_frontend_device_care_payload(service, user_id, str(device["id"])))
+    return device
 
 
 @router.post("/chat-messages", status_code=status.HTTP_201_CREATED)

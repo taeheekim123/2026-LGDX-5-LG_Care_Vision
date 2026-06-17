@@ -7,3 +7,4 @@ export function getCurrentUserEmail() {
 export function setCurrentUserEmail(userEmail: string) {
   window.localStorage.setItem(CURRENT_USER_EMAIL_KEY, userEmail);
 }
+
