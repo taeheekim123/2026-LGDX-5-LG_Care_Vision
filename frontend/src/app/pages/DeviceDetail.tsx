@@ -2,6 +2,12 @@ import { useParams, useNavigate } from "react-router";
 import { ChevronLeft, Snowflake, Thermometer, Wind } from "lucide-react";
 import imgImage6 from "../../imports/제품페이지관리/47f735f974d0900368394246ff236d4a45df2a58.png";
 
+const recentHistory = [
+  { id: "r1", type: "Self Care", title: "에어컨 필터 청소", date: "2일 전" },
+  { id: "r2", type: "Self A/S", title: "리모컨 페어링", date: "1주 전" },
+  { id: "r3", type: "Self Care", title: "실외기 외관 점검", date: "2주 전" },
+];
+
 const glass = {
   background: "rgba(255,255,255,0.55)",
   backdropFilter: "blur(28px)",
@@ -26,7 +32,7 @@ export function DeviceDetail() {
   const asCount = 2;
 
   return (
-    <div className="relative min-h-full w-full overflow-hidden bg-[#f7f9f8]">
+    <div className="relative min-h-full w-full bg-[#f7f9f8]">
       <div
         className="pointer-events-none absolute -top-20 -left-16 w-72 h-72 rounded-full"
         style={{ background: "rgba(61,220,151,0.09)", filter: "blur(90px)" }}
@@ -143,6 +149,47 @@ export function DeviceDetail() {
                 <p className="font-['Pretendard:SemiBold',sans-serif] text-[11px]" style={{ color: "#ca8a04" }}>Self A/S 횟수</p>
               </div>
             </div>
+          </div>
+          <div className="pt-3 mt-3" style={{ borderTop: "1px solid rgba(200,200,200,0.25)" }}>
+            <p className="font-['Pretendard:Medium',sans-serif] text-[12px] text-[#888] mb-1">최근 관리 내용</p>
+            <p className="font-['Pretendard:Medium',sans-serif] text-[14px] text-[#111]">
+              {recentHistory[0].title} · {recentHistory[0].date}
+            </p>
+          </div>
+        </div>
+
+        <div className="rounded-[20px] p-5" style={glass}>
+          <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111] mb-3">최근 관리 이력</p>
+          <div className="space-y-3">
+            {recentHistory.map((item) => (
+              <div key={item.id} className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span
+                    className="py-0.5 rounded-[6px] font-['Pretendard:Medium',sans-serif] text-[11px] text-center inline-block shrink-0"
+                    style={{
+                      minWidth: "64px",
+                      ...(item.type === "Self Care"
+                        ? {
+                            background: "rgba(61,220,151,0.12)",
+                            color: "#0f8a58",
+                            border: "1px solid rgba(29,184,122,0.22)",
+                          }
+                        : {
+                            background: "rgba(253,211,77,0.18)",
+                            color: "#ca8a04",
+                            border: "1px solid rgba(202,138,4,0.22)",
+                          }),
+                    }}
+                  >
+                    {item.type}
+                  </span>
+                  <p className="font-['Pretendard:Medium',sans-serif] text-[14px] text-[#111] truncate">
+                    {item.title}
+                  </p>
+                </div>
+                <p className="font-['Pretendard:Medium',sans-serif] text-[12px] text-[#888] shrink-0">{item.date}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
