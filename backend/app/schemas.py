@@ -34,6 +34,13 @@ class RAGSearchRequest(APIModel):
     limit: int = Field(default=5, ge=1, le=10)
 
 
+class TTSSynthesizeRequest(APIModel):
+    text: str = Field(min_length=1, max_length=800)
+    language_code: str = "en-IN"
+    voice_name: str | None = None
+    speaking_rate: float = Field(default=0.92, ge=0.25, le=4.0)
+
+
 class ARPlanRequest(APIModel):
     analysis: dict[str, Any] | None = None
     user_id: str = "U001"

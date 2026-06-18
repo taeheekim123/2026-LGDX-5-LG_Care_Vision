@@ -1,10 +1,9 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { ChevronLeft, Maximize2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import acImage from "../../imports/제품페이지관리/47f735f974d0900368394246ff236d4a45df2a58.png";
-import { completeGuide, getGuideOptions } from "../api/care";
+import { requestAiChat } from "../api/chat";
 import type { ChatGuideOptions, ChatManualGuide } from "../types/chat";
-import { getCurrentUserEmail } from "../utils/authSession";
 
 const glass = {
   background: "rgba(255,255,255,0.55)",
@@ -14,19 +13,83 @@ const glass = {
   boxShadow: "0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.95)",
 } as React.CSSProperties;
 
-const FILTER_CLEANING_STEPS = [
-  "전원을 끄고 플러그를 뽑습니다",
-  "필터 커버를 천천히 열어 올립니다",
-  "잠금을 풀고 필터를 분리합니다",
-  "흐르는 물로 세척 후 그늘에 말립니다",
-  "필터를 다시 장착하고 커버를 닫습니다",
-];
-
-const AR_GUIDE_STEP_TITLES: Record<string, string[]> = {
-  filter_cleaning: ["전원 차단", "커버 열기", "필터 분리", "세척 및 건조", "재장착"],
+const PROCEDURE_LABELS: Record<string, string> = {
+  filter_cleaning: "Filter Cleaning",
+  noise_self_check: "Noise/Vibration Self Check",
+  no_cooling_self_check: "Weak Cooling/Airflow Self Check",
+  odor_self_check: "Odor Self Check",
+  water_leak_monsoon: "Water Leak Self Check",
+  power_troubleshooting: "Power Self Check",
+  remote_operation: "Remote/Function Use Guide",
 };
 
-const youtubeEmbedUrl = (url?: string | null, videoId?: string) => {
+const FILTER_CLEANING_STEPS = [
+  "Turn off the power and unplug the unit.",
+  "Slowly lift the filter cover.",
+  "Release the lock and remove the filter.",
+  "Rinse under running water, then dry in the shade.",
+  "Reinstall the filter and close the cover.",
+];
+
+const KNOWN_GUIDE_STEPS: Record<string, string[]> = {
+  filter_cleaning: FILTER_CLEANING_STEPS,
+  noise_self_check: [
+    "If you notice metallic sounds, a burning smell, or severe vibration, stop using the product and contact the service center.",
+    "Check that the front cover and visible panels are fully closed.",
+    "Check whether curtains, furniture, or loose items are shaking because of airflow.",
+    "From a safe distance, check that the product is not tilted.",
+    "Turn it back on with low airflow and check whether the noise decreases.",
+    "Do not disassemble or touch internal covers, fans, or motor parts yourself.",
+    "If the noise continues, request professional service.",
+  ],
+  no_cooling_self_check: [
+    "Check that the desired temperature is set lower than the current indoor temperature.",
+    "If the filter has a lot of dust, clean it and try operating again.",
+    "Check that nothing is blocking ventilation around the outdoor unit.",
+    "Check whether doors or windows are open or strong sunlight is coming in.",
+    "If cooling remains weak, request professional service.",
+  ],
+  power_troubleshooting: [
+    "If there is a burning smell, smoke, or sparks, turn off the power and contact the service center immediately.",
+    "Check the remote batteries and display status.",
+    "Visually check that the power plug is securely connected.",
+    "Check whether the circuit breaker is off, but do not touch it with wet hands.",
+    "If the same symptom repeats, request professional service without disassembling the product.",
+  ],
+};
+
+const AR_GUIDE_STEP_TITLES: Record<string, string[]> = {
+  filter_cleaning: ["Turn Off Power", "Open Cover", "Remove Filter", "Wash and Dry", "Reinstall"],
+  no_cooling_self_check: ["Check Temperature Setting", "Check Filter Status", "Check Air Outlet", "Check Indoor Environment", "Request Professional Service"],
+};
+
+const AR_GUIDE_STEP_TARGETS: Record<
+  string,
+  Array<{ targetHint?: string; targetClasses?: string[]; contextClasses?: string[] }>
+> = {
+  filter_cleaning: [
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Filter mesh", targetClasses: ["filter"], contextClasses: ["aircon"] },
+    { targetHint: "Removed filter", targetClasses: ["filter"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+  ],
+  no_cooling_self_check: [
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Filter mesh", targetClasses: ["filter"], contextClasses: ["aircon"] },
+    { targetHint: "Air outlet / airflow path", targetClasses: ["outlet"], contextClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+  ],
+};
+
+const getProcedureLabel = (procedure?: string) =>
+  (procedure && PROCEDURE_LABELS[procedure]) || "Guide";
+
+const getGuideDisplayTitle = (guideOptions?: ChatGuideOptions | null) =>
+  guideOptions?.display_title || `${getProcedureLabel(guideOptions?.procedure_type)} Steps`;
+
+const youtubeEmbedUrl = (url?: string, videoId?: string) => {
   if (videoId) return `https://www.youtube.com/embed/${videoId}`;
   if (!url) return null;
   const watchMatch = url.match(/[?&]v=([^&]+)/);
@@ -37,105 +100,113 @@ const youtubeEmbedUrl = (url?: string | null, videoId?: string) => {
 };
 
 const extractGuideSteps = (guide?: ChatManualGuide, procedureType?: string) => {
-  if (procedureType === "filter_cleaning") return FILTER_CLEANING_STEPS;
+  if (procedureType && KNOWN_GUIDE_STEPS[procedureType]) return KNOWN_GUIDE_STEPS[procedureType];
   const text = guide?.guide_text || guide?.summary || "";
   const steps = text
     .split(/\n+/)
     .map((line) => line.replace(/^\s*(?:\d+[\).\s-]*|[①-⑳]\s*)/, "").trim())
     .filter((line) => line.length > 0);
-  return steps.length > 0 ? steps : FILTER_CLEANING_STEPS;
+  return steps.length > 0 ? steps : ["Review the official guide and proceed step by step within a safe range."];
 };
 
 const arGuideStepsFromOptions = (guideOptions?: ChatGuideOptions) => {
-  const procedureType = guideOptions?.procedure_type || "filter_cleaning";
+  const procedureType = guideOptions?.procedure_type;
   const manual = guideOptions?.manual_guides?.[0];
-  const titles = AR_GUIDE_STEP_TITLES[procedureType] ?? AR_GUIDE_STEP_TITLES.filter_cleaning;
-  return extractGuideSteps(manual, procedureType).map((desc, index) => ({
-    title: titles[index] || `STEP ${index + 1}`,
+  const titles = procedureType ? AR_GUIDE_STEP_TITLES[procedureType] : undefined;
+  const targets = procedureType ? AR_GUIDE_STEP_TARGETS[procedureType] : undefined;
+  const displaySteps = guideOptions?.display_steps ?? [];
+  const descriptions = displaySteps.length
+    ? displaySteps
+        .map((step) => (step.text || step.source_text || "").trim())
+        .filter(Boolean)
+    : extractGuideSteps(manual, procedureType);
+  return descriptions.map((desc, index) => ({
+    title: displaySteps[index]?.title || titles?.[index] || `STEP ${index + 1}`,
     desc,
+    tts_enabled: displaySteps[index]?.tts_enabled ?? true,
+    tts_text: displaySteps[index]?.tts_text || desc,
+    tts_language_code: displaySteps[index]?.tts_language_code || "en-IN",
+    tts_provider: displaySteps[index]?.tts_provider || "web_speech",
+    audio_url: displaySteps[index]?.audio_url,
+    sourceType: displaySteps[index]?.source_type,
+    sourceUrl: displaySteps[index]?.source_url,
+    sourceText: displaySteps[index]?.source_text,
+    ...targets?.[index],
   }));
 };
 
 const guideVideo = (guideOptions?: ChatGuideOptions) => {
   const youtube = guideOptions?.youtube_recommendations?.[0];
   const manual = guideOptions?.manual_guides?.[0];
-  const embedUrl = youtubeEmbedUrl(youtube?.source_url, youtube?.video_id) || youtubeEmbedUrl(manual?.video_url);
+  const embedUrl = youtubeEmbedUrl(youtube?.source_url, youtube?.video_id) || youtubeEmbedUrl(manual?.video_url || undefined);
   return {
-    title: youtube?.title || manual?.title || "LG 공식 영상 가이드",
+    title: youtube?.title || manual?.title || "LG Official Video Guide",
     embedUrl,
+    videoUrl: manual?.video_url || youtube?.source_url || null,
+    channel: youtube?.channel_name,
   };
 };
 
 export function SelfCare() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"manual" | "ar">("manual");
-  const [guideOptions, setGuideOptions] = useState<ChatGuideOptions | null>(null);
-  const [isGuideLoading, setIsGuideLoading] = useState(true);
-  const [guideError, setGuideError] = useState("");
-  const [isCompleting, setIsCompleting] = useState(false);
+  const location = useLocation();
+  const routeState = location.state as { tab?: "manual" | "ar"; guideOptions?: ChatGuideOptions } | null;
+  const initialTab = routeState?.tab ?? "manual";
+  const [activeTab, setActiveTab] = useState<"manual" | "ar">(initialTab);
+  const [guideOptions, setGuideOptions] = useState<ChatGuideOptions | null>(routeState?.guideOptions ?? null);
+  const [isGuideLoading, setIsGuideLoading] = useState(false);
 
   useEffect(() => {
+    if (routeState?.guideOptions) {
+      setGuideOptions(routeState.guideOptions);
+      return;
+    }
+
     let cancelled = false;
 
-    async function loadGuideOptions() {
+    const loadGuideOptions = async () => {
+      setIsGuideLoading(true);
       try {
-        const options = await getGuideOptions({
-          userId: getCurrentUserEmail(),
+        const response = await requestAiChat("Air conditioner filter cleaning manual guide", {
+          intent: "care",
+          productCategory: "Air Conditioner",
+          productType: "Air Conditioner",
+          productName: "Living Room Air Conditioner",
+          model: "AS-Q24ENXE",
           deviceId: "D001",
-          procedureType: "filter_cleaning",
-          serviceFlowType: "self_care",
-          languageCode: "en",
+          symptom: "filter_cleaning",
+          recommendedActions: ["manual", "ar"],
         });
         if (!cancelled) {
-          setGuideOptions(options);
-          setGuideError("");
+          setGuideOptions(response.guide_options ?? null);
         }
       } catch {
         if (!cancelled) {
           setGuideOptions(null);
-          setGuideError("공식 가이드 API 연결을 확인하지 못했어요.");
         }
       } finally {
-        if (!cancelled) setIsGuideLoading(false);
+        if (!cancelled) {
+          setIsGuideLoading(false);
+        }
       }
-    }
+    };
 
     loadGuideOptions();
+
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [routeState?.guideOptions]);
 
-  const manualGuide = guideOptions?.manual_guides?.[0];
-  const steps = useMemo(
-    () => extractGuideSteps(manualGuide, guideOptions?.procedure_type || "filter_cleaning"),
-    [guideOptions?.procedure_type, manualGuide],
-  );
-  const video = guideVideo(guideOptions ?? undefined);
-
-  const handleDone = async () => {
-    setIsCompleting(true);
-    try {
-      const guideId = (manualGuide as { guide_id?: string | number } | undefined)?.guide_id ?? 1;
-      await completeGuide({
-        userId: getCurrentUserEmail(),
-        deviceId: "D001",
-        guideId,
-        procedureType: guideOptions?.procedure_type || "filter_cleaning",
-        serviceFlowType: "self_care",
-      });
-    } catch {
-      // 로컬 시연 기록은 유지하되, 백엔드 실패는 화면 흐름을 막지 않는다.
-    }
+  const handleDone = () => {
     const history = JSON.parse(localStorage.getItem("careHistory") || "[]");
     history.push({
       id: Date.now().toString(),
       type: "Self Care",
-      title: "에어컨 필터 청소",
+      title: "Air Conditioner Filter Cleaning",
       date: new Date().toISOString(),
     });
     localStorage.setItem("careHistory", JSON.stringify(history));
-    setIsCompleting(false);
     navigate("/", { state: { aiDismissed: true } });
   };
 
@@ -145,38 +216,50 @@ export function SelfCare() {
       state: {
         from: "/self-care",
         procedureType: guideOptions?.procedure_type || "filter_cleaning",
-        guideTitle: "필터 청소",
+        guideTitle: guideOptions?.display_title || procedureLabel,
         guideSteps: arGuideStepsFromOptions(guideOptions ?? undefined),
       },
     });
   };
 
   const cardCls = "rounded-[20px] p-5";
+  const manual = guideOptions?.manual_guides?.[0];
+  const procedureType = guideOptions?.procedure_type;
+  const procedureLabel = getProcedureLabel(procedureType);
+  const guideTitle = getGuideDisplayTitle(guideOptions);
+  const steps = guideOptions ? extractGuideSteps(manual, procedureType) : FILTER_CLEANING_STEPS;
+  const video = guideVideo(guideOptions ?? undefined);
 
   const DoneSection = () => (
-    <div className={cardCls} style={glass}>
-      <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111] mb-4 text-center">관리를 완료하셨나요?</p>
-      <div className="flex gap-3">
+    <div className="rounded-[16px] px-4 py-3 flex items-center justify-between gap-3" style={glass}>
+      <p className="font-['Pretendard:SemiBold',sans-serif] text-[13px] text-[#444]">Did you complete the care task?</p>
+      <div className="flex gap-2 shrink-0">
         <button
           onClick={handleDone}
-          disabled={isCompleting}
-          className="flex-1 rounded-2xl py-3 text-[14px] font-semibold text-white bg-gradient-to-r from-[#F77B50] to-[#F05C5C] hover:opacity-90 transition-opacity"
+          className="rounded-xl px-4 py-1.5 text-[12px] font-semibold text-white bg-gradient-to-r from-[#1DB87A] to-[#3DDC97] hover:opacity-90 transition-opacity"
         >
-          {isCompleting ? "저장 중" : "예"}
+          Yes
         </button>
         <button
           onClick={handleSkip}
-          className="flex-1 rounded-2xl py-3 text-[14px] font-semibold text-[#F77B50] bg-white border border-[#F77B50] hover:bg-orange-50 transition-colors"
+          className="rounded-xl px-4 py-1.5 text-[12px] font-semibold text-[#1DB87A] bg-white border border-[#1DB87A] hover:bg-[#f0fdf7] transition-colors"
         >
-          아니요
+          No
         </button>
       </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#F3FFF7] via-[#FAF3E3] to-[#FEECD7]">
-      <div className="w-full max-w-[390px] mx-auto pb-10">
+    <div className="relative min-h-screen w-full bg-[#f7f9f8] overflow-x-hidden">
+      {/* Aurora Glow — Home 동일 */}
+      <div className="pointer-events-none absolute -top-24 -left-20 w-80 h-80 rounded-full"
+        style={{ background: "rgba(61,220,151,0.10)", filter: "blur(90px)" }} />
+      <div className="pointer-events-none absolute top-[360px] -right-16 w-64 h-64 rounded-full"
+        style={{ background: "rgba(100,210,190,0.09)", filter: "blur(80px)" }} />
+      <div className="pointer-events-none absolute bottom-[180px] left-0 w-56 h-56 rounded-full"
+        style={{ background: "rgba(80,200,160,0.08)", filter: "blur(75px)" }} />
+      <div className="relative z-10 w-full max-w-[390px] mx-auto pb-10">
 
         {/* 헤더 */}
         <div className="flex items-center gap-1 px-4 pt-10 pb-5">
@@ -184,7 +267,7 @@ export function SelfCare() {
             <ChevronLeft size={22} className="text-[#555]" />
           </button>
           <p className="font-['Pretendard:Medium',sans-serif] text-[20px] tracking-[-0.3px] text-black leading-[15px]">
-            셀프 케어
+            Self Care
           </p>
         </div>
 
@@ -192,19 +275,19 @@ export function SelfCare() {
         <div className="mx-6 mb-5">
           <div className="rounded-[20px] p-5" style={glass}>
             <div className="flex justify-center mb-4">
-              <img src={acImage} alt="에어컨" className="w-[200px] h-[100px] object-contain" />
+              <img src={acImage} alt="Air Conditioner" className="w-[200px] h-[100px] object-contain" />
             </div>
-            <p className="font-['Pretendard:SemiBold',sans-serif] text-[18px] text-[#111] text-center mb-1">거실 에어컨</p>
+            <p className="font-['Pretendard:SemiBold',sans-serif] text-[18px] text-[#111] text-center mb-1">Living Room Air Conditioner</p>
             <p className="font-['Pretendard:Regular',sans-serif] text-[13px] text-[#888] text-center mb-4">
-              LG 휘센 벽걸이
+              LG Whisen Wall-mounted
             </p>
             <div className="grid grid-cols-2 gap-2 pt-4" style={{ borderTop: "1px solid rgba(200,200,200,0.3)" }}>
               <div className="flex justify-between">
-                <p className="font-['Pretendard:Regular',sans-serif] text-[13px] text-[#888]">제품군</p>
-                <p className="font-['Pretendard:Medium',sans-serif] text-[13px] text-[#111]">에어컨</p>
+                <p className="font-['Pretendard:Regular',sans-serif] text-[13px] text-[#888]">Product Type</p>
+                <p className="font-['Pretendard:Medium',sans-serif] text-[13px] text-[#111]">Air Conditioner</p>
               </div>
               <div className="flex justify-between">
-                <p className="font-['Pretendard:Regular',sans-serif] text-[13px] text-[#888]">등록일</p>
+                <p className="font-['Pretendard:Regular',sans-serif] text-[13px] text-[#888]">Registered Date</p>
                 <p className="font-['Pretendard:Medium',sans-serif] text-[13px] text-[#111]">2024.01.15</p>
               </div>
             </div>
@@ -219,50 +302,56 @@ export function SelfCare() {
               onClick={() => setActiveTab(tab)}
               className={`flex-1 py-2.5 text-[14px] font-semibold border-b-2 -mb-px transition-colors ${
                 activeTab === tab
-                  ? "text-[#F05C5C] border-[#F05C5C]"
+                  ? "text-[#1DB87A] border-[#1DB87A]"
                   : "text-[#b0b0b0] border-transparent"
               }`}
             >
-              {tab === "manual" ? "매뉴얼" : "AR"}
+              {tab === "manual" ? "Manual" : "AR"}
             </button>
           ))}
         </div>
 
-        {/* 메뉴얼 탭 */}
+        {/* Manual 탭 */}
         {activeTab === "manual" && (
           <div className="mx-6 flex flex-col gap-4">
-            {/* 영상 플레이어 */}
+            {/* Chat.tsx 공식근거 기반 영상 표시 구조 */}
             <div className="rounded-[20px] overflow-hidden" style={glass}>
               <div className="w-full aspect-video bg-[#e8ecef] flex items-center justify-center relative">
+                {video.embedUrl ? (
+                  <iframe
+                    title={video.title}
+                    src={video.embedUrl}
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : video.videoUrl ? (
+                  <video controls className="w-full h-full object-cover" src={video.videoUrl} controlsList="nodownload">
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
+                  <p className="font-['Pretendard:Regular',sans-serif] text-[13px] text-[#888]">
+                    {isGuideLoading ? "Loading the official manual." : "No linked official video is available."}
+                  </p>
+                )}
                 <button className="absolute top-3 right-3 w-8 h-8 bg-white/80 rounded-lg flex items-center justify-center">
                   <Maximize2 size={16} className="text-[#555]" />
                 </button>
-                {video.embedUrl ? (
-                  <iframe
-                    className="w-full h-full"
-                    src={video.embedUrl}
-                    title={video.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  />
-                ) : (
-                  <p className="font-['Pretendard:Medium',sans-serif] text-[13px] text-[#999]">
-                    {isGuideLoading ? "공식 영상을 불러오는 중" : "공식 영상 준비 중"}
-                  </p>
-                )}
               </div>
             </div>
 
-            {/* 단계 카드 */}
+            {/* Chat.tsx 공식근거 기반 단계별 Guide 구조 */}
             <div className={cardCls} style={glass}>
-              <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111] mb-4">진행 순서</p>
-              {guideError && (
-                <p className="font-['Pretendard:Regular',sans-serif] text-[12px] text-[#F05C5C] mb-3">{guideError}</p>
-              )}
+              <div className="flex items-center justify-between gap-2 mb-4">
+                <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111]">📋 {guideTitle}</p>
+                <span className="font-['Pretendard:Medium',sans-serif] text-[9px] text-[#2d9b69] bg-[#eaf8f1] rounded-full px-2 py-[2px] whitespace-nowrap">
+                  LG official standard
+                </span>
+              </div>
               <div className="flex flex-col gap-3">
                 {steps.map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <span className="w-[22px] h-[22px] rounded-full bg-gradient-to-r from-[#F77B50] to-[#F05C5C] flex items-center justify-center flex-shrink-0 mt-[1px]">
+                    <span className="w-[22px] h-[22px] rounded-full bg-gradient-to-r from-[#1DB87A] to-[#3DDC97] flex items-center justify-center flex-shrink-0 mt-[1px]">
                       <span className="text-[11px] font-bold text-white">{i + 1}</span>
                     </span>
                     <p className="font-['Pretendard:Regular',sans-serif] text-[13px] text-[#555] leading-snug pt-[2px]">{step}</p>
@@ -280,11 +369,11 @@ export function SelfCare() {
           <div className="mx-6 flex flex-col gap-4">
             {/* 단계 카드 */}
             <div className={cardCls} style={glass}>
-              <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111] mb-4">진행 순서</p>
+              <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111] mb-4">📋 {guideTitle}</p>
               <div className="flex flex-col gap-3">
                 {steps.map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <span className="w-[22px] h-[22px] rounded-full bg-gradient-to-r from-[#F77B50] to-[#F05C5C] flex items-center justify-center flex-shrink-0 mt-[1px]">
+                    <span className="w-[22px] h-[22px] rounded-full bg-gradient-to-r from-[#1DB87A] to-[#3DDC97] flex items-center justify-center flex-shrink-0 mt-[1px]">
                       <span className="text-[11px] font-bold text-white">{i + 1}</span>
                     </span>
                     <p className="font-['Pretendard:Regular',sans-serif] text-[13px] text-[#555] leading-snug pt-[2px]">{step}</p>
@@ -293,12 +382,12 @@ export function SelfCare() {
               </div>
             </div>
 
-            {/* AR 가이드 버튼 */}
+            {/* AR Guide 버튼 */}
             <button
               onClick={handleStartArGuide}
-              className="w-full rounded-2xl py-4 text-[15px] font-semibold text-white bg-gradient-to-r from-[#F77B50] to-[#F05C5C] hover:opacity-90 transition-opacity"
+              className="w-full rounded-2xl py-4 text-[15px] font-semibold text-white bg-gradient-to-r from-[#1DB87A] to-[#3DDC97] hover:opacity-90 transition-opacity"
             >
-              AR 가이드 시작하기
+              AR Guide Get Started
             </button>
 
             <DoneSection />

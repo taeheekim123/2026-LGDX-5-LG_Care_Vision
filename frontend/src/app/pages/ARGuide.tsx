@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "react-router";
-import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, Camera } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ChevronLeft, Camera, Volume2, VolumeX, Lightbulb, Check, ArrowUp } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { API_BASE_URL } from "../api/client";
 import {
   getCaptureSizeFromDimensions,
@@ -13,14 +14,37 @@ import {
 } from "./arGuideDetection";
 
 const CHAT_STORAGE_KEY = "chat_messages_v20260612";
+const TTS_STORAGE_KEY = "careshot_ar_tts_enabled";
 
 interface ARGuideStep {
   title: string;
   desc: string;
+  tts_enabled?: boolean;
+  tts_text?: string;
+  tts_language_code?: string;
+  tts_provider?: "web_speech" | string;
+  audio_url?: string | null;
   safety?: string;
+  hint?: string;
   targetHint?: string;
   targetClasses?: string[];
   contextClasses?: string[];
+  sourceType?: string;
+  sourceUrl?: string | null;
+  sourceText?: string;
+}
+
+interface GuideDisplayStep {
+  title?: string;
+  text?: string;
+  tts_enabled?: boolean;
+  tts_text?: string;
+  tts_language_code?: string;
+  tts_provider?: "web_speech" | "google_cloud_tts" | string;
+  audio_url?: string | null;
+  source_type?: string;
+  source_url?: string | null;
+  source_text?: string;
 }
 
 interface ARGuideLocationState {
@@ -32,42 +56,136 @@ interface ARGuideLocationState {
 
 const defaultSteps: ARGuideStep[] = [
   {
-    title: "전원 차단",
-    desc: "전원을 끄고 플러그를 뽑으세요.",
-    safety: "전원이 완전히 꺼진 상태에서만 다음 단계로 이동하세요.",
-    targetHint: "에어컨 본체",
+    title: "Turn Off Power",
+    desc: "Turn off the power and unplug the unit.",
+    safety: "Move to the next step only after the power is completely off.",
+    hint: "Press and hold the air conditioner power button\nor unplug it directly.",
+    targetHint: "Air conditioner body",
     targetClasses: ["aircon"],
   },
   {
-    title: "커버 열기",
-    desc: "필터 커버를 천천히 들어 올리세요.",
-    safety: "커버가 걸리면 억지로 당기지 말고 여닫힘 방향을 다시 확인하세요.",
-    targetHint: "에어컨 본체",
+    title: "Open Cover",
+    desc: "Slowly lift the filter cover.",
+    safety: "If the cover is stuck, do not force it. Check the opening direction again.",
+    hint: "Hold both sides of the filter cover\nand slowly lift it upward.",
+    targetHint: "Air conditioner body",
     targetClasses: ["aircon"],
   },
   {
-    title: "필터 분리",
-    desc: "양쪽 잠금을 풀고 필터를 분리하세요.",
-    safety: "표시된 필터 위치와 실제 손 위치가 맞는지 확인한 뒤 분리하세요.",
-    targetHint: "필터 그물망",
+    title: "Remove Filter",
+    desc: "Release both locks and remove the filter.",
+    safety: "Check that the marked filter position matches your hand position before removing it.",
+    hint: "Press the lock tabs on both sides of the filter\nand pull it downward.",
+    targetHint: "Filter mesh",
     targetClasses: ["filter"],
     contextClasses: ["aircon"],
   },
   {
-    title: "세척 및 건조",
-    desc: "흐르는 물로 헹군 후 그늘에 말리세요.",
-    safety: "젖은 필터는 완전히 건조한 뒤 재장착하세요.",
-    targetHint: "분리한 필터",
+    title: "Wash and Dry",
+    desc: "Rinse under running water, then dry in the shade.",
+    safety: "Reinstall the filter only after it is completely dry.",
+    hint: "Rinse only with lukewarm running water\nwithout detergent.",
+    targetHint: "Removed filter",
     targetClasses: ["filter"],
   },
   {
-    title: "재장착",
-    desc: "필터를 다시 끼우고 커버를 닫으세요.",
-    safety: "필터 방향이 맞는지 확인하고 커버를 천천히 닫으세요.",
-    targetHint: "에어컨 본체",
+    title: "Reinstall",
+    desc: "Reinstall the filter and close the cover.",
+    safety: "Check the filter direction and close the cover slowly.",
+    hint: "After inserting the filter, press the cover\nuntil it clicks.",
+    targetHint: "Air conditioner body",
     targetClasses: ["aircon"],
   },
 ];
+
+const noCoolingSelfCheckSteps: ARGuideStep[] = [
+  {
+    title: "Check Temperature Setting",
+    desc: "Check that the desired temperature is set lower than the current indoor temperature.",
+    hint: "Set the target temperature lower\nthan the room temperature.",
+    targetHint: "Air conditioner body",
+    targetClasses: ["aircon"],
+  },
+  {
+    title: "Check Filter Status",
+    desc: "If the filter has a lot of dust, clean it and try operating again.",
+    hint: "Look for dust buildup on the filter mesh\nbefore restarting the unit.",
+    targetHint: "Filter mesh",
+    targetClasses: ["filter"],
+    contextClasses: ["aircon"],
+  },
+  {
+    title: "Check Air Outlet",
+    desc: "Check that nothing is blocking the air outlet or airflow path.",
+    hint: "Keep curtains, furniture, and loose items\naway from the airflow path.",
+    targetHint: "Air outlet / airflow path",
+    targetClasses: ["outlet"],
+    contextClasses: ["aircon"],
+  },
+  {
+    title: "Check Indoor Environment",
+    desc: "Check whether doors or windows are open or strong sunlight is coming in.",
+    hint: "Close open windows and reduce direct sunlight\nbefore checking cooling again.",
+    targetHint: "Air conditioner body",
+    targetClasses: ["aircon"],
+  },
+  {
+    title: "Request Professional Service",
+    desc: "If cooling remains weak, request professional service.",
+    hint: "If the symptom continues after self-check,\nconnect to professional service.",
+    targetHint: "Air conditioner body",
+    targetClasses: ["aircon"],
+  },
+];
+
+const guideStepsByProcedure: Record<string, ARGuideStep[]> = {
+  filter_cleaning: defaultSteps,
+  no_cooling_self_check: noCoolingSelfCheckSteps,
+};
+
+const guideStepTargetsByProcedure: Record<
+  string,
+  Array<{ targetHint?: string; targetClasses?: string[]; contextClasses?: string[] }>
+> = {
+  filter_cleaning: defaultSteps.map(({ targetHint, targetClasses, contextClasses }) => ({
+    targetHint,
+    targetClasses,
+    contextClasses,
+  })),
+  no_cooling_self_check: [
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air outlet / airflow path", targetClasses: ["outlet"], contextClasses: ["aircon"] },
+    { targetHint: "Filter mesh", targetClasses: ["filter"], contextClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+  ],
+};
+
+const guideStepsFromDisplaySteps = (procedureType: string, displaySteps?: GuideDisplayStep[]): ARGuideStep[] => {
+  const targets = guideStepTargetsByProcedure[procedureType] ?? [];
+  return (displaySteps ?? [])
+    .map((step, index) => {
+      const desc = (step.text || step.source_text || "").trim();
+      if (!desc) return null;
+      return {
+        title: step.title || `STEP ${index + 1}`,
+        desc,
+        tts_enabled: step.tts_enabled ?? true,
+        tts_text: step.tts_text || desc,
+        tts_language_code: step.tts_language_code || "en-IN",
+        tts_provider: step.tts_provider || "web_speech",
+        audio_url: step.audio_url,
+        hint: guideStepsByProcedure[procedureType]?.[index]?.hint,
+        sourceType: step.source_type,
+        sourceUrl: step.source_url,
+        sourceText: step.source_text,
+        ...(targets[index] ?? {}),
+      };
+    })
+    .filter((step): step is ARGuideStep => Boolean(step));
+};
 
 const getCaptureSize = (video: HTMLVideoElement) => {
   return getCaptureSizeFromDimensions(video.videoWidth, video.videoHeight);
@@ -79,34 +197,200 @@ const detectionLabelMap: Record<string, string> = {
   outlet: "토출구",
 };
 
-const DETECTION_CONFIDENCE_THRESHOLD = 0.35;
+const DEFAULT_DETECTION_CONFIDENCE_THRESHOLD = 0.35;
+const AIRCON_DETECTION_CONFIDENCE_THRESHOLD = 0.35;
+const OUTLET_DETECTION_CONFIDENCE_THRESHOLD = 0.25;
 const DETECTION_JPEG_QUALITY = 0.85;
-const DETECTION_HOLD_MS = 1800;
+const DETECTION_HOLD_MS = 900;
 
 const getDetectionLabel = (detection: DetectionBox) =>
   `${detectionLabelMap[detection.class_name] ?? detection.class_name} ${(
     detection.confidence * 100
   ).toFixed(0)}%`;
 
+const getModelProfileForProcedure = (procedureType: string) =>
+  procedureType === "no_cooling_self_check" ? "self_as_no_cooling" : "self_care";
+
+const getConfidenceThresholdForStep = (step: ARGuideStep | undefined) => {
+  const targetClasses = step?.targetClasses ?? [];
+  if (targetClasses.includes("filter")) return DEFAULT_DETECTION_CONFIDENCE_THRESHOLD;
+  if (targetClasses.includes("outlet")) return OUTLET_DETECTION_CONFIDENCE_THRESHOLD;
+  if (targetClasses.includes("aircon")) return AIRCON_DETECTION_CONFIDENCE_THRESHOLD;
+  return DEFAULT_DETECTION_CONFIDENCE_THRESHOLD;
+};
+
 export function ARGuide() {
   const navigate = useNavigate();
   const location = useLocation();
   const routeState = (location.state as ARGuideLocationState | null) ?? {};
+  const queryParams = new URLSearchParams(location.search);
+  const queryProcedureType =
+    queryParams.get("procedure_type") || queryParams.get("procedureType") || undefined;
   const from = routeState.from ?? "/self-care";
-  const procedureType = routeState.procedureType ?? "filter_cleaning";
-  const modelProfile = procedureType === "no_cooling_self_check" ? "self_as_no_cooling" : "self_care";
-  const steps = routeState.guideSteps?.length ? routeState.guideSteps : defaultSteps;
+  const procedureType = routeState.procedureType ?? queryProcedureType ?? "filter_cleaning";
+  const [remoteGuideSteps, setRemoteGuideSteps] = useState<ARGuideStep[]>([]);
+  const steps = routeState.guideSteps?.length
+    ? routeState.guideSteps
+    : remoteGuideSteps.length
+      ? remoteGuideSteps
+      : guideStepsByProcedure[procedureType] ?? defaultSteps;
   const [current, setCurrent] = useState(0);
   const [cameraState, setCameraState] = useState<CameraState>("loading");
   const [detectionMode, setDetectionMode] = useState<DetectionMode>("none");
   const [lastDetection, setLastDetection] = useState<DetectionBox | null>(null);
   const [statusText, setStatusText] = useState("카메라 준비 중");
+  const [ttsEnabled, setTtsEnabled] = useState(() => localStorage.getItem(TTS_STORAGE_KEY) !== "false");
+  const [ttsSupported] = useState(() => typeof window !== "undefined" && "speechSynthesis" in window);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const overlayRef = useRef<HTMLCanvasElement | null>(null);
   const captureRef = useRef<HTMLCanvasElement | null>(null);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioObjectUrlRef = useRef<string | null>(null);
   const smoothedBoxRef = useRef<DetectionBox | null>(null);
   const lastDetectionAtRef = useRef(0);
-  const currentStep = steps[current];
+  const currentStep = steps[current] ?? steps[0];
+
+  useEffect(() => {
+    if (current >= steps.length) setCurrent(0);
+  }, [current, steps.length]);
+
+  useEffect(() => {
+    if (routeState.guideSteps?.length) return;
+    let cancelled = false;
+    const serviceFlowType = procedureType === "no_cooling_self_check" ? "self_as" : "self_care";
+    const params = new URLSearchParams({
+      user_id: "U001",
+      device_id: "D001",
+      procedure_type: procedureType,
+      service_flow_type: serviceFlowType,
+      language_code: "en",
+    });
+
+    fetch(`${API_BASE_URL}/v1/guides/options?${params.toString()}`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (cancelled || !data?.display_steps?.length) return;
+        const nextSteps = guideStepsFromDisplaySteps(procedureType, data.display_steps);
+        if (nextSteps.length) setRemoteGuideSteps(nextSteps);
+      })
+      .catch(() => {
+        if (!cancelled) setRemoteGuideSteps([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [procedureType, routeState.guideSteps?.length]);
+
+  const stopStepSpeech = useCallback(() => {
+    if (ttsSupported) window.speechSynthesis.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = "";
+      audioRef.current = null;
+    }
+    if (audioObjectUrlRef.current) {
+      URL.revokeObjectURL(audioObjectUrlRef.current);
+      audioObjectUrlRef.current = null;
+    }
+    utteranceRef.current = null;
+  }, [ttsSupported]);
+
+  const speakWithWebSpeech = useCallback(
+    (text: string) => {
+      if (!ttsSupported) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = currentStep.tts_language_code || "en-IN";
+      utterance.rate = 0.92;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      utteranceRef.current = utterance;
+      window.speechSynthesis.speak(utterance);
+    },
+    [currentStep.tts_language_code, ttsSupported],
+  );
+
+  const speakCurrentStep = useCallback(
+    async (force = false) => {
+      if (!force && !ttsEnabled) return;
+      if (currentStep.tts_enabled === false) return;
+      const text = (currentStep.tts_text || currentStep.desc || "").trim();
+      if (!text) return;
+
+      stopStepSpeech();
+      if (currentStep.tts_provider === "google_cloud_tts" || currentStep.audio_url) {
+        try {
+          const audioUrl =
+            currentStep.audio_url ||
+            URL.createObjectURL(
+              await fetch(`${API_BASE_URL}/v1/tts/synthesize`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  text,
+                  language_code: currentStep.tts_language_code || "en-IN",
+                  speaking_rate: 0.92,
+                }),
+              }).then((response) => {
+                if (!response.ok) throw new Error(`Google TTS failed: ${response.status}`);
+                return response.blob();
+              }),
+            );
+          if (!currentStep.audio_url) audioObjectUrlRef.current = audioUrl;
+          const audio = new Audio(audioUrl);
+          audioRef.current = audio;
+          await audio.play();
+          return;
+        } catch {
+          stopStepSpeech();
+        }
+      }
+      speakWithWebSpeech(text);
+    },
+    [currentStep, speakWithWebSpeech, stopStepSpeech, ttsEnabled],
+  );
+
+  useEffect(() => {
+    if (!ttsSupported) return;
+    speakCurrentStep(false);
+    return () => stopStepSpeech();
+  }, [current, speakCurrentStep, stopStepSpeech, ttsSupported]);
+
+  useEffect(() => {
+    const handleToggle = (event: Event) => {
+      const enabled =
+        event instanceof CustomEvent && typeof event.detail?.enabled === "boolean"
+          ? event.detail.enabled
+          : !ttsEnabled;
+      setTtsEnabled(enabled);
+      localStorage.setItem(TTS_STORAGE_KEY, String(enabled));
+      if (!enabled) stopStepSpeech();
+      if (enabled) speakCurrentStep(true);
+    };
+    const handleReplay = () => speakCurrentStep(true);
+    const handleStop = () => stopStepSpeech();
+
+    window.addEventListener("careshot:ar-tts:toggle", handleToggle);
+    window.addEventListener("careshot:ar-tts:replay", handleReplay);
+    window.addEventListener("careshot:ar-tts:stop", handleStop);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
+      const key = event.key.toLowerCase();
+      if (key === "v") handleToggle(new CustomEvent("careshot:ar-tts:toggle"));
+      if (key === "r") handleReplay();
+      if (key === "s") handleStop();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("careshot:ar-tts:toggle", handleToggle);
+      window.removeEventListener("careshot:ar-tts:replay", handleReplay);
+      window.removeEventListener("careshot:ar-tts:stop", handleStop);
+      window.removeEventListener("keydown", handleKeyDown);
+      stopStepSpeech();
+    };
+  }, [speakCurrentStep, stopStepSpeech, ttsEnabled]);
 
   useEffect(() => {
     setLastDetection(null);
@@ -163,6 +447,8 @@ export function ARGuide() {
 
       busy = true;
       try {
+        const detectionModelProfile = getModelProfileForProcedure(procedureType);
+        const detectionConfidenceThreshold = getConfidenceThresholdForStep(currentStep);
         const response = await fetch(`${API_BASE_URL}/v1/ar/filter-detect`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -170,10 +456,10 @@ export function ARGuide() {
             image_data_url: imageDataUrl,
             image_width: width,
             image_height: height,
-            confidence_threshold: DETECTION_CONFIDENCE_THRESHOLD,
-            target_classes: steps[current].targetClasses ?? ["filter"],
-            require_context_classes: steps[current].contextClasses ?? null,
-            model_profile: modelProfile,
+            confidence_threshold: detectionConfidenceThreshold,
+            target_classes: currentStep.targetClasses ?? ["aircon"],
+            require_context_classes: currentStep.contextClasses ?? null,
+            model_profile: detectionModelProfile,
             procedure_type: procedureType,
             mock_fallback: false,
           }),
@@ -210,7 +496,7 @@ export function ARGuide() {
     }, 700);
 
     return () => window.clearInterval(interval);
-  }, [cameraState, current, steps, modelProfile, procedureType]);
+  }, [cameraState, current, steps, procedureType]);
 
   useEffect(() => {
     const canvas = overlayRef.current;
@@ -276,7 +562,7 @@ export function ARGuide() {
         const doneMsg = {
           id: Date.now().toString(),
           type: "bot",
-          content: "AR 가이드를 완료하셨나요?\n관리 내용을 기록해드릴게요.",
+          content: "Did you finish the AR guide?\nI'll record the care details.",
           time: new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }),
           showDoneAsk: true,
         };
@@ -286,81 +572,166 @@ export function ARGuide() {
     }
   };
   return (
-    <div className="min-h-screen w-full bg-black">
-      <div className="w-full max-w-[390px] mx-auto min-h-screen relative flex flex-col">
-        <div className="flex items-center gap-3 px-4 pt-10 pb-4 bg-gradient-to-b from-black/60 to-transparent z-10">
-          <button onClick={goBack} className="p-1">
-            <ChevronLeft size={22} className="text-white" />
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -14 }}
+      transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+      className="relative flex h-full w-full flex-col overflow-hidden text-[#292B2E]"
+      style={{ background: "linear-gradient(160deg, #d6f2e8 0%, #f0f8e8 30%, #fce8f0 65%, #ede8f8 100%)" }}
+    >
+      <header className="flex shrink-0 items-center justify-between px-[24px] pb-[24px] pt-[44px]">
+        <button onClick={goBack} className="-ml-1 flex h-9 w-9 items-center justify-start" aria-label="Go back">
+          <ChevronLeft size={32} strokeWidth={1.9} className="text-[#35383B]" />
+        </button>
+        <h1 className="text-[23px] font-semibold leading-none tracking-[0]">AR</h1>
+        <div className="w-9" />
+      </header>
+
+      <nav className="flex shrink-0 items-center gap-[8px] px-[16px] pb-[16px]">
+        {steps.map((_, idx) => {
+          const isActive = idx === current;
+          const isDone = idx < current;
+          return (
+            <div key={idx} className="flex flex-1 items-center">
+              <motion.button
+                onClick={() => setCurrent(idx)}
+                aria-label={`STEP ${idx + 1}`}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 22 }}
+                className="flex flex-1 flex-col items-center gap-[5px] rounded-[12px] py-[8px] transition-all"
+                style={isActive ? {
+                  background: "linear-gradient(135deg, #24C99A, #14B989)",
+                  boxShadow: "0 4px 14px rgba(34,197,154,0.35), inset 0 1px 0 rgba(255,255,255,0.3)",
+                  border: "1px solid rgba(255,255,255,0.3)",
+                } : {
+                  background: "rgba(255,255,255,0.45)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.65)",
+                  boxShadow: "0 2px 8px rgba(31,69,61,0.06), inset 0 1px 0 rgba(255,255,255,0.8)",
+                }}
+              >
+                {isDone
+                  ? <Check size={14} strokeWidth={2.5} className="text-[#22C59A]" />
+                  : <span className={`text-[11px] font-bold tracking-[0] ${isActive ? "text-white" : "text-[#B0B4B2]"}`}>{idx + 1}</span>
+                }
+              </motion.button>
+            </div>
+          );
+        })}
+      </nav>
+
+      <main className="flex min-h-0 flex-1 flex-col gap-[12px] overflow-y-auto px-[12px] pb-[10px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <section className="relative flex flex-1 flex-col rounded-[18px] px-[14px] pb-[14px] pt-[14px]" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.75)", boxShadow: "0 16px 32px rgba(31,69,61,0.08), inset 0 1px 0 rgba(255,255,255,0.9)" }}>
+          <button
+            onClick={() => {
+              const nextEnabled = !ttsEnabled;
+              setTtsEnabled(nextEnabled);
+              localStorage.setItem(TTS_STORAGE_KEY, String(nextEnabled));
+              if (!nextEnabled) stopStepSpeech();
+              if (nextEnabled) speakCurrentStep(true);
+            }}
+            className="absolute right-[12px] top-[22px] z-10 flex h-10 w-10 items-center justify-center rounded-full backdrop-blur-sm"
+            style={{ background: "rgba(255,255,255,0.86)" }}
+            aria-label="Voice guidance"
+          >
+            {ttsEnabled ? <Volume2 size={22} strokeWidth={1.9} className="text-[#35383B]" /> : <VolumeX size={22} strokeWidth={1.9} className="text-[#C7CECC]" />}
           </button>
 
-          <div className="flex-1 flex items-center">
-            {steps.map((_, idx) => (
-              <div key={idx} className="flex items-center flex-1 last:flex-none">
-                <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold transition-colors ${
-                    idx === current
-                      ? "bg-[#F77B50] text-white scale-110"
-                      : idx < current
-                      ? "bg-white text-black"
-                      : "bg-white/30 text-white"
-                  }`}
-                >
-                  {idx + 1}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={current}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -14 }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              className="relative shrink-0"
+            >
+              <span className="mx-[10px] inline-flex rounded-[7px] bg-[#E4F5F0] px-[10px] py-[5px] text-[13px] font-medium leading-none tracking-[0] text-[#20AD86]">STEP {current + 1} / {steps.length}</span>
+              <h2 className="mb-0 ml-[10px] mr-12 mt-[10px] text-[22px] font-bold leading-tight tracking-[0] text-[#202124]">{currentStep.title}</h2>
+              <p className="mb-0 ml-[10px] mr-12 mt-[6px] text-[13px] font-medium leading-[1.28] tracking-[0] text-[#6A6D70]">{currentStep.desc}</p>
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="relative mt-[12px] flex min-h-[160px] flex-1 overflow-hidden rounded-[15px] border-[1.5px] border-[#22C59A]/40 bg-white/20">
+            <video ref={videoRef} autoPlay playsInline muted className="h-full w-full object-cover" />
+            <canvas ref={overlayRef} className="absolute inset-0 z-20 h-full w-full pointer-events-none" />
+            <canvas ref={captureRef} className="hidden" />
+            <Corner className="left-[17px] top-[18px] rotate-0" />
+            <Corner className="right-[17px] top-[18px] rotate-90" />
+            <Corner className="bottom-[18px] right-[17px] rotate-180" />
+            <Corner className="bottom-[18px] left-[17px] -rotate-90" />
+            {cameraState !== "ready" && (
+              <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/60">
+                <div className="flex h-[64px] w-[64px] items-center justify-center rounded-full bg-[#ECF5F2]">
+                  <Camera size={36} strokeWidth={1.65} className="text-[#718E86]" />
                 </div>
-                {idx < steps.length - 1 && (
-                  <div className={`flex-1 h-[2px] ${idx < current ? "bg-white" : "bg-white/30"}`} />
-                )}
+                <p className="mt-[16px] text-[15px] font-medium tracking-[0] text-white/80">
+                  {cameraState === "denied" ? "Camera permission is required" : "Preparing camera"}
+                </p>
               </div>
-            ))}
+            )}
           </div>
-        </div>
+        </section>
 
-        <div className="flex-1 relative flex items-center justify-center bg-[#111] overflow-hidden">
-          <video ref={videoRef} className="absolute inset-0 h-full w-full object-cover" muted playsInline />
-          <canvas ref={overlayRef} className="absolute inset-0 h-full w-full" />
-          <canvas ref={captureRef} className="hidden" />
-
-          {cameraState !== "ready" && (
-            <div className="relative z-10 flex flex-col items-center gap-3 text-white/70">
-              <Camera size={48} />
-              <p className="font-['Pretendard:Medium',sans-serif] text-[13px]">{statusText}</p>
+        <section className="flex min-h-[104px] shrink-0 items-center rounded-[18px] bg-white px-[16px] py-[13px] shadow-[0_14px_32px_rgba(31,69,61,0.075)]">
+          <div className="flex h-[78px] w-[98px] shrink-0 items-center justify-center overflow-hidden rounded-[11px] bg-[#F1F8F5]">
+            <AirconIllustration className="h-[64px] w-[88px]" arrow />
+          </div>
+          <div className="mx-[16px] h-[70px] border-l border-dashed border-[#DDE5E2]" />
+          <div className="min-w-0 flex-1">
+            <div className="mb-[6px] flex items-center gap-[5px]">
+              <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#DDF3EC] text-[#22B98F]"><Lightbulb size={11} strokeWidth={2} /></span>
+              <strong className="text-[13px] font-semibold tracking-[0] text-[#20AD86]">Try this</strong>
             </div>
-          )}
-
-        </div>
-
-        <div className="bg-white px-6 py-5">
-          <p className="font-['Pretendard:Medium',sans-serif] text-[12px] text-[#F77B50] mb-1">
-            STEP {current + 1} / {steps.length}
-          </p>
-          <p className="font-['Pretendard:SemiBold',sans-serif] text-[16px] text-black mb-1">
-            {currentStep.title}
-          </p>
-          <p className="font-['Pretendard:Medium',sans-serif] text-[13px] text-[#666] mb-4">
-            {currentStep.desc}
-          </p>
-
-          <div className="flex gap-3">
-            <button
-              onClick={handlePrev}
-              disabled={current === 0}
-              className={`flex-1 rounded-2xl py-3 font-['Pretendard:SemiBold',sans-serif] text-[14px] border transition-colors ${
-                current === 0
-                  ? "border-[#e0e0e0] text-[#c0c0c0] bg-[#f8f8f8]"
-                  : "border-[#F77B50] text-[#F77B50] bg-white hover:bg-[#fff4ef]"
-              }`}
-            >
-              이전으로
-            </button>
-            <button
-              onClick={handleNext}
-              className="flex-1 rounded-2xl py-3 font-['Pretendard:SemiBold',sans-serif] text-[14px] text-white bg-gradient-to-r from-[#F77B50] to-[#F05C5C]"
-            >
-              {current === steps.length - 1 ? "완료" : "다음으로"}
-            </button>
+            <p className="whitespace-pre-line py-0 pl-[20px] pr-0 text-[13px] font-medium leading-[1.45] tracking-[0] text-[#55595D]">{currentStep.hint || currentStep.safety || currentStep.targetHint || currentStep.desc}</p>
           </div>
+        </section>
+      </main>
+
+      <footer className="mx-[12px] mb-[20px] shrink-0 rounded-[16px] px-[8px] py-[8px]" style={{ background: "rgba(255,255,255,0.45)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.65)", boxShadow: "0 4px 20px rgba(31,69,61,0.08), inset 0 1px 0 rgba(255,255,255,0.8)" }}>
+        <div className="flex items-center gap-[8px]">
+          <motion.button
+            onClick={handlePrev}
+            disabled={current === 0}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 22 }}
+            className="h-[48px] flex-1 rounded-[12px] text-[15px] font-bold tracking-[0] transition disabled:opacity-30"
+            style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.65)", color: "#20B88E", boxShadow: "0 2px 8px rgba(31,69,61,0.06), inset 0 1px 0 rgba(255,255,255,0.9)" }}
+          >Previous</motion.button>
+          <motion.button
+            onClick={handleNext}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 22 }}
+            className="h-[48px] flex-1 rounded-[12px] text-[15px] font-bold tracking-[0] text-white"
+            style={{ background: "linear-gradient(135deg, #24C99A, #14B989)", boxShadow: "0 4px 14px rgba(34,197,154,0.35), inset 0 1px 0 rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.3)" }}
+          >{current === steps.length - 1 ? "Done" : "Next"}</motion.button>
+        </div>
+      </footer>
+    </motion.div>
+  );
+}
+
+function AirconIllustration({ className, arrow = false }: { className?: string; arrow?: boolean }) {
+  return (
+    <div className={`relative ${className ?? ""}`} aria-hidden="true">
+      <div className="absolute left-[18%] top-[8%] h-[38%] w-[72%] rounded-[9px] border border-[#E2E7E5] bg-gradient-to-br from-white via-[#FDFEFE] to-[#F1F4F3] shadow-[8px_10px_18px_rgba(70,88,85,0.13)]" />
+      <div className="absolute left-[22%] top-[43%] h-[9%] w-[63%] skew-x-[-10deg] rounded-sm bg-gradient-to-r from-[#646D6B] via-[#303534] to-[#8A9490] opacity-85" />
+      <div className="absolute left-[23%] top-[51%] h-[24%] w-[56%] skew-x-[-12deg] border border-[#C9D2CF] bg-[#F8FBFA] shadow-[0_6px_10px_rgba(70,88,85,0.12)]">
+        <div className="grid h-full grid-cols-4 grid-rows-2 gap-px p-[3px] opacity-70">
+          {Array.from({ length: 8 }).map((_, idx) => <span key={idx} className="bg-[#DCE6E3]" />)}
         </div>
       </div>
+      {arrow && (
+        <div className="absolute left-[44%] top-[6%] flex h-[28px] w-[28px] items-center justify-center rounded-full bg-[#22C59A]/15 text-[#22B98F]">
+          <ArrowUp size={18} strokeWidth={2.3} />
+        </div>
+      )}
     </div>
   );
+}
+
+function Corner({ className }: { className: string }) {
+  return <span className={`absolute h-[24px] w-[24px] rounded-tl-[5px] border-l-2 border-t-2 border-[#22B98F] ${className}`} />;
 }
