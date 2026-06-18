@@ -141,6 +141,21 @@ Manual local TestClient check with real Google credentials:
   - `/api/v1/ar/plans` -> `audio_url=null`, `audio_url_count=0`
 - Interpretation: the endpoint implementation remains live, but the running Render process still does not expose pre-generation behavior. Most likely the env change has not been saved into the active service deployment or the service has not been redeployed/restarted after adding the variable.
 
+### 2026-06-19 final live verification after Render redeploy
+
+- `/api/v1/ar/plans`
+  - `step_count=7`
+  - `first_tts_provider=google_cloud_tts`
+  - `first_tts_language_code=en-IN`
+  - `first_has_audio_url=true`
+  - `audio_url_count=7`
+  - first audio `GET` -> `200 audio/mpeg`, `23040` bytes
+- `/api/v1/guides/options`
+  - `manual_guides[0].display_steps[0].tts_provider=google_cloud_tts`
+  - `manual_guides[0].display_steps[0].audio_url` present
+  - guide option audio `GET` -> `200 audio/mpeg`, `42432` bytes
+- Final status: task 7 live behavior is verified. Runtime cache is still temporary by design, so task 8 remains the Supabase Storage persistence migration.
+
 ## Task 8 Supabase Storage direction
 
 Task 8 should replace Render runtime cache URLs with persistent Supabase Storage URLs.
