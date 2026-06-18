@@ -130,6 +130,17 @@ Manual local TestClient check with real Google credentials:
   - `GOOGLE_TTS_PREGENERATE=1`
   - Google service account credential env or file-based credential already configured for live TTS
 
+### 2026-06-19 follow-up after env addition report
+
+- User reported adding `GOOGLE_TTS_PREGENERATE=1` in Render.
+- Re-check after the report:
+  - `POST /api/v1/tts/generate` -> still works, cached mp3 `GET` -> `200 audio/mpeg`, `29568` bytes
+  - `POST /api/v1/ar/plans` -> `tts_provider=google_cloud_tts`, `audio_url=null`, `audio_url_count=0`
+  - `GET /api/v1/guides/options?...` -> `google_tts_provider_count=1`, `audio_url_count=0`, `audio_url_null_count=1`
+- Re-check again after waiting 60 seconds:
+  - `/api/v1/ar/plans` -> `audio_url=null`, `audio_url_count=0`
+- Interpretation: the endpoint implementation remains live, but the running Render process still does not expose pre-generation behavior. Most likely the env change has not been saved into the active service deployment or the service has not been redeployed/restarted after adding the variable.
+
 ## Task 8 Supabase Storage direction
 
 Task 8 should replace Render runtime cache URLs with persistent Supabase Storage URLs.
