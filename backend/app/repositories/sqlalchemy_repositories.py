@@ -607,17 +607,19 @@ class SQLAlchemyEnvironmentRepository(BaseRepository):
         return payload
 
     def resolve_region_id(self, region_id_or_state: str, city: str | None = None) -> str:
-        row = self.fetch_one(
-            """
+        sql = """
             SELECT region_id
             FROM "REGION"
             WHERE region_id = ?
-               OR (state = ? AND (? IS NULL OR city = ?))
-            ORDER BY CASE WHEN region_id = ? THEN 0 ELSE 1 END
-            LIMIT 1
-            """,
-            (region_id_or_state, region_id_or_state, city, city, region_id_or_state),
-        )
+               OR state = ?
+        """
+        params: list[Any] = [region_id_or_state, region_id_or_state]
+        if city:
+            sql += " AND city = ?"
+            params.append(city)
+        sql += " ORDER BY CASE WHEN region_id = ? THEN 0 ELSE 1 END LIMIT 1"
+        params.append(region_id_or_state)
+        row = self.fetch_one(sql, tuple(params))
         return (row or {}).get("region_id") or region_id_or_state
 
     def create_environment_fetch_log(self, payload: dict[str, Any]) -> dict[str, Any]:

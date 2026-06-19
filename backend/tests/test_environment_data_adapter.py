@@ -7,6 +7,7 @@ from typing import Any
 from app.adapters.environment import EnvironmentDataAdapter
 from app.repositories import CareShotRepository
 from app.repositories.database import DEFAULT_SQLITE_DB_PATH
+from app.repositories.sqlalchemy_repositories import SQLAlchemyEnvironmentRepository
 
 
 class FakeProvider:
@@ -70,6 +71,17 @@ class FakeEnvironmentRepository:
     def create_environment_fetch_log(self, payload: dict[str, Any]) -> dict[str, Any]:
         self.fetch_logs.append(payload)
         return payload
+
+
+class CapturingEnvironmentRepository(SQLAlchemyEnvironmentRepository):
+    def __init__(self) -> None:
+        self.last_sql: str | None = None
+        self.last_params: tuple[Any, ...] | None = None
+
+    def fetch_one(self, sql: str, params: tuple[Any, ...] = ()) -> dict[str, Any] | None:
+        self.last_sql = sql
+        self.last_params = params
+        return {"region_id": "INDIA_TELANGANA_HYDERABAD"}
 
 
 def test_environment_adapter_uses_fresh_cache_without_external_call() -> None:
@@ -249,6 +261,18 @@ def test_environment_adapter_forced_failure_exercises_live_fallback_path() -> No
     assert failing_provider.calls == 1
     assert default_provider.calls == 0
     assert repo.fetch_logs[0]["provider_id"] == "ENV_PROVIDER_FORCE_FAIL"
+
+
+def test_resolve_region_id_avoids_postgres_untyped_null_city_predicate() -> None:
+    repo = CapturingEnvironmentRepository()
+
+    region_id = repo.resolve_region_id("Telangana", "Hyderabad")
+
+    assert region_id == "INDIA_TELANGANA_HYDERABAD"
+    assert repo.last_sql is not None
+    assert "? IS NULL OR" not in repo.last_sql
+    assert "AND city = ?" in repo.last_sql
+    assert repo.last_params == ("Telangana", "Telangana", "Hyderabad", "Telangana")
 
 
 def test_sqlite_environment_observation_insert_matches_final_21_table_shape(tmp_path) -> None:
