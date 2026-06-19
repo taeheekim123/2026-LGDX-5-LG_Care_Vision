@@ -62,8 +62,8 @@ export function LanguageSettings() {
                 className="w-full px-5 py-4 flex items-center justify-between hover:bg-white/30 transition-colors"
               >
                 <div className="text-left">
-                  <p className={`${isSelected ? "font-['Pretendard:SemiBold',sans-serif]" : "font-['Pretendard:Regular',sans-serif]"} text-[15px] text-[#111] mb-[2px]`}>{lang.native}</p>
-                  <p className={`${isSelected ? "font-['Pretendard:Medium',sans-serif]" : "font-['Pretendard:Regular',sans-serif]"} text-[12px] text-[#888]`}>{lang.name}</p>
+                  <p className={`${isSelected ? "font-['Pretendard:SemiBold',sans-serif] text-[17px] text-[#111]" : "font-['Pretendard:Regular',sans-serif] text-[15px] text-[#111]"} mb-[2px] transition-all duration-200`}>{lang.native}</p>
+                  <p className={`${isSelected ? "font-['Pretendard:Medium',sans-serif] text-[13px] text-[#555]" : "font-['Pretendard:Regular',sans-serif] text-[12px] text-[#888]"} transition-all duration-200`}>{lang.name}</p>
                 </div>
                 {isSelected && <Check size={20} className="text-[#1DB87A]" />}
               </button>

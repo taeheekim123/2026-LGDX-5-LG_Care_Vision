@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, Camera, Volume2, VolumeX, Lightbulb, Check, ArrowUp } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { API_BASE_URL } from "../api/client";
+import arTitle from "../../imports/ar-title.svg";
 import {
   getCaptureSizeFromDimensions,
   getObjectCoverTransform,
@@ -13,7 +14,7 @@ import {
   type CameraState,
 } from "./arGuideDetection";
 
-const CHAT_STORAGE_KEY = "chat_messages_v20260612";
+const CHAT_STORAGE_KEY = "chat_messages_v20260618_transition_v2";
 const TTS_STORAGE_KEY = "careshot_ar_tts_enabled";
 
 interface ARGuideStep {
@@ -542,21 +543,15 @@ export function ARGuide() {
       const visibleHeight = Math.min(height - visibleY, boxHeight - Math.max(0, -y));
       if (visibleWidth <= 0 || visibleHeight <= 0) return;
 
-      ctx.strokeStyle = "#F77B50";
-      ctx.lineWidth = 3;
-      ctx.shadowColor = "rgba(247, 123, 80, 0.45)";
+      ctx.save();
+      ctx.fillStyle = "rgba(94, 206, 178, 0.12)";
+      ctx.fillRect(visibleX, visibleY, visibleWidth, visibleHeight);
+      ctx.strokeStyle = "rgba(94, 206, 178, 0.78)";
+      ctx.lineWidth = 4;
+      ctx.shadowColor = "rgba(94, 206, 178, 0.38)";
       ctx.shadowBlur = 12;
       ctx.strokeRect(visibleX, visibleY, visibleWidth, visibleHeight);
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = "#F77B50";
-      ctx.fillRect(visibleX, Math.max(0, visibleY - 28), 118, 24);
-      ctx.fillStyle = "#fff";
-      ctx.font = "12px sans-serif";
-      ctx.fillText(
-        getDetectionLabel(lastDetection),
-        visibleX + 8,
-        Math.max(16, visibleY - 11),
-      );
+      ctx.restore();
     };
 
     draw();
@@ -598,7 +593,7 @@ export function ARGuide() {
         <button onClick={goBack} className="-ml-1 flex h-9 w-9 items-center justify-start" aria-label="Go back">
           <ChevronLeft size={32} strokeWidth={1.9} className="text-[#35383B]" />
         </button>
-        <h1 className="text-[23px] font-semibold leading-none tracking-[0]">AR</h1>
+        <img src={arTitle} alt="AR" className="h-[17px] w-[30px]" />
         <div className="w-9" />
       </header>
 
