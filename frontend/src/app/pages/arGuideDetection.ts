@@ -15,6 +15,8 @@ export interface FilterDetectionResponse {
   image_width: number;
   image_height: number;
   detections: DetectionBox[];
+  raw_detections?: DetectionBox[] | null;
+  filtered_detections?: DetectionBox[] | null;
   message?: string | null;
 }
 

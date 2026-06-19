@@ -199,14 +199,22 @@ const detectionLabelMap: Record<string, string> = {
 
 const DEFAULT_DETECTION_CONFIDENCE_THRESHOLD = 0.35;
 const AIRCON_DETECTION_CONFIDENCE_THRESHOLD = 0.35;
-const OUTLET_DETECTION_CONFIDENCE_THRESHOLD = 0.25;
+const OUTLET_DETECTION_CONFIDENCE_THRESHOLD = 0.55;
 const DETECTION_JPEG_QUALITY = 0.85;
-const DETECTION_HOLD_MS = 900;
+const DETECTION_HOLD_MS = 1100;
 
 const getDetectionLabel = (detection: DetectionBox) =>
   `${detectionLabelMap[detection.class_name] ?? detection.class_name} ${(
     detection.confidence * 100
   ).toFixed(0)}%`;
+
+const formatDebugDetections = (detections?: DetectionBox[] | null) => {
+  if (!detections?.length) return "none";
+  return detections
+    .slice(0, 5)
+    .map((detection) => `${detection.class_name}:${(detection.confidence * 100).toFixed(0)}%`)
+    .join(", ");
+};
 
 const getModelProfileForProcedure = (procedureType: string) =>
   procedureType === "no_cooling_self_check" ? "self_as_no_cooling" : "self_care";
@@ -219,12 +227,6 @@ const getConfidenceThresholdForStep = (step: ARGuideStep | undefined) => {
   return DEFAULT_DETECTION_CONFIDENCE_THRESHOLD;
 };
 
-const resolveAudioUrl = (audioUrl: string) => {
-  if (!audioUrl.startsWith("/")) return audioUrl;
-  const apiOrigin = new URL(API_BASE_URL, window.location.origin).origin;
-  return `${apiOrigin}${audioUrl}`;
-};
-
 export function ARGuide() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -232,6 +234,8 @@ export function ARGuide() {
   const queryParams = new URLSearchParams(location.search);
   const queryProcedureType =
     queryParams.get("procedure_type") || queryParams.get("procedureType") || undefined;
+  const debugDetectionEnabled =
+    queryParams.get("debugDetection") === "1" || queryParams.get("debug_detection") === "1";
   const from = routeState.from ?? "/self-care";
   const procedureType = routeState.procedureType ?? queryProcedureType ?? "filter_cleaning";
   const [remoteGuideSteps, setRemoteGuideSteps] = useState<ARGuideStep[]>([]);
@@ -244,6 +248,7 @@ export function ARGuide() {
   const [cameraState, setCameraState] = useState<CameraState>("loading");
   const [detectionMode, setDetectionMode] = useState<DetectionMode>("none");
   const [lastDetection, setLastDetection] = useState<DetectionBox | null>(null);
+  const [detectionDebug, setDetectionDebug] = useState<FilterDetectionResponse | null>(null);
   const [statusText, setStatusText] = useState("카메라 준비 중");
   const [ttsEnabled, setTtsEnabled] = useState(() => localStorage.getItem(TTS_STORAGE_KEY) !== "false");
   const [ttsSupported] = useState(() => typeof window !== "undefined" && "speechSynthesis" in window);
@@ -329,7 +334,7 @@ export function ARGuide() {
       if (currentStep.tts_provider === "google_cloud_tts" || currentStep.audio_url) {
         try {
           const audioUrl =
-            (currentStep.audio_url ? resolveAudioUrl(currentStep.audio_url) : "") ||
+            currentStep.audio_url ||
             URL.createObjectURL(
               await fetch(`${API_BASE_URL}/v1/tts/synthesize`, {
                 method: "POST",
@@ -468,11 +473,13 @@ export function ARGuide() {
             model_profile: detectionModelProfile,
             procedure_type: procedureType,
             mock_fallback: false,
+            debug_detections: debugDetectionEnabled,
           }),
         });
         if (!response.ok) throw new Error(`filter detect failed: ${response.status}`);
         const result = (await response.json()) as FilterDetectionResponse;
         setDetectionMode(result.mode);
+        setDetectionDebug(debugDetectionEnabled ? result : null);
         const detection = result.detections[0] ?? null;
         if (detection) {
           const smoothed = smoothBox(smoothedBoxRef.current, detection);
@@ -495,14 +502,15 @@ export function ARGuide() {
         }
       } catch {
         setDetectionMode("none");
+        setDetectionDebug(null);
         setStatusText("탐지 서버 연결 대기");
       } finally {
         busy = false;
       }
-    }, 700);
+    }, 600);
 
     return () => window.clearInterval(interval);
-  }, [cameraState, current, steps, procedureType]);
+  }, [cameraState, current, steps, procedureType, debugDetectionEnabled]);
 
   useEffect(() => {
     const canvas = overlayRef.current;
@@ -676,6 +684,13 @@ export function ARGuide() {
                 <p className="mt-[16px] text-[15px] font-medium tracking-[0] text-white/80">
                   {cameraState === "denied" ? "Camera permission is required" : "Preparing camera"}
                 </p>
+              </div>
+            )}
+            {debugDetectionEnabled && detectionDebug && (
+              <div className="absolute bottom-[8px] left-[8px] right-[8px] z-30 rounded-[8px] bg-black/70 px-[9px] py-[7px] text-[10px] font-medium leading-[1.35] tracking-[0] text-white">
+                <div>model: {detectionDebug.model_profile ?? "unknown"}</div>
+                <div>raw: {formatDebugDetections(detectionDebug.raw_detections)}</div>
+                <div>filtered: {formatDebugDetections(detectionDebug.filtered_detections ?? detectionDebug.detections)}</div>
               </div>
             )}
           </div>

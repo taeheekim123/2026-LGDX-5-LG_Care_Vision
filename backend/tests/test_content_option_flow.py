@@ -141,6 +141,7 @@ def test_dynamic_manual_guides_are_created_for_supported_aircon_procedures(tmp_p
             assert response.status_code == 200
             option_set = response.json()
             assert option_set["procedure_type"] == procedure_type
+            assert option_set["display_title"]
             assert option_set["manual_guides"]
             assert option_set["manual_guides"][0]["dynamic"] is True
             assert option_set["manual_guides"][0]["generation_source"] == "rag_chunk_dynamic_manual"
@@ -149,5 +150,43 @@ def test_dynamic_manual_guides_are_created_for_supported_aircon_procedures(tmp_p
                 item["procedure_type"] == procedure_type
                 for item in option_set.get("youtube_recommendations") or []
             )
+            assert option_set["display_steps"]
+            if procedure_type == "no_cooling_self_check":
+                assert option_set["display_title"] == "Cooling / Weak Airflow Self-check Guide"
+                outlet_step = next(
+                    step
+                    for step in option_set["display_steps"]
+                    if "air inlet or outlet" in step["source_text"]
+                )
+                assert outlet_step["title"] == "Check air inlet/outlet"
+                assert outlet_step["text"] == "Check whether the air inlet or outlet is blocked by curtains, furniture, or dust."
+                assert outlet_step["language_code"] == "en"
+                assert outlet_step["source_language_code"] == "en"
+                assert outlet_step["source_type"] == "official_dynamic_manual"
+    finally:
+        app.dependency_overrides.clear()
+
+
+def test_filter_cleaning_display_steps_are_backend_generated(tmp_path) -> None:
+    client, _service = make_test_client(tmp_path)
+    try:
+        response = client.get(
+            "/api/v1/guides/options",
+            params={
+                "user_id": "U001",
+                "device_id": "D001",
+                "procedure_type": "filter_cleaning",
+                "service_flow_type": "self_care",
+            },
+        )
+        assert response.status_code == 200
+        option_set = response.json()
+        titles = [step["title"] for step in option_set["display_steps"]]
+        assert titles == ["Turn off power", "Open the front cover", "Remove the filter", "Rinse and dry", "Reinstall the filter"]
+        assert all(step["source_type"] == "official_dynamic_manual" for step in option_set["display_steps"])
+        assert option_set["display_steps"][0]["text"] == "Turn off the air conditioner before opening the front cover."
+        assert option_set["display_steps"][0]["source_text"] == "Turn off the air conditioner before opening the front cover."
+        assert option_set["display_steps"][0]["language_code"] == "en"
+        assert option_set["display_steps"][0]["source_language_code"] == "en"
     finally:
         app.dependency_overrides.clear()

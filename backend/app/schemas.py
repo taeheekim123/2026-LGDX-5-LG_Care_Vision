@@ -41,16 +41,6 @@ class TTSSynthesizeRequest(APIModel):
     speaking_rate: float = Field(default=0.92, ge=0.25, le=4.0)
 
 
-class TTSGenerateResponse(APIModel):
-    audio_url: str
-    cache_key: str
-    provider: str = "google_cloud_tts"
-    cached: bool
-    content_type: str = "audio/mpeg"
-    storage_provider: str = "render_runtime"
-    object_path: str | None = None
-
-
 class ARPlanRequest(APIModel):
     analysis: dict[str, Any] | None = None
     user_id: str = "U001"
@@ -88,7 +78,12 @@ class ARFilterDetectionRequest(APIModel):
     image_width: int = Field(default=640, ge=1)
     image_height: int = Field(default=480, ge=1)
     confidence_threshold: float = Field(default=0.25, ge=0, le=1)
+    target_classes: list[str] | None = None
+    require_context_classes: list[str] | None = None
+    model_profile: str | None = None
+    procedure_type: str | None = None
     mock_fallback: bool = True
+    debug_detections: bool = False
 
 
 class ARFilterDetectionBox(APIModel):
@@ -103,10 +98,35 @@ class ARFilterDetectionBox(APIModel):
 class ARFilterDetectionResponse(APIModel):
     model_loaded: bool
     mode: Literal["yolo", "mock", "none"]
+    model_profile: str | None = None
+    model_path: str | None = None
     image_width: int
     image_height: int
     detections: list[ARFilterDetectionBox] = Field(default_factory=list)
+    raw_detections: list[ARFilterDetectionBox] | None = None
+    filtered_detections: list[ARFilterDetectionBox] | None = None
     message: str | None = None
+
+
+class ARCameraReviewCaptureRequest(APIModel):
+    image_data_url: str | None = None
+    image_base64: str | None = None
+    issue_type: Literal["false_positive", "false_negative", "bad_box", "ok", "review"] = "review"
+    expected_class: str | None = None
+    predicted_class: str | None = None
+    confidence: float | None = None
+    step_index: int | None = Field(default=None, ge=1)
+    step_title: str | None = None
+    target_classes: list[str] = Field(default_factory=list)
+    context_classes: list[str] = Field(default_factory=list)
+    session: str | None = None
+    notes: str | None = None
+
+
+class ARCameraReviewCaptureResponse(APIModel):
+    saved: bool
+    message: str | None = None
+    paths: dict[str, str] = Field(default_factory=dict)
 
 
 class EnvironmentRefreshRequest(APIModel):

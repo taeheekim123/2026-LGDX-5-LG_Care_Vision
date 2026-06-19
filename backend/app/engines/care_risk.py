@@ -29,7 +29,7 @@ class CareRiskScoreEngine:
         score = min(round(score, 1), 100.0)
         risk_band = self.risk_band(score, thresholds)
         trigger_reason = [factor["reason"] for factor in factors] or [
-            "No strong preventive care risk factors were detected. The current care risk is low."
+            "No strong preventive care factor was found; care risk remains low."
         ]
 
         return {
@@ -65,7 +65,7 @@ class CareRiskScoreEngine:
                     "factor": "days_since_last_care",
                     "value": days_since_last_care,
                     "score_delta": round(delta, 1),
-                    "reason": f"{int(days_since_last_care)} days have passed since the last care activity.",
+                    "reason": f"It has been {int(days_since_last_care)} days since the last care activity.",
                 }
             )
         if daily_runtime:
@@ -109,7 +109,7 @@ class CareRiskScoreEngine:
                     "factor": "humidity_percent",
                     "value": humidity,
                     "score_delta": delta,
-                    "reason": f"Current humidity is high at {humidity:.0f}%.",
+                    "reason": f"Current humidity is {humidity:.0f}%, which is high.",
                 }
             )
         if product_type in {"air_conditioner", "air_purifier"} and aqi >= 100:
@@ -127,7 +127,7 @@ class CareRiskScoreEngine:
                     "factor": "aqi",
                     "value": aqi,
                     "score_delta": delta,
-                    "reason": f"The current air quality index (AQI) is high at {aqi:.0f}.",
+                    "reason": f"Current AQI is {aqi:.0f}, which is high.",
                 }
             )
         if product_type == "air_purifier" and (pm25 >= 60 or pm10 >= 120):
@@ -149,7 +149,7 @@ class CareRiskScoreEngine:
                     "factor": "water_hardness_level",
                     "value": water_hardness,
                     "score_delta": delta,
-                    "reason": "Water hardness is high in the current environment.",
+                    "reason": "Current water hardness is high.",
                 }
             )
         if product_type == "air_conditioner" and monsoon in {"moderate", "heavy"}:
@@ -161,7 +161,7 @@ class CareRiskScoreEngine:
                     "factor": "rain_monsoon_intensity",
                     "value": monsoon,
                     "score_delta": delta,
-                    "reason": f"Monsoon intensity is {monsoon_label}, increasing the need for air conditioner moisture care.",
+                    "reason": f"Monsoon intensity is {monsoon_label}, increasing the need for AC moisture care.",
                 }
             )
         return score
@@ -180,7 +180,7 @@ class CareRiskScoreEngine:
                     "factor": "smart_diagnosis_severity",
                     "value": severity,
                     "score_delta": delta,
-                    "reason": f"ThinQ smart diagnosis severity is {severity}.",
+                    "reason": f"ThinQ Smart Diagnosis severity is {severity}.",
                 }
             )
         return float(delta)

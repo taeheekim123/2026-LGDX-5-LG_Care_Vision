@@ -43,7 +43,9 @@ def _frontend_user_profile(raw: dict[str, Any] | None) -> dict[str, str]:
 def _frontend_device_option(raw: dict[str, Any] | None, fallback_id: str) -> dict[str, Any]:
     raw = raw or {}
     device_id = raw.get("device_id") or fallback_id
-    name = raw.get("display_name") or raw.get("nickname") or raw.get("product_name") or "거실 에어컨"
+    name = raw.get("display_name") or raw.get("nickname") or raw.get("product_name") or "Living Room Air Conditioner"
+    if name == "거실 에어컨":
+        name = "Living Room Air Conditioner"
     model = raw.get("model_name") or raw.get("model") or "AS-Q24ENXE"
     return {"id": str(device_id), "name": str(name), "model": str(model)}
 
@@ -70,32 +72,32 @@ def _relative_date_label(value: Any) -> str:
     now = datetime.now(timezone.utc)
     days = max(0, int((now - parsed.astimezone(timezone.utc)).total_seconds() // 86400))
     if days <= 0:
-        return "오늘"
+        return "Today"
     if days < 7:
-        return f"{days}일 전"
+        return f"{days} days ago"
     weeks = days // 7
     if weeks < 5:
-        return f"{weeks}주 전"
+        return f"{weeks} weeks ago"
     months = days // 30
-    return f"{max(months, 1)}개월 전"
+    return f"{max(months, 1)} months ago"
 
 
 def _care_history_title(item: dict[str, Any]) -> str:
     raw_title = item.get("title")
     procedure = item.get("procedure_type") or raw_title
     labels = {
-        "ar_guide": "에어컨 필터 청소",
-        "filter_cleaning": "에어컨 필터 청소",
-        "remote_pairing": "리모컨 페어링",
-        "remote_operation": "리모컨 사용 점검",
-        "outdoor_unit_visual_check": "실외기 외관 점검",
-        "power_troubleshooting": "전원 자가점검",
-        "no_cooling_self_check": "냉방/바람 약함 자가점검",
-        "noise_self_check": "소음/진동 자가점검",
-        "odor_self_check": "냄새 자가점검",
-        "water_leak_monsoon": "누수 자가점검",
+        "ar_guide": "Air conditioner filter cleaning",
+        "filter_cleaning": "Air conditioner filter cleaning",
+        "remote_pairing": "Remote pairing",
+        "remote_operation": "Remote operation check",
+        "outdoor_unit_visual_check": "Outdoor unit visual check",
+        "power_troubleshooting": "Power self-check",
+        "no_cooling_self_check": "Weak cooling/airflow self-check",
+        "noise_self_check": "Noise/vibration self-check",
+        "odor_self_check": "Odor self-check",
+        "water_leak_monsoon": "Water leak self-check",
     }
-    return labels.get(str(procedure), str(raw_title or procedure or "관리 이력"))
+    return labels.get(str(procedure), str(raw_title or procedure or "Care history"))
 
 
 def _frontend_care_history_item(item: dict[str, Any]) -> dict[str, str]:
@@ -167,12 +169,12 @@ def _json_list(value: Any) -> list[Any]:
 
 def _symptom_location_question(procedure: str | None) -> str:
     return {
-        "noise_self_check": "소음이나 진동이 어디에서 느껴지나요? 실내기 본체, 송풍구, 앞 커버, 배수부, 전원부 중 가까운 위치를 알려주세요.",
-        "no_cooling_self_check": "냉방이 잘 안 되는 상황을 조금 더 알려주세요. 바람은 나오는지, 바람이 약한지, 송풍구 쪽 문제인지 알려주세요.",
-        "power_troubleshooting": "전원이 꺼지는 상황을 조금 더 알려주세요. 플러그, 콘센트, 차단기, 표시창, 리모컨 중 어디에서 이상이 보이나요?",
-        "odor_self_check": "냄새가 어디에서 주로 나나요? 송풍구, 필터, 실내기 본체, 배수부 중 가까운 위치를 알려주세요.",
-        "water_leak_monsoon": "물이 어디에서 새나요? 실내기 본체, 송풍구, 배수 호스, 실외기 주변 중 가까운 위치를 알려주세요.",
-    }.get(str(procedure), "증상이 나타나는 위치나 상황을 조금 더 알려주세요.")
+        "noise_self_check": "Where do you notice the noise or vibration? Please choose the closest area, such as the indoor unit body, air outlet, front cover, drain area, or power area.",
+        "no_cooling_self_check": "Please tell me more about the weak cooling condition. Is air coming out, is the airflow weak, or does it seem related to the air outlet?",
+        "power_troubleshooting": "Please tell me more about the power issue. Do you notice anything unusual with the plug, outlet, breaker, display, or remote controller?",
+        "odor_self_check": "Where is the odor strongest? Please choose the closest area, such as the air outlet, filter, indoor unit body, or drain area.",
+        "water_leak_monsoon": "Where is the water leaking from? Please choose the closest area, such as the indoor unit body, air outlet, drain hose, or outdoor unit area.",
+    }.get(str(procedure), "Please tell me more about where or when the symptom appears.")
 
 
 def _localized_chat_message(raw: dict[str, Any], fallback: str) -> str:
@@ -186,34 +188,30 @@ def _localized_chat_message(raw: dict[str, Any], fallback: str) -> str:
     if missing_slots:
         first_missing = missing_slots[0]
         if first_missing == "risk_signal":
-            return "연기, 스파크, 타는 냄새, 감전, 냉매/가스 냄새 같은 위험 신호가 있나요? 없다면 '아니요'라고 답해주세요."
+            return "Do you notice any danger signs such as smoke, sparks, burning smell, electric shock, or refrigerant/gas odor? If not, please answer 'No'."
         if first_missing == "symptom_location":
             return _symptom_location_question(procedure)
         if first_missing == "environment_context":
-            return "현재 실내가 습하거나 먼지가 많거나 비/장마 영향을 받고 있나요?"
+            return "Is the room currently humid, dusty, or affected by rain or monsoon conditions?"
         if first_missing == "recent_diagnosis":
-            return "ThinQ 진단이나 표시창에 에러 코드가 보이나요? 차단기가 내려가거나 전원이 반복해서 꺼지는 신호가 있으면 함께 알려주세요."
+            return "Do you see an error code in ThinQ diagnosis or on the display? Also tell me if the breaker trips or power turns off repeatedly."
         if first_missing == "symptom_type":
-            return (
-                decision.get("next_question")
-                or state.get("next_question")
-                or "어떤 문제가 있나요? 냉방/바람, 소음/진동, 냄새, 물샘, 전원 문제, 필터 관리 중 가까운 증상을 알려주세요."
-            )
-        return "안전한 안내를 위해 증상을 한 가지만 더 알려주세요."
+            return "What issue are you experiencing? Please choose the closest symptom: cooling/airflow, noise/vibration, odor, water leak, power issue, or filter care."
+        return "Please share one more detail so I can guide you safely."
 
     if decision.get("service_flow_type") == "expert_as" or decision.get("risk_level") == "high":
-        return "위험 신호가 있어 AR 자가 안내는 차단했어요. 공식 A/S 또는 서비스센터 연결을 권장합니다."
+        return "A danger sign was detected, so AR self-guidance is blocked. We recommend official service or service center support."
 
     procedure_label = {
-        "filter_cleaning": "필터 청소",
-        "noise_self_check": "소음/진동 자가점검",
-        "no_cooling_self_check": "냉방/바람 약함 자가점검",
-        "odor_self_check": "냄새 자가점검",
-        "water_leak_monsoon": "누수 자가점검",
-        "power_troubleshooting": "전원 자가점검",
-    }.get(str(procedure), "가이드")
+        "filter_cleaning": "filter cleaning",
+        "noise_self_check": "noise/vibration self-check",
+        "no_cooling_self_check": "weak cooling/airflow self-check",
+        "odor_self_check": "odor self-check",
+        "water_leak_monsoon": "water leak self-check",
+        "power_troubleshooting": "power self-check",
+    }.get(str(procedure), "guide")
     if chatbot.get("guide_options"):
-        return f"공식 근거에 맞는 {procedure_label} 안내를 준비했어요. 안전 규칙상 허용되는 단계만 보여드릴게요."
+        return f"I prepared an official-evidence-based {procedure_label}. Only steps allowed by the safety policy will be shown."
     return fallback
 
 
@@ -236,8 +234,8 @@ def _frontend_card_policy(raw: dict[str, Any]) -> dict[str, Any]:
     if missing_slots:
         return {
             "card_type": "clarification",
-            "title": "추가 확인 필요",
-            "description": "안전한 안내를 위해 고객 답변을 먼저 확인합니다.",
+            "title": "More information needed",
+            "description": "Please answer the safety question before guidance starts.",
             "primary_action": "answer_question",
             "show_manual_button": False,
             "show_ar_button": False,
@@ -248,8 +246,8 @@ def _frontend_card_policy(raw: dict[str, Any]) -> dict[str, Any]:
     if service_flow_type == "expert_as" or risk_level == "high":
         return {
             "card_type": "service_route",
-            "title": "전문 A/S 연결 권장",
-            "description": "위험 신호가 있어 AR 자가 안내를 차단하고 서비스센터 연결만 제공합니다.",
+            "title": "Expert service recommended",
+            "description": "A danger sign was detected, so AR self-guidance is blocked and only service center support is provided.",
             "primary_action": "service_center",
             "show_manual_button": False,
             "show_ar_button": False,
@@ -262,8 +260,8 @@ def _frontend_card_policy(raw: dict[str, Any]) -> dict[str, Any]:
     ):
         return {
             "card_type": "safety_block",
-            "title": "공식자료 확인 불가",
-            "description": "공식 근거가 확인되지 않아 AR 자가 안내를 시작하지 않습니다.",
+            "title": "Official evidence unavailable",
+            "description": "AR self-guidance will not start because official evidence was not verified.",
             "primary_action": "service_center",
             "show_manual_button": False,
             "show_ar_button": False,
@@ -274,8 +272,8 @@ def _frontend_card_policy(raw: dict[str, Any]) -> dict[str, Any]:
     if guide_options and service_flow_type in {"self_care", "self_as"} and risk_level in {"low", "medium"}:
         return {
             "card_type": "ar_start",
-            "title": "AR 가이드 시작 가능",
-            "description": "공식 근거가 확인된 Low/Medium 자가점검 또는 관리 안내입니다.",
+            "title": "AR guide available",
+            "description": "This is an official-evidence-based low/medium-risk self-check or care guide.",
             "primary_action": "start_ar",
             "show_manual_button": True,
             "show_ar_button": True,
@@ -286,8 +284,8 @@ def _frontend_card_policy(raw: dict[str, Any]) -> dict[str, Any]:
     if guide_options:
         return {
             "card_type": "manual_only",
-            "title": "매뉴얼 가이드 제공",
-            "description": "공식 자료 기반 매뉴얼 안내를 먼저 제공합니다.",
+            "title": "Manual guide available",
+            "description": "An official-material-based manual guide is available first.",
             "primary_action": "manual_guide",
             "show_manual_button": True,
             "show_ar_button": ar_guide_allowed,
@@ -397,7 +395,7 @@ def get_frontend_devices(
     if primary:
         device = _frontend_device_option(primary, "D001")
     else:
-        device = {"id": "D001", "name": "거실 에어컨", "model": "AS-Q24ENXE"}
+        device = {"id": "D001", "name": "Living Room Air Conditioner", "model": "AS-Q24ENXE"}
     device.update(_frontend_device_care_payload(service, user_id, str(device["id"])))
     return [device]
 

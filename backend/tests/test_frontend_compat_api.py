@@ -122,19 +122,19 @@ def test_frontend_user_and_devices_contracts() -> None:
         assert devices_response.status_code == 200
         devices = devices_response.json()
         assert devices[0]["id"] == "D001"
-        assert devices[0]["name"] == "거실 에어컨"
+        assert devices[0]["name"] == "Living Room Air Conditioner"
         assert devices[0]["model"] == "AS-Q24ENXE"
         assert devices[0]["care_summary"] == {
             "self_care_count": 5,
             "self_as_count": 2,
             "total_care_count": 7,
-            "recent_title": "에어컨 필터 청소",
-            "recent_date": "2일 전",
+            "recent_title": "Air conditioner filter cleaning",
+            "recent_date": "2 days ago",
         }
         assert devices[0]["recent_history"] == [
-            {"id": "101", "type": "Self Care", "title": "에어컨 필터 청소", "date": "2일 전"},
-            {"id": "102", "type": "Self A/S", "title": "리모컨 페어링", "date": "1주 전"},
-            {"id": "103", "type": "Self Care", "title": "실외기 외관 점검", "date": "2주 전"},
+            {"id": "101", "type": "Self Care", "title": "Air conditioner filter cleaning", "date": "2 days ago"},
+            {"id": "102", "type": "Self A/S", "title": "Remote pairing", "date": "1 weeks ago"},
+            {"id": "103", "type": "Self Care", "title": "Outdoor unit visual check", "date": "2 weeks ago"},
         ]
 
         device_detail_response = client.get("/api/devices/D001")
@@ -159,15 +159,15 @@ def test_frontend_ai_chat_adapts_chatbot_engine_response() -> None:
         )
         assert response.status_code == 200
         payload = response.json()
-        assert payload["message"].startswith("공식 근거에 맞는")
+        assert payload["message"].startswith("I prepared an official-evidence-based")
         assert payload["message_type"] == "guide_card"
         assert payload["session_id"] == "CHAT_TEST_001"
         assert payload["service_flow_type"] == "self_care"
         assert payload["needs_clarification"] is False
         assert payload["card_policy"] == {
             "card_type": "ar_start",
-            "title": "AR 가이드 시작 가능",
-            "description": "공식 근거가 확인된 Low/Medium 자가점검 또는 관리 안내입니다.",
+            "title": "AR guide available",
+            "description": "This is an official-evidence-based low/medium-risk self-check or care guide.",
             "primary_action": "start_ar",
             "show_manual_button": True,
             "show_ar_button": True,
@@ -273,7 +273,7 @@ def test_frontend_ai_chat_card_policy_blocks_official_no_match() -> None:
         assert payload["recommended_action"] == "official_match_review_needed"
         assert payload["guide_options"] is None
         assert payload["card_policy"]["card_type"] == "safety_block"
-        assert payload["card_policy"]["title"] == "공식자료 확인 불가"
+        assert payload["card_policy"]["title"] == "Official evidence unavailable"
         assert payload["card_policy"]["show_ar_button"] is False
         assert payload["card_policy"]["show_manual_button"] is False
         assert payload["card_policy"]["show_service_button"] is True
@@ -327,7 +327,7 @@ def test_frontend_ai_chat_parses_string_missing_slots_and_localizes_clarificatio
         assert payload["needs_clarification"] is True
         assert payload["missing_slots"] == ["risk_signal", "symptom_location"]
         assert payload["procedure_type"] == "noise_self_check"
-        assert "위험 신호" in payload["message"]
+        assert "danger signs" in payload["message"]
         assert payload["guide_options"] is None
     finally:
         app.dependency_overrides.clear()
@@ -372,7 +372,7 @@ def test_frontend_ai_chat_uses_backend_question_for_generic_low_info_symptom_mis
         assert payload["needs_clarification"] is True
         assert payload["procedure_type"] is None
         assert payload["guide_options"] is None
-        assert payload["message"].startswith("어떤 문제가 있나요?")
+        assert payload["message"].startswith("What issue are you experiencing?")
     finally:
         app.dependency_overrides.clear()
 
@@ -422,11 +422,11 @@ def test_frontend_ai_chat_asks_risk_signal_before_symptom_detail() -> None:
         payload = response.json()
         assert payload["needs_clarification"] is True
         assert payload["procedure_type"] == "no_cooling_self_check"
-        assert "위험 신호" in payload["message"]
-        assert "아니요" in payload["message"]
-        assert "바람이 나오는지" not in payload["message"]
-        assert "냉방이 안 되는 상황" not in payload["message"]
-        assert "소음/진동" not in payload["message"]
+        assert "danger signs" in payload["message"]
+        assert "'No'" in payload["message"]
+        assert "air coming out" not in payload["message"]
+        assert "weak cooling condition" not in payload["message"]
+        assert "noise/vibration" not in payload["message"]
     finally:
         app.dependency_overrides.clear()
 
@@ -476,9 +476,9 @@ def test_frontend_ai_chat_uses_procedure_specific_symptom_detail_copy_after_risk
         payload = response.json()
         assert payload["needs_clarification"] is True
         assert payload["procedure_type"] == "no_cooling_self_check"
-        assert "냉방이 잘 안 되는 상황" in payload["message"]
-        assert "바람은 나오는지" in payload["message"]
-        assert "위험 신호" not in payload["message"]
+        assert "weak cooling condition" in payload["message"]
+        assert "air coming out" in payload["message"]
+        assert "danger signs" not in payload["message"]
     finally:
         app.dependency_overrides.clear()
 
@@ -528,12 +528,12 @@ def test_frontend_ai_chat_power_issue_asks_risk_only_first() -> None:
         payload = response.json()
         assert payload["needs_clarification"] is True
         assert payload["procedure_type"] == "power_troubleshooting"
-        assert "위험 신호" in payload["message"]
-        assert "아니요" in payload["message"]
-        assert "전원부" not in payload["message"]
-        assert "플러그" not in payload["message"]
-        assert "차단기" not in payload["message"]
-        assert "표시장" not in payload["message"]
+        assert "danger signs" in payload["message"]
+        assert "'No'" in payload["message"]
+        assert "power area" not in payload["message"]
+        assert "plug" not in payload["message"]
+        assert "breaker" not in payload["message"]
+        assert "display" not in payload["message"]
     finally:
         app.dependency_overrides.clear()
 
@@ -583,9 +583,9 @@ def test_frontend_ai_chat_power_issue_asks_detail_after_negative_risk() -> None:
         payload = response.json()
         assert payload["needs_clarification"] is True
         assert payload["procedure_type"] == "power_troubleshooting"
-        assert "전원이 꺼지는 상황" in payload["message"]
-        assert "플러그" in payload["message"]
-        assert "위험 신호" not in payload["message"]
+        assert "power issue" in payload["message"]
+        assert "plug" in payload["message"]
+        assert "danger signs" not in payload["message"]
     finally:
         app.dependency_overrides.clear()
 
