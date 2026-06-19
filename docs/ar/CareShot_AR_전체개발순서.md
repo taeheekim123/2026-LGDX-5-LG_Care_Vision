@@ -5284,3 +5284,50 @@ AR 화면의 bbox 라벨이 현재 단계명과 confidence를 함께 표시해 "
 npm run smoke:ar-guide -> ok=true
 npm run build -> success
 ```
+
+### 27.15 Render/Supabase 환경 API PostgreSQL region lookup 보정 - 완료
+
+배경:
+
+```text
+Render 배포 프론트 Home 화면에서 Fine Dust가 10으로 표시됐다.
+원인 확인 결과 실제 미세먼지 값이 10인 것이 아니라, live 환경 API가 fallback_cache로 내려오면서 observation.aqi, pm25, pm10이 null이었고 프론트가 null fallback 기본값 10을 표시했다.
+```
+
+원인:
+
+```text
+백엔드 환경 refresh 중 create_environment_observation -> resolve_region_id 경로에서 PostgreSQL/Supabase가 아래 조건의 파라미터 타입을 추론하지 못했다.
+(? IS NULL OR city = ?)
+오류: psycopg.errors.IndeterminateDatatype / could not determine data type of parameter
+```
+
+수정:
+
+```text
+backend/app/repositories/sqlalchemy_repositories.py
+- resolve_region_id에서 city가 있으면 AND city = ? 조건을 SQL에 직접 추가
+- city가 없으면 city 조건을 붙이지 않도록 SQL 분기
+- PostgreSQL의 untyped null predicate를 제거
+```
+
+검증:
+
+```text
+python -m pytest tests/test_environment_data_adapter.py -q --basetemp C:\Users\TAEHEE\carevision_pytest_tmp_env -p no:cacheprovider
+-> 9 passed
+```
+
+추가 회귀 테스트:
+
+```text
+test_resolve_region_id_avoids_postgres_untyped_null_city_predicate
+- resolve_region_id("Telangana", "Hyderabad") 호출 시 "? IS NULL OR" 패턴이 생성되지 않는지 확인
+- city가 있을 때 "AND city = ?" 조건과 파라미터 순서 확인
+```
+
+남은 확인:
+
+```text
+GitHub push 후 Render 백엔드가 자동 배포되면 /api/v1/environment/current?region=India&city=Hyderabad 또는 실제 사용자 지역 기준으로 재호출해 fallback_cache/null 문제가 해소됐는지 live 재검증한다.
+```
