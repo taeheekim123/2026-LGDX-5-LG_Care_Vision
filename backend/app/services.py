@@ -23,72 +23,121 @@ from .engines import CareRiskScoreEngine, DecisionEngineV2, PreventiveCareRecomm
 from .evaluation_service import EvaluationService
 from .llm_service import create_llm_service
 from .repositories import CareShotRepository, PostgreSQLRepositoryRegistry
-from .tts_service import generate_google_tts_mp3_asset, google_tts_enabled, google_tts_pregenerate_enabled
+from .tts_service import google_tts_enabled
 
 
 PART_LABELS = {
-    "power_area": "전원 영역",
-    "front_cover": "전면 커버",
-    "front_filter": "필터",
-    "air_outlet": "송풍구",
-    "internal_electrical_area": "내부 전기부",
+    "power_area": "Power area",
+    "front_cover": "Front cover",
+    "front_filter": "Filter",
+    "air_outlet": "Air outlet",
+    "internal_electrical_area": "Internal electrical area",
 }
 
 ACTION_COPY = {
+    "power_off": {
+        "title": "Turn off power first",
+        "instruction": "Turn off the air conditioner before touching user-accessible parts.",
+        "safety": "Do not open the cover while the unit is powered on.",
+    },
+    "open_front_panel": {
+        "title": "Open the front cover upward",
+        "instruction": "Hold the lower edge of the front cover and lift it slowly upward.",
+        "safety": "Open it gently with both hands and do not force it.",
+    },
+    "remove_filter": {
+        "title": "Remove the filter",
+        "instruction": "Hold the filter handle and pull it forward gently to remove it.",
+        "safety": "Do not touch internal parts behind the filter.",
+    },
+    "wash_filter": {
+        "title": "Rinse and dry the filter",
+        "instruction": "Remove dust, rinse the filter lightly with water, and dry it completely in the shade.",
+        "safety": "Do not reinstall a wet filter.",
+    },
+    "dry_filter": {
+        "title": "Wipe the air outlet surface",
+        "instruction": "Wipe only visible dust on the air outlet surface with a soft cloth.",
+        "safety": "Do not spray water or insert tools inside the air outlet.",
+    },
+    "insert_filter": {
+        "title": "Reinsert the filter",
+        "instruction": "Reinsert the completely dry filter in its original direction.",
+        "safety": "Check that the filter direction is correct.",
+    },
+    "close_front_panel": {
+        "title": "Close the cover and finish",
+        "instruction": "Close the front cover to complete the care step.",
+        "safety": "If the cover is lifted, press it again to secure it.",
+    },
     "highlight_and_confirm": {
-        "title": "전원을 먼저 꺼주세요",
-        "instruction": "작업 전 에어컨 전원이 꺼져 있는지 확인합니다.",
-        "safety": "전원이 켜진 상태에서는 커버를 열지 마세요.",
+        "title": "Turn off power first",
+        "instruction": "Confirm that the air conditioner is turned off before starting.",
+        "safety": "Do not open the cover while the unit is powered on.",
     },
     "open_direction": {
-        "title": "전면 커버를 위로 여세요",
-        "instruction": "표시된 전면 커버 아래쪽을 잡고 천천히 위로 들어 올립니다.",
-        "safety": "무리하게 힘을 주지 말고 양손으로 천천히 여세요.",
+        "title": "Open the front cover upward",
+        "instruction": "Hold the lower edge of the marked front cover and lift it slowly upward.",
+        "safety": "Open it gently with both hands and do not force it.",
     },
     "pull_direction": {
-        "title": "필터를 앞으로 빼세요",
-        "instruction": "화살표 방향으로 필터 손잡이를 잡고 부드럽게 분리합니다.",
-        "safety": "필터 안쪽의 내부 부품은 만지지 마세요.",
+        "title": "Pull the filter forward",
+        "instruction": "Hold the filter handle and remove it gently in the arrow direction.",
+        "safety": "Do not touch internal parts behind the filter.",
     },
     "bottom_sheet_instruction": {
-        "title": "필터를 세척하고 말리세요",
-        "instruction": "먼지를 제거한 뒤 물로 가볍게 헹구고 그늘에서 완전히 말립니다.",
-        "safety": "젖은 필터를 바로 장착하지 마세요.",
+        "title": "Rinse and dry the filter",
+        "instruction": "Remove dust, rinse lightly with water, and dry the filter completely in the shade.",
+        "safety": "Do not reinstall a wet filter.",
     },
     "surface_check": {
-        "title": "송풍구 표면을 닦으세요",
-        "instruction": "송풍구 표면의 먼지만 부드러운 천으로 닦습니다.",
-        "safety": "송풍구 안쪽으로 물을 뿌리거나 도구를 넣지 마세요.",
+        "title": "Wipe the air outlet surface",
+        "instruction": "Wipe only visible dust on the air outlet surface with a soft cloth.",
+        "safety": "Do not spray water or insert tools inside the air outlet.",
     },
     "insert_direction": {
-        "title": "필터를 다시 넣으세요",
-        "instruction": "완전히 마른 필터를 원래 방향으로 다시 끼웁니다.",
-        "safety": "필터 방향이 맞는지 확인하세요.",
+        "title": "Reinsert the filter",
+        "instruction": "Reinsert the completely dry filter in its original direction.",
+        "safety": "Check that the filter direction is correct.",
     },
     "close_and_complete": {
-        "title": "커버를 닫고 완료하세요",
-        "instruction": "전면 커버가 완전히 닫혔는지 확인하면 관리가 완료됩니다.",
-        "safety": "커버가 들떠 있으면 다시 눌러 고정하세요.",
+        "title": "Close the cover and finish",
+        "instruction": "Confirm that the front cover is fully closed to complete the care step.",
+        "safety": "If the cover is lifted, press it again to secure it.",
     },
     "inspect_filter": {
-        "title": "필터 상태를 확인하세요",
-        "instruction": "필터에 먼지가 많으면 분리 후 청소합니다.",
-        "safety": "필터 뒤쪽의 내부 부품은 만지지 마세요.",
+        "title": "Check the filter condition",
+        "instruction": "If the filter has heavy dust, remove it and clean it.",
+        "safety": "Do not touch internal parts behind the filter.",
     },
     "inspect_surface": {
-        "title": "송풍구 막힘을 확인하세요",
-        "instruction": "송풍구 표면에 먼지나 막힘이 있는지 확인합니다.",
-        "safety": "깊은 내부 점검은 A/S로 연결하세요.",
+        "title": "Check for air outlet blockage",
+        "instruction": "Check whether there is dust or blockage on the air outlet surface.",
+        "safety": "Request service for deeper internal inspection.",
     },
     "close_and_check_result": {
-        "title": "다시 조립하고 증상을 확인하세요",
-        "instruction": "필터와 커버를 원위치한 뒤 증상이 해결됐는지 확인합니다.",
-        "safety": "증상이 계속되면 A/S 접수로 이동하세요.",
+        "title": "Reassemble and check the result",
+        "instruction": "Return the filter and cover to their original positions, then check whether the symptom is resolved.",
+        "safety": "If the symptom continues, request service.",
     },
 }
 
 
 AIRCON_DYNAMIC_MANUAL_GUIDES = {
+    "filter_cleaning": {
+        "service_flows": {"self_care"},
+        "title": "Air Conditioner Filter Cleaning Guide",
+        "summary": "User-accessible wall-mounted air conditioner filter cleaning guide.",
+        "safety_scope": "user_accessible_filter_only",
+        "steps": [
+            "Turn off the air conditioner before opening the front cover.",
+            "Open only the user-accessible front cover carefully.",
+            "Remove the visible filter gently without touching internal parts.",
+            "Rinse dust from the filter with water and dry it completely in the shade.",
+            "Reinstall the completely dry filter and close the front cover.",
+        ],
+        "stop_conditions": ["internal_parts_visible", "filter_damaged", "cover_not_closing"],
+    },
     "power_troubleshooting": {
         "service_flows": {"self_as"},
         "title": "Air Conditioner No Power Safe-Check Guide",
@@ -210,6 +259,100 @@ AIRCON_DYNAMIC_MANUAL_GUIDES = {
         ],
         "stop_conditions": ["unsupported_feature", "odor_persists", "moisture_persists"],
     },
+}
+
+OFFICIAL_STEP_DISPLAY_COPY = {
+    "Turn off the air conditioner before opening the front cover.": {
+        "title": "Turn off power",
+        "text": "Turn off the air conditioner before opening the front cover.",
+    },
+    "Open only the user-accessible front cover carefully.": {
+        "title": "Open the front cover",
+        "text": "Open only the user-accessible front cover carefully.",
+    },
+    "Remove the visible filter gently without touching internal parts.": {
+        "title": "Remove the filter",
+        "text": "Remove the visible filter gently without touching internal parts.",
+    },
+    "Rinse dust from the filter with water and dry it completely in the shade.": {
+        "title": "Rinse and dry",
+        "text": "Rinse dust from the filter with water and dry it completely in the shade.",
+    },
+    "Reinstall the completely dry filter and close the front cover.": {
+        "title": "Reinstall the filter",
+        "text": "Reinstall the completely dry filter and close the front cover.",
+    },
+    "Confirm the selected mode is Cool and the set temperature is lower than the room temperature.": {
+        "title": "Check temperature settings",
+        "text": "Confirm the selected mode is Cool and the set temperature is lower than the room temperature.",
+    },
+    "Check whether doors, windows, or direct sunlight are increasing the room heat load.": {
+        "title": "Check the room environment",
+        "text": "Check whether doors, windows, or direct sunlight are increasing the room heat load.",
+    },
+    "Check whether the air inlet or outlet is blocked by curtains, furniture, or dust.": {
+        "title": "Check air inlet/outlet",
+        "text": "Check whether the air inlet or outlet is blocked by curtains, furniture, or dust.",
+    },
+    "Inspect the visible filter area if it is user-accessible; clean the filter only if the model guide allows it.": {
+        "title": "Check the filter area",
+        "text": "Inspect the visible filter area if it is user-accessible; clean the filter only if the model guide allows it.",
+    },
+    "Run the unit for several minutes and check whether airflow improves.": {
+        "title": "Check operation",
+        "text": "Run the unit for several minutes and check whether airflow improves.",
+    },
+    "Do not open internal covers, refrigerant lines, fan motors, PCB, or compressor parts.": {
+        "title": "Do not disassemble",
+        "text": "Do not open internal covers, refrigerant lines, fan motors, PCB, or compressor parts.",
+    },
+    "If cooling does not improve, request expert A/S.": {
+        "title": "Request expert service",
+        "text": "If cooling does not improve, request expert A/S.",
+    },
+}
+
+PROCEDURE_DISPLAY_TITLES = {
+    "filter_cleaning": ["Turn off power", "Open the front cover", "Remove the filter", "Rinse and dry", "Reinstall the filter"],
+    "no_cooling_self_check": [
+        "Check temperature settings",
+        "Check the room environment",
+        "Check air inlet/outlet",
+        "Check the filter area",
+        "Check operation",
+        "Do not disassemble",
+        "Request expert service",
+    ],
+    "noise_self_check": [
+        "Check danger signs",
+        "Check the front cover",
+        "Check nearby objects",
+        "Check mounting level",
+        "Try lower fan speed",
+        "Do not disassemble",
+        "Request expert service",
+    ],
+    "power_troubleshooting": [
+        "Check danger signs",
+        "Turn off power",
+        "Check remote/display",
+        "Check indoor unit display",
+        "Check power connection",
+        "Check circuit breaker",
+        "Do not disassemble",
+        "Request expert service",
+    ],
+}
+
+GUIDE_OPTION_DISPLAY_TITLES = {
+    "filter_cleaning": "Filter Cleaning Guide",
+    "no_cooling_self_check": "Cooling / Weak Airflow Self-check Guide",
+    "noise_self_check": "Noise / Vibration Self-check Guide",
+    "power_troubleshooting": "Power Troubleshooting Self-check Guide",
+    "odor_self_check": "Odor Self-check Guide",
+    "water_leak_monsoon": "Water Leak Self-check Guide",
+    "remote_operation": "Remote / Function Operation Guide",
+    "auto_clean": "Auto Clean Guide",
 }
 
 RAG_PROCEDURE_ALIASES = {
@@ -385,6 +528,9 @@ class CareShotBackendService:
 
     def plan_from_analysis(self, analysis: dict[str, Any]) -> dict[str, Any]:
         plan_result = self.ar_selector.select_and_build(analysis)
+        if not plan_result.get("ar_guide_plan"):
+            plan_result.setdefault("tts_enabled", False)
+            plan_result.setdefault("tts_provider", "web_speech")
         overlay_data = None
         overlay_build_warning = None
         if plan_result.get("ar_guide_plan"):
@@ -441,15 +587,22 @@ class CareShotBackendService:
             target_part = step["target_part"]
             copy = ACTION_COPY.get(step["action_type"], {})
             display_instruction = copy.get("instruction") or step.get("instruction_text")
+            display_safety = copy.get("safety") or step.get("safety_message")
             display_steps.append(
                 {
                     **step,
-                    "display_title": copy.get("title") or f"{PART_LABELS.get(target_part, target_part)} 안내",
+                    "instruction_text": display_instruction,
+                    "safety_message": display_safety,
+                    "display_title": copy.get("title") or f"{PART_LABELS.get(target_part, target_part)} guide",
                     "display_instruction": display_instruction,
-                    "display_safety": copy.get("safety") or step.get("safety_message"),
+                    "display_safety": display_safety,
                     "target_part_map": part_lookup.get(target_part),
-                    "next_button_label": "완료" if step["step_order"] == len(guide_steps) else "다음 단계",
-                    **self.tts_fields_for_step(display_instruction),
+                    "next_button_label": "Complete" if step["step_order"] == len(guide_steps) else "Next",
+                    **self.build_step_tts_fields(
+                        text=display_instruction,
+                        ar_allowed=True,
+                        language_code=self.resolve_tts_language_code(analysis),
+                    ),
                 }
             )
 
@@ -485,6 +638,7 @@ class CareShotBackendService:
         for index, step in enumerate(ar_guide_plan.get("overlay_steps") or [], start=1):
             action = step.get("action") or "safe_check"
             title = action.replace("_", " ").title()
+            display_safety = "External safe-check only. Stop and request expert A/S if power is not restored or a high-risk signal appears."
             guide_steps.append(
                 {
                     "guide_step_id": step.get("step_id"),
@@ -495,9 +649,14 @@ class CareShotBackendService:
                     "safety_message": "External safe-check only. Do not open covers, wiring, PCB, refrigerant, compressor, or damaged power parts.",
                     "display_title": title,
                     "display_instruction": title,
-                    "display_safety": "External safe-check only. Stop and request expert A/S if power is not restored or a high-risk signal appears.",
+                    "display_safety": display_safety,
                     "target_part_map": None,
                     "next_button_label": "Complete" if index == len(ar_guide_plan.get("overlay_steps") or []) else "Next",
+                    **self.build_step_tts_fields(
+                        text=title,
+                        ar_allowed=True,
+                        language_code=self.resolve_tts_language_code(analysis),
+                    ),
                 }
             )
         return {
@@ -521,6 +680,33 @@ class CareShotBackendService:
             },
             "guide_steps": guide_steps,
             "ar_guide_plan": ar_guide_plan,
+        }
+
+    @staticmethod
+    def resolve_tts_language_code(analysis: dict[str, Any]) -> str:
+        language = (
+            analysis.get("conversation_state", {}).get("detected_language")
+            or analysis.get("rag_evidence", {}).get("language_code")
+            or analysis.get("context", {}).get("language_code")
+        )
+        if language in {"en-US", "en_IN", "en-IN"}:
+            return str(language).replace("_", "-")
+        return "en-IN"
+
+    @staticmethod
+    def build_step_tts_fields(
+        *,
+        text: str | None,
+        ar_allowed: bool,
+        language_code: str,
+    ) -> dict[str, Any]:
+        tts_text = (text or "").strip()
+        enabled = bool(ar_allowed and tts_text)
+        return {
+            "tts_enabled": enabled,
+            "tts_text": tts_text if enabled else "",
+            "tts_language_code": language_code,
+            "tts_provider": "google_cloud_tts" if enabled and google_tts_enabled() else "web_speech",
         }
 
     def pick_ar_guide(self, analysis: dict[str, Any], structure_type: str) -> dict[str, Any]:
@@ -923,6 +1109,13 @@ class CareShotBackendService:
             if dynamic_ar:
                 ar_options.append(dynamic_ar)
 
+        display_steps = self.build_display_steps(
+            procedure_type=procedure,
+            manual_options=manual_options,
+            rag_evidence=rag_evidence,
+            youtube_recommendations=youtube_recommendations,
+        )
+
         return {
             "option_set_id": f"GUIDE_OPTIONS_{user_id}_{device_id}_{procedure}",
             "user_id": user_id,
@@ -931,6 +1124,8 @@ class CareShotBackendService:
             "service_flow_type": service_flow_type,
             "procedure_type": procedure,
             "language_code": language_code,
+            "display_title": self.display_title_for_guide_option(procedure, service_flow_type),
+            "display_steps": display_steps,
             "manual_guides": manual_options,
             "youtube_recommendations": youtube_recommendations,
             "ar_guides": ar_options,
@@ -949,6 +1144,257 @@ class CareShotBackendService:
                 "manual_or_ar_method_saved": False,
             },
         }
+
+    @staticmethod
+    def display_title_for_guide_option(procedure_type: str | None, service_flow_type: str | None = None) -> str:
+        if procedure_type and procedure_type in GUIDE_OPTION_DISPLAY_TITLES:
+            return GUIDE_OPTION_DISPLAY_TITLES[procedure_type]
+        fallback = procedure_type or service_flow_type or "Guide"
+        return f"{fallback.replace('_', ' ').title()} Guide"
+
+    def build_display_steps(
+        self,
+        procedure_type: str,
+        manual_options: list[dict[str, Any]],
+        rag_evidence: dict[str, Any] | None,
+        youtube_recommendations: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        manual_steps = self.display_steps_from_manual_options(procedure_type, manual_options)
+        if manual_steps:
+            return manual_steps
+
+        dynamic_steps = self.display_steps_from_dynamic_manual(procedure_type)
+        if dynamic_steps:
+            return dynamic_steps
+
+        rag_steps = self.display_steps_from_rag_evidence(procedure_type, rag_evidence)
+        if rag_steps:
+            return rag_steps
+
+        youtube_steps = self.display_steps_from_youtube_recommendations(procedure_type, youtube_recommendations)
+        if youtube_steps:
+            return youtube_steps
+
+        return []
+
+    def display_steps_from_manual_options(
+        self,
+        procedure_type: str,
+        manual_options: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        for guide in manual_options:
+            source_steps = self.extract_display_source_steps(guide.get("guide_text") or "")
+            if len(source_steps) < 2:
+                continue
+            source_kind = "official_dynamic_manual" if guide.get("dynamic") else "official_manual"
+            return [
+                self.display_step_from_source(
+                    procedure_type=procedure_type,
+                    index=index,
+                    source_text=source_text,
+                    source_type=source_kind,
+                    source_url=guide.get("source_url") or guide.get("video_url"),
+                    source_title=guide.get("title"),
+                    evidence=guide.get("evidence") or [],
+                    generation_source=guide.get("generation_source"),
+                )
+                for index, source_text in enumerate(source_steps, start=1)
+            ]
+        return []
+
+    def display_steps_from_dynamic_manual(self, procedure_type: str) -> list[dict[str, Any]]:
+        config = AIRCON_DYNAMIC_MANUAL_GUIDES.get(procedure_type)
+        if not config:
+            return []
+        source_steps = [step for step in config.get("steps", []) if step]
+        if len(source_steps) < 2:
+            return []
+        evidence = [
+            {
+                "title": config.get("title"),
+                "source_type": "official_dynamic_manual",
+                "safety_scope": config.get("safety_scope"),
+                "summary": config.get("summary"),
+            }
+        ]
+        return [
+            self.display_step_from_source(
+                procedure_type=procedure_type,
+                index=index,
+                source_text=source_text,
+                source_type="official_dynamic_manual",
+                source_url=None,
+                source_title=config.get("title"),
+                evidence=evidence,
+                generation_source="dynamic_official_procedure_template",
+            )
+            for index, source_text in enumerate(source_steps, start=1)
+        ]
+
+    def display_steps_from_rag_evidence(
+        self,
+        procedure_type: str,
+        rag_evidence: dict[str, Any] | None,
+    ) -> list[dict[str, Any]]:
+        accepted_procedures = {procedure_type}
+        if procedure_type in RAG_PROCEDURE_ALIASES:
+            accepted_procedures.add(RAG_PROCEDURE_ALIASES[procedure_type])
+        for item in (rag_evidence or {}).get("results") or []:
+            if item.get("procedure_type") not in accepted_procedures:
+                continue
+            if item.get("source_type") not in {"official_pdf", "official_manual", "official_help", "official_youtube"}:
+                continue
+            source_steps = self.extract_display_source_steps(item.get("chunk_text") or "")
+            if len(source_steps) < 2:
+                continue
+            return [
+                self.display_step_from_source(
+                    procedure_type=procedure_type,
+                    index=index,
+                    source_text=source_text,
+                    source_type=item.get("source_type") or "official_rag",
+                    source_url=item.get("source_url"),
+                    source_title=item.get("title") or item.get("chunk_title"),
+                    evidence=[
+                        {
+                            "asset_id": item.get("asset_id"),
+                            "chunk_id": item.get("chunk_id"),
+                            "title": item.get("title") or item.get("chunk_title"),
+                            "source_url": item.get("source_url"),
+                            "source_type": item.get("source_type"),
+                            "section_title": item.get("source_section"),
+                        }
+                    ],
+                    generation_source="rag_evidence",
+                )
+                for index, source_text in enumerate(source_steps, start=1)
+            ]
+        return []
+
+    def display_steps_from_youtube_recommendations(
+        self,
+        procedure_type: str,
+        youtube_recommendations: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        for item in youtube_recommendations:
+            if item.get("procedure_type") != procedure_type:
+                continue
+            source_text = item.get("guide_text") or item.get("transcript") or item.get("chunk_text") or ""
+            source_steps = self.extract_display_source_steps(source_text)
+            if len(source_steps) < 2:
+                continue
+            return [
+                self.display_step_from_source(
+                    procedure_type=procedure_type,
+                    index=index,
+                    source_text=step_text,
+                    source_type="official_youtube",
+                    source_url=item.get("source_url"),
+                    source_title=item.get("title"),
+                    evidence=[item],
+                    generation_source="official_youtube_transcript",
+                )
+                for index, step_text in enumerate(source_steps, start=1)
+            ]
+        return []
+
+    @staticmethod
+    def extract_display_source_steps(text: str) -> list[str]:
+        cleaned = (text or "").strip()
+        if not cleaned:
+            return []
+        steps: list[str] = []
+        metadata_labels = {
+            "risk policy",
+            "official channel",
+            "official youtube video title",
+            "source",
+            "source type",
+            "product type",
+            "procedure type",
+            "asset id",
+            "chunk id",
+            "retrieval mode",
+            "validation",
+        }
+        metadata_fragments = {
+            "browser/search discovery",
+            "youtube oembed",
+            "watch url access check",
+            "air_conditioner",
+            "filter_cleaning",
+            "no_cooling_self_check",
+        }
+        for line in cleaned.splitlines():
+            value = re.sub(r"^\s*(?:\d+[\).\s-]*|[①-⑳]\s*)", "", line).strip()
+            value = re.sub(r"\s+", " ", value)
+            if not value:
+                continue
+            if ":" in value and len(value.split(":", 1)[0]) <= 24:
+                label, rest = value.split(":", 1)
+                if label.strip().lower() in metadata_labels:
+                    continue
+                value = rest.strip() or value
+            lower_value = value.lower()
+            if any(fragment in lower_value for fragment in metadata_fragments):
+                continue
+            if len(value.split()) < 4 and not re.search(r"[가-힣]", value):
+                continue
+            if len(value) >= 12:
+                steps.append(value)
+        if len(steps) >= 2:
+            return steps
+        sentence_steps = [
+            part.strip()
+            for part in re.split(r"(?<=[.!?。])\s+", cleaned)
+            if len(part.strip()) >= 20
+        ]
+        return sentence_steps if len(sentence_steps) >= 2 else []
+
+    def display_step_from_source(
+        self,
+        procedure_type: str,
+        index: int,
+        source_text: str,
+        source_type: str,
+        source_url: str | None,
+        source_title: str | None,
+        evidence: list[dict[str, Any]],
+        generation_source: str | None = None,
+    ) -> dict[str, Any]:
+        source_text = re.sub(r"\s+", " ", (source_text or "").strip())
+        copy = OFFICIAL_STEP_DISPLAY_COPY.get(source_text)
+        title = (copy or {}).get("title") or self.display_title_for_step(procedure_type, index, source_text)
+        text = (copy or {}).get("text") or source_text
+        return {
+            "title": title,
+            "text": text,
+            "tts_enabled": bool(text),
+            "tts_text": text,
+            "tts_language_code": "en-IN",
+            "tts_provider": "google_cloud_tts" if text and google_tts_enabled() else "web_speech",
+            "language_code": "en",
+            "source_type": source_type,
+            "source_url": source_url,
+            "source_title": source_title,
+            "source_text": source_text,
+            "source_language_code": "en",
+            "evidence": evidence,
+            "generation_source": generation_source or source_type,
+        }
+
+    @staticmethod
+    def display_title_for_step(procedure_type: str, index: int, source_text: str) -> str:
+        titles = PROCEDURE_DISPLAY_TITLES.get(procedure_type) or []
+        if 0 <= index - 1 < len(titles):
+            return titles[index - 1]
+        if "filter" in source_text.lower():
+            return "Check the filter"
+        if "outlet" in source_text.lower() or "inlet" in source_text.lower() or "airflow" in source_text.lower():
+            return "Check air inlet/outlet"
+        if "service" in source_text.lower() or "a/s" in source_text.lower():
+            return "Request expert service"
+        return f"STEP {index}"
 
     def select_youtube_recommendations(
         self,
@@ -1052,7 +1498,6 @@ class CareShotBackendService:
             "source_url": first_source_url,
             "video_url": first_video_url,
             "evidence": evidence,
-            "display_steps": self.display_steps_from_text_steps(guide_template["steps"]),
             "dynamic": True,
             "generation_source": "rag_chunk_dynamic_manual",
             "safety_scope": guide_template["safety_scope"],
@@ -1196,58 +1641,6 @@ class CareShotBackendService:
             "source_url": content.get("source_url"),
             "video_url": content.get("video_url"),
             "evidence": evidence,
-            "display_steps": CareShotBackendService.display_steps_from_text_steps(
-                content.get("guide_text") or content.get("guide_summary") or ""
-            ),
-        }
-
-    @staticmethod
-    def display_steps_from_text_steps(steps: list[str] | str | None) -> list[dict[str, Any]]:
-        if isinstance(steps, str):
-            raw_steps = [
-                line.strip()
-                for line in steps.splitlines()
-                if line.strip()
-            ]
-        else:
-            raw_steps = [str(step).strip() for step in (steps or []) if str(step).strip()]
-        provider = "google_cloud_tts" if google_tts_enabled() else "web_speech"
-        return [
-            {
-                "title": f"STEP {index}",
-                "text": step,
-                **CareShotBackendService.tts_fields_for_step(step, provider=provider),
-            }
-            for index, step in enumerate(raw_steps, start=1)
-        ]
-
-    @staticmethod
-    def tts_fields_for_step(
-        text: str | None,
-        *,
-        language_code: str = "en-IN",
-        provider: str | None = None,
-    ) -> dict[str, Any]:
-        tts_text = (text or "").strip()
-        selected_provider = provider or ("google_cloud_tts" if google_tts_enabled() else "web_speech")
-        audio_url = None
-        cache_key = None
-        if tts_text and google_tts_enabled() and google_tts_pregenerate_enabled():
-            try:
-                asset = generate_google_tts_mp3_asset(text=tts_text, language_code=language_code)
-                audio_url = asset.audio_url
-                cache_key = asset.cache_key
-                selected_provider = asset.provider
-            except Exception:
-                audio_url = None
-                cache_key = None
-        return {
-            "tts_enabled": bool(tts_text),
-            "tts_text": tts_text,
-            "tts_language_code": language_code,
-            "tts_provider": selected_provider,
-            "audio_url": audio_url,
-            "tts_cache_key": cache_key,
         }
 
     @staticmethod

@@ -4,6 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from ..dependencies import get_service
 from ..schemas import (
+    ARCameraReviewCaptureRequest,
+    ARCameraReviewCaptureResponse,
     ARFilterDetectionRequest,
     ARFilterDetectionResponse,
     ARPlanRequest,
@@ -11,7 +13,8 @@ from ..schemas import (
     ARSessionUpdateRequest,
 )
 from ..services import CareShotBackendService
-from ..yolo_filter_service import FilterDetectionService, get_filter_detection_service
+from ..ar_camera_review_service import save_camera_review_capture
+from ..yolo_filter_service import get_filter_detection_service_for_profile
 
 
 router = APIRouter(prefix="/ar", tags=["ar"])
@@ -59,15 +62,27 @@ def update_ar_session(
 
 
 @router.post("/filter-detect", response_model=ARFilterDetectionResponse)
-def detect_filter_bbox(
-    request: ARFilterDetectionRequest,
-    detector: FilterDetectionService = Depends(get_filter_detection_service),
-) -> dict:
+def detect_filter_bbox(request: ARFilterDetectionRequest) -> dict:
     image_payload = request.image_data_url or request.image_base64
+    detector = get_filter_detection_service_for_profile(
+        request.model_profile or "",
+        request.procedure_type or "",
+    )
     return detector.detect(
         image_payload=image_payload,
         image_width=request.image_width,
         image_height=request.image_height,
         confidence_threshold=request.confidence_threshold,
+        target_classes=request.target_classes,
+        require_context_classes=request.require_context_classes,
         mock_fallback=request.mock_fallback,
+        debug_detections=request.debug_detections,
     )
+
+
+@router.post("/camera-review-capture", response_model=ARCameraReviewCaptureResponse)
+def create_camera_review_capture(request: ARCameraReviewCaptureRequest) -> dict:
+    result = save_camera_review_capture(request.model_dump())
+    if not result["saved"]:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=result["message"])
+    return result
