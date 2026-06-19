@@ -176,14 +176,14 @@ export function DeviceDetail() {
                   background: "rgba(61,220,151,0.12)",
                   backdropFilter: "blur(14px)",
                   WebkitBackdropFilter: "blur(14px)",
-                  border: "1px solid rgba(61,220,151,0.14)",
+                  border: "1px solid rgba(61,220,151,0.18)",
                   boxShadow: "inset 0 1px 0 rgba(255,255,255,0.88), inset 0 -10px 18px rgba(22,163,74,0.05)",
                 }}
               >
                 <span style={{ fontFamily: "Pretendard,sans-serif", fontSize: 25, fontWeight: 800, color: "#159B63", lineHeight: 1 }}>
                   {careCount}
                 </span>
-                <div style={{ width: "28%", height: "1px", background: "rgba(21,155,99,0.14)", borderRadius: 99 }} />
+                <div style={{ width: "28%", height: "1px", background: "rgba(21,155,99,0.28)", borderRadius: 99 }} />
                 <p className="font-['Pretendard:SemiBold',sans-serif] text-[11px]" style={{ color: "#5D7169" }}>Self Care</p>
               </div>
             </div>
@@ -204,14 +204,14 @@ export function DeviceDetail() {
                   background: "rgba(250,204,21,0.14)",
                   backdropFilter: "blur(14px)",
                   WebkitBackdropFilter: "blur(14px)",
-                  border: "1px solid rgba(250,204,21,0.18)",
+                  border: "1px solid rgba(250,204,21,0.24)",
                   boxShadow: "inset 0 1px 0 rgba(255,255,255,0.88), inset 0 -10px 18px rgba(202,138,4,0.05)",
                 }}
               >
                 <span style={{ fontFamily: "Pretendard,sans-serif", fontSize: 25, fontWeight: 800, color: "#FACC15", lineHeight: 1 }}>
                   {asCount}
                 </span>
-                <div style={{ width: "28%", height: "1px", background: "rgba(250,204,21,0.34)", borderRadius: 99 }} />
+                <div style={{ width: "28%", height: "1px", background: "rgba(202,138,4,0.32)", borderRadius: 99 }} />
                 <p className="font-['Pretendard:SemiBold',sans-serif] text-[11px]" style={{ color: "#6F6F67" }}>Self A/S</p>
               </div>
             </div>
@@ -243,7 +243,7 @@ export function DeviceDetail() {
                           }
                         : {
                             background: "rgba(250,204,21,0.14)",
-                            color: "#D4A300",
+                            color: "#e48e2d",
                             border: "1px solid rgba(250,204,21,0.24)",
                             boxShadow: "inset 0 1px 0 rgba(255,255,255,0.72)",
                           }),

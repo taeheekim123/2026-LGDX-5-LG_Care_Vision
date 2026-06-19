@@ -83,13 +83,60 @@ const AR_GUIDE_STEP_TITLES: Record<string, string[]> = {
   power_troubleshooting: ["Check Warning Signs", "Check Display", "Check Power Connection", "Check Circuit Breaker", "Request Professional Service"],
 };
 
+const AR_GUIDE_STEP_TARGETS: Record<
+  string,
+  Array<{ targetHint?: string; targetClasses?: string[]; contextClasses?: string[] }>
+> = {
+  filter_cleaning: [
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Filter mesh", targetClasses: ["filter"], contextClasses: ["aircon"] },
+    { targetHint: "Removed filter", targetClasses: ["filter"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+  ],
+  no_cooling_self_check: [
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air outlet / airflow path", targetClasses: ["outlet"], contextClasses: ["aircon"] },
+    { targetHint: "Filter mesh", targetClasses: ["filter"], contextClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+  ],
+};
+
+const CLIENT_AR_GUIDE_PROCEDURES = new Set(Object.keys(AR_GUIDE_STEP_TARGETS));
+
+const canOpenArGuide = (guideOptions?: ChatGuideOptions) => {
+  if (!guideOptions) return true;
+  if ((guideOptions.ar_guides?.length ?? 0) > 0) return true;
+  const procedureType = guideOptions.procedure_type;
+  return Boolean(procedureType && CLIENT_AR_GUIDE_PROCEDURES.has(procedureType));
+};
+
 const arGuideStepsFromOptions = (guideOptions?: ChatGuideOptions) => {
   const procedureType = guideOptions?.procedure_type;
   const manual = guideOptions?.manual_guides?.[0];
   const titles = procedureType ? AR_GUIDE_STEP_TITLES[procedureType] : undefined;
-  return extractGuideSteps(manual, procedureType).map((desc, index) => ({
-    title: titles?.[index] || `STEP ${index + 1}`,
+  const targets = procedureType ? AR_GUIDE_STEP_TARGETS[procedureType] : undefined;
+  const displaySteps = guideOptions?.display_steps ?? [];
+  const descriptions = displaySteps.length
+    ? displaySteps
+        .map((step) => (step.text || step.source_text || "").trim())
+        .filter(Boolean)
+    : extractGuideSteps(manual, procedureType);
+  return descriptions.map((desc, index) => ({
+    title: displaySteps[index]?.title || titles?.[index] || `STEP ${index + 1}`,
     desc,
+    tts_enabled: displaySteps[index]?.tts_enabled ?? true,
+    tts_text: displaySteps[index]?.tts_text || desc,
+    tts_language_code: displaySteps[index]?.tts_language_code || "en-IN",
+    tts_provider: displaySteps[index]?.tts_provider || "web_speech",
+    audio_url: displaySteps[index]?.audio_url,
+    sourceType: displaySteps[index]?.source_type,
+    sourceUrl: displaySteps[index]?.source_url,
+    sourceText: displaySteps[index]?.source_text,
+    ...targets?.[index],
   }));
 };
 
@@ -279,7 +326,7 @@ export function Chat() {
     if (response.needs_clarification) return "needs_clarification";
     if (response.card_policy?.card_type === "safety_block") return "blocked";
     if (response.service_flow_type === "expert_as" || response.risk_level === "high") return "blocked";
-    if ((response.guide_options?.ar_guides?.length ?? 0) > 0) return "ar_ready";
+    if (response.guide_options && canOpenArGuide(response.guide_options)) return "ar_ready";
     if (response.guide_options) return "evidence_found";
     return "sent";
   };
@@ -354,12 +401,14 @@ export function Chat() {
   };
 
   const handleArGuideClick = (message: Message) => {
-    if (!message.guideOptions || (message.guideOptions.ar_guides?.length ?? 0) > 0) {
-      navigate("/ar-guide", {
+    if (canOpenArGuide(message.guideOptions)) {
+      const procedureType = message.guideOptions?.procedure_type;
+      const procedureQuery = procedureType ? `?procedure_type=${encodeURIComponent(procedureType)}` : "";
+      navigate(`/ar-guide${procedureQuery}`, {
         state: {
           from: "/chat",
-          procedureType: message.guideOptions?.procedure_type,
-          guideTitle: getProcedureLabel(message.guideOptions?.procedure_type),
+          procedureType,
+          guideTitle: message.guideOptions?.display_title || getProcedureLabel(procedureType),
           guideSteps: arGuideStepsFromOptions(message.guideOptions),
         },
       });

@@ -58,8 +58,36 @@ const KNOWN_GUIDE_STEPS: Record<string, string[]> = {
   ],
 };
 
+const AR_GUIDE_STEP_TITLES: Record<string, string[]> = {
+  filter_cleaning: ["Turn Off Power", "Open Cover", "Remove Filter", "Wash and Dry", "Reinstall"],
+  no_cooling_self_check: ["Check Temperature Setting", "Check Filter Status", "Check Air Outlet", "Check Indoor Environment", "Request Professional Service"],
+};
+
+const AR_GUIDE_STEP_TARGETS: Record<
+  string,
+  Array<{ targetHint?: string; targetClasses?: string[]; contextClasses?: string[] }>
+> = {
+  filter_cleaning: [
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Filter mesh", targetClasses: ["filter"], contextClasses: ["aircon"] },
+    { targetHint: "Removed filter", targetClasses: ["filter"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+  ],
+  no_cooling_self_check: [
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Filter mesh", targetClasses: ["filter"], contextClasses: ["aircon"] },
+    { targetHint: "Air outlet / airflow path", targetClasses: ["outlet"], contextClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+    { targetHint: "Air conditioner body", targetClasses: ["aircon"] },
+  ],
+};
+
 const getProcedureLabel = (procedure?: string) =>
   (procedure && PROCEDURE_LABELS[procedure]) || "Guide";
+
+const getGuideDisplayTitle = (guideOptions?: ChatGuideOptions | null) =>
+  guideOptions?.display_title || `${getProcedureLabel(guideOptions?.procedure_type)} Steps`;
 
 const youtubeEmbedUrl = (url?: string, videoId?: string) => {
   if (videoId) return `https://www.youtube.com/embed/${videoId}`;
@@ -79,6 +107,32 @@ const extractGuideSteps = (guide?: ChatManualGuide, procedureType?: string) => {
     .map((line) => line.replace(/^\s*(?:\d+[\).\s-]*|[①-⑳]\s*)/, "").trim())
     .filter((line) => line.length > 0);
   return steps.length > 0 ? steps : ["Review the official guide and proceed step by step within a safe range."];
+};
+
+const arGuideStepsFromOptions = (guideOptions?: ChatGuideOptions) => {
+  const procedureType = guideOptions?.procedure_type;
+  const manual = guideOptions?.manual_guides?.[0];
+  const titles = procedureType ? AR_GUIDE_STEP_TITLES[procedureType] : undefined;
+  const targets = procedureType ? AR_GUIDE_STEP_TARGETS[procedureType] : undefined;
+  const displaySteps = guideOptions?.display_steps ?? [];
+  const descriptions = displaySteps.length
+    ? displaySteps
+        .map((step) => (step.text || step.source_text || "").trim())
+        .filter(Boolean)
+    : extractGuideSteps(manual, procedureType);
+  return descriptions.map((desc, index) => ({
+    title: displaySteps[index]?.title || titles?.[index] || `STEP ${index + 1}`,
+    desc,
+    tts_enabled: displaySteps[index]?.tts_enabled ?? true,
+    tts_text: displaySteps[index]?.tts_text || desc,
+    tts_language_code: displaySteps[index]?.tts_language_code || "en-IN",
+    tts_provider: displaySteps[index]?.tts_provider || "web_speech",
+    audio_url: displaySteps[index]?.audio_url,
+    sourceType: displaySteps[index]?.source_type,
+    sourceUrl: displaySteps[index]?.source_url,
+    sourceText: displaySteps[index]?.source_text,
+    ...targets?.[index],
+  }));
 };
 
 const guideVideo = (guideOptions?: ChatGuideOptions) => {
@@ -157,11 +211,22 @@ export function SelfCare() {
   };
 
   const handleSkip = () => navigate("/");
+  const handleStartArGuide = () => {
+    navigate("/ar-guide", {
+      state: {
+        from: "/self-care",
+        procedureType: guideOptions?.procedure_type || "filter_cleaning",
+        guideTitle: guideOptions?.display_title || procedureLabel,
+        guideSteps: arGuideStepsFromOptions(guideOptions ?? undefined),
+      },
+    });
+  };
 
   const cardCls = "rounded-[20px] p-5";
   const manual = guideOptions?.manual_guides?.[0];
   const procedureType = guideOptions?.procedure_type;
   const procedureLabel = getProcedureLabel(procedureType);
+  const guideTitle = getGuideDisplayTitle(guideOptions);
   const steps = guideOptions ? extractGuideSteps(manual, procedureType) : FILTER_CLEANING_STEPS;
   const video = guideVideo(guideOptions ?? undefined);
 
@@ -194,10 +259,10 @@ export function SelfCare() {
         style={{ background: "rgba(100,210,190,0.09)", filter: "blur(80px)" }} />
       <div className="pointer-events-none absolute bottom-[180px] left-0 w-56 h-56 rounded-full"
         style={{ background: "rgba(80,200,160,0.08)", filter: "blur(75px)" }} />
-      <div className="relative z-10 w-full max-w-[390px] mx-auto pb-10">
+      <div className="relative z-10 px-[18px] pt-[40px] pb-10 w-full max-w-[390px] mx-auto">
 
         {/* 헤더 */}
-        <div className="flex items-center gap-1 px-4 pt-10 pb-5">
+        <div className="flex items-center gap-1 mb-5 -mx-[2px]">
           <button onClick={() => navigate("/")} className="p-1">
             <ChevronLeft size={22} className="text-[#555]" />
           </button>
@@ -207,7 +272,7 @@ export function SelfCare() {
         </div>
 
         {/* 제품 카드 — DeviceDetail 동일 구조 */}
-        <div className="mx-6 mb-5">
+        <div className="mb-5">
           <div className="rounded-[20px] p-5" style={glass}>
             <div className="relative flex justify-center mb-1 pt-[24px]">
               <span className="absolute top-0 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#BFEAD4] bg-[#eaf8f1] px-[10px] py-[3px] font-['Pretendard:Medium',sans-serif] text-[9px] text-[#2d9b69]">
@@ -230,7 +295,7 @@ export function SelfCare() {
         </div>
 
         {/* 탭 */}
-        <div className="flex mx-6 mb-5 border-b border-[#e0e0e0]">
+        <div className="flex mb-5 border-b border-[#e0e0e0]">
           {(["manual", "ar"] as const).map((tab) => (
             <button
               key={tab}
@@ -248,7 +313,7 @@ export function SelfCare() {
 
         {/* Manual 탭 */}
         {activeTab === "manual" && (
-          <div className="mx-6 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             {/* Chat.tsx 공식근거 기반 영상 표시 구조 */}
             <div className="rounded-[20px] p-[14px]" style={glass}>
               <div className="mb-3">
@@ -289,7 +354,7 @@ export function SelfCare() {
             {/* Chat.tsx 공식근거 기반 단계별 Guide 구조 */}
             <div className={cardCls} style={glass}>
               <div className="flex items-center justify-between gap-2 mb-4">
-                <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111]">📋 {procedureLabel} Steps</p>
+                <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111]">📋 {guideTitle}</p>
                 <span className="font-['Pretendard:Medium',sans-serif] text-[9px] text-[#2d9b69] bg-[#eaf8f1] rounded-full px-2 py-[2px] whitespace-nowrap">
                   LG official standard
                 </span>
@@ -312,10 +377,10 @@ export function SelfCare() {
 
         {/* AR 탭 */}
         {activeTab === "ar" && (
-          <div className="mx-6 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             {/* 단계 카드 */}
             <div className={cardCls} style={glass}>
-              <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111] mb-4">📋 {procedureLabel} Steps</p>
+              <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111] mb-4">📋 {guideTitle}</p>
               <div className="flex flex-col gap-3">
                 {steps.map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
@@ -330,7 +395,7 @@ export function SelfCare() {
 
             {/* AR Guide 버튼 */}
             <button
-              onClick={() => navigate("/ar-guide", { state: { from: "/self-care" } })}
+              onClick={handleStartArGuide}
               className="w-full rounded-2xl py-4 text-[15px] font-semibold text-white bg-gradient-to-r from-[#1DB87A] to-[#3DDC97] hover:opacity-90 transition-opacity"
             >
               AR Guide Get Started
