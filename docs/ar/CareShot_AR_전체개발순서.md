@@ -5457,3 +5457,59 @@ filter cleaning AR에서 에어컨이 잘 안 잡히는 문제는 단순 thresho
 2차는 detection policy 보정: 단계별로 filter-only 허용 단계와 aircon context 필수 단계를 분리하고, confidence threshold를 단계/객체별로 재검토한다.
 3차는 학습 데이터 보강: 실제 발표 환경의 벽걸이 에어컨, 필터가 살짝 열린 상태, 조명/거리/각도 변형 이미지를 Roboflow/YOLO 데이터셋에 추가해 재학습한다.
 ```
+### 27.19 Home 지역 표시 중복 및 live 사용자 region 검증 - 부분 완료
+
+배경:
+
+```text
+Home 환경 카드가 `Delhi, Delhi · Today`처럼 같은 지역명을 두 번 표시했다.
+사용자는 Hyderabad 주소를 입력했다고 인지했지만, live API에서는 기존 계정의 저장 주소/region 값이 다르게 확인될 수 있었다.
+```
+
+확인 결과:
+
+```text
+Home.tsx의 displayLocation(region, city)는 [city, region]을 그대로 join한다.
+REGION seed에서 Delhi는 state=Delhi, city=Delhi이므로 UI가 `Delhi, Delhi`로 보였다.
+이는 주소가 두 번 저장된 것이 아니라 city/state 표시 중복이다.
+
+live API 검증:
+- GET /api/v1/environment/current?region=Telangana&city=Hyderabad
+  -> observation.region=Telangana, observation.city=Hyderabad, temperature/aqi/pm 값 정상 반환
+- POST /api/users/register with address `146 Victoria Street, Hyderabad, Telangana 500001, India`
+  -> user.region_id=INDIA_TELANGANA_HYDERABAD, region=Telangana, city=Hyderabad 정상 반환
+- GET /api/users/me?user_email=vikramdas205@yahoo.com
+  -> live DB에는 address=`104 Queen Street, Gangtok, Sikkim 737101, India`, region_id=INDIA_DELHI_DELHI로 저장되어 있었음
+```
+
+수정:
+
+```text
+frontend/src/app/pages/Home.tsx
+- displayLocation에서 city와 region이 대소문자 무시 기준으로 같으면 한 번만 표시하도록 보정
+- 예: Delhi/Delhi -> `Delhi · Today`
+- Hyderabad/Telangana -> `Hyderabad, Telangana · Today`
+```
+
+검증:
+
+```powershell
+cd frontend
+npm run build
+```
+
+결과:
+
+```text
+vite v6.3.5 building for production...
+2660 modules transformed
+built in 7.66s
+```
+
+남은 작업:
+
+```text
+- 이미 잘못 저장된 기존 user row는 회원가입/프로필 수정 API를 다시 호출하거나 운영 DB 보정으로 region_id를 갱신해야 함.
+- Sikkim/Gangtok은 현재 REGION 50개 seed에 없으므로 정확 매핑하려면 REGION seed 확장 또는 geocoding 기반 nearest/support-region 정책이 필요함.
+- Home에서 unsupported region을 Delhi로 조용히 fallback하지 않고 사용자에게 확인시키는 정책은 후속 개선 대상.
+```

@@ -19,7 +19,13 @@ function formatDisplayName(name?: string) {
 }
 
 function displayLocation(region?: string, city?: string) {
-  const location = [city, region].filter(Boolean).join(", ");
+  const normalizedCity = city?.trim();
+  const normalizedRegion = region?.trim();
+  const parts =
+    normalizedCity && normalizedRegion && normalizedCity.toLowerCase() === normalizedRegion.toLowerCase()
+      ? [normalizedCity]
+      : [normalizedCity, normalizedRegion].filter(Boolean);
+  const location = parts.join(", ");
   return location ? `${location} · Today` : "Updating location · Today";
 }
 
