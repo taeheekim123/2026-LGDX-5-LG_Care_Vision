@@ -5513,3 +5513,51 @@ built in 7.66s
 - Sikkim/Gangtok은 현재 REGION 50개 seed에 없으므로 정확 매핑하려면 REGION seed 확장 또는 geocoding 기반 nearest/support-region 정책이 필요함.
 - Home에서 unsupported region을 Delhi로 조용히 fallback하지 않고 사용자에게 확인시키는 정책은 후속 개선 대상.
 ```
+
+### 27.20 self care 필터청소 AR aircon context detector 고도화 - 보류 / 후속 작업
+
+배경:
+
+```text
+filter_cleaning AR에서 필터/커버를 찾기 전에 카메라가 에어컨 본체를 안정적으로 보고 있는지 확인하는 단계가 필요하다.
+self A/S 모델이 aircon/indoor_unit 본체 탐지를 더 안정적으로 수행할 가능성이 있어, self care 필터청소 흐름에서 에어컨 context 확인 부분만 self A/S 모델을 재사용하는 방향을 검토했다.
+```
+
+정책:
+
+```text
+이 작업은 아직 실제 모바일 카메라/실물 에어컨 성능 검증 전이므로 구현 반영하지 않고 후속 작업으로 보류한다.
+self care 전체를 self A/S 모델로 대체하지 않는다.
+self A/S 모델은 aircon/indoor_unit context 확인 전용으로만 사용한다.
+filter/front_filter/front_cover 실제 overlay 기준은 self care detector 또는 reference part map이 담당한다.
+```
+
+후속 구현 후보:
+
+```text
+procedure_type == filter_cleaning일 때:
+
+1. self A/S aircon context detector 호출
+   - model_profile: self_as_no_cooling
+   - target_classes: ["aircon", "indoor_unit"]
+   - 역할: 에어컨 본체가 화면에 들어왔는지 확인
+
+2. aircon context가 확인된 뒤 self care filter detector 호출
+   - model_profile: self_care
+   - target_classes: ["filter", "front_filter", "front_cover"]
+   - 역할: 필터/전면 커버 위치 탐지
+
+3. filter 미검출 시 fallback
+   - aircon bbox + reference part map 기반으로 예상 필터 위치 표시
+   - 단, self A/S aircon bbox를 필터 위치 overlay의 직접 기준으로 쓰지는 않음
+```
+
+완료 전 검증 조건:
+
+```text
+- 실제 모바일 카메라에서 debugDetection=1로 확인
+- Step 1~2에서 self_as_no_cooling raw/filtered 결과에 aircon 또는 indoor_unit이 안정적으로 표시되는지 확인
+- Step 3에서 self_care raw/filtered 결과에 filter/front_filter/front_cover가 표시되는지 확인
+- 실제 에어컨, reference image 출력물, 모니터 표시 환경 각각에서 confidence/bbox 흔들림 확인
+- 탐지 성능이 불안정하면 구현보다 데이터셋 보강/threshold 조정/part map fallback을 우선 검토
+```
