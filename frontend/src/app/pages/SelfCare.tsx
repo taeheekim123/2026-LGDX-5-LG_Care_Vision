@@ -194,10 +194,10 @@ export function SelfCare() {
         style={{ background: "rgba(100,210,190,0.09)", filter: "blur(80px)" }} />
       <div className="pointer-events-none absolute bottom-[180px] left-0 w-56 h-56 rounded-full"
         style={{ background: "rgba(80,200,160,0.08)", filter: "blur(75px)" }} />
-      <div className="relative z-10 w-full max-w-[390px] mx-auto pb-10">
+      <div className="relative z-10 px-[18px] pt-[40px] pb-10 w-full max-w-[390px] mx-auto">
 
         {/* 헤더 */}
-        <div className="flex items-center gap-1 px-4 pt-10 pb-5">
+        <div className="flex items-center gap-1 mb-5 -mx-[2px]">
           <button onClick={() => navigate("/")} className="p-1">
             <ChevronLeft size={22} className="text-[#555]" />
           </button>
@@ -207,7 +207,7 @@ export function SelfCare() {
         </div>
 
         {/* 제품 카드 — DeviceDetail 동일 구조 */}
-        <div className="mx-6 mb-5">
+        <div className="mb-5">
           <div className="rounded-[20px] p-5" style={glass}>
             <div className="relative flex justify-center mb-1 pt-[24px]">
               <span className="absolute top-0 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#BFEAD4] bg-[#eaf8f1] px-[10px] py-[3px] font-['Pretendard:Medium',sans-serif] text-[9px] text-[#2d9b69]">
@@ -230,7 +230,7 @@ export function SelfCare() {
         </div>
 
         {/* 탭 */}
-        <div className="flex mx-6 mb-5 border-b border-[#e0e0e0]">
+        <div className="flex mb-5 border-b border-[#e0e0e0]">
           {(["manual", "ar"] as const).map((tab) => (
             <button
               key={tab}
@@ -248,7 +248,7 @@ export function SelfCare() {
 
         {/* Manual 탭 */}
         {activeTab === "manual" && (
-          <div className="mx-6 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             {/* Chat.tsx 공식근거 기반 영상 표시 구조 */}
             <div className="rounded-[20px] p-[14px]" style={glass}>
               <div className="mb-3">
@@ -312,7 +312,7 @@ export function SelfCare() {
 
         {/* AR 탭 */}
         {activeTab === "ar" && (
-          <div className="mx-6 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             {/* 단계 카드 */}
             <div className={cardCls} style={glass}>
               <p className="font-['Pretendard:SemiBold',sans-serif] text-[15px] text-[#111] mb-4">📋 {procedureLabel} Steps</p>
