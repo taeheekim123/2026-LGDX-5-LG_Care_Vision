@@ -12,6 +12,13 @@ import careVisionLogo from "../../imports/care-vision-logo.svg";
 const HOME_ENVIRONMENT_POLL_INTERVAL_MS = 60 * 60 * 1000;
 const SHOW_WELCOME_ONCE_KEY = "careVisionShowWelcomeOnce";
 
+const normalStatusBadge = {
+  background: "rgba(255,232,154,0.24)",
+  border: "1px solid rgba(255,214,90,0.55)",
+  color: "#D8A900",
+  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.68), 0 2px 8px rgba(255,214,90,0.18)",
+};
+
 function formatDisplayName(name?: string) {
   const trimmedName = name?.trim();
   if (!trimmedName) return "User";
@@ -413,7 +420,7 @@ export function Home() {
     : displayLocation(profileLocation?.region, profileLocation?.city);
 
   return (
-    <div className="relative min-h-full w-full overflow-x-hidden bg-[#f7f9f8]">
+    <div className="relative min-h-full w-full overflow-x-hidden bg-[#f7f9f8] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       {/* 留ㅼ슦 ????Aurora Glow */}
       <div className="pointer-events-none absolute -top-24 -left-20 w-80 h-80 rounded-full"
         style={{ background: "rgba(61,220,151,0.10)", filter: "blur(90px)" }} />
@@ -438,8 +445,9 @@ export function Home() {
 
       <motion.div
         className="relative z-10 px-[18px] pt-[52px] pb-[14px] w-full max-w-[390px] mx-auto"
+        initial={{ opacity: 0, y: 14, scale: 0.985, filter: "blur(8px)" }}
         animate={isAiCareTransitioning ? { opacity: 0.82, filter: "blur(1.5px)" } : { opacity: 1, filter: "blur(0px)" }}
-        transition={{ duration: 0.24, ease: "easeOut" }}
+        transition={{ duration: isAiCareTransitioning ? 0.24 : 0.56, ease: isAiCareTransitioning ? "easeOut" : [0.22, 1, 0.36, 1] }}
       >
 
         {/* ?ㅻ뜑 */}
@@ -447,7 +455,7 @@ export function Home() {
           <img src={careVisionLogo} alt="Care Vision" className="h-[17px] w-[121px]" />
         </div>
         <p className="mb-[26px] font-['Pretendard:Regular',sans-serif] text-[20px] font-normal tracking-[-0.36px] text-[#111]" style={{ paddingLeft: "5px" }}>
-          {showWelcome ? "Welcome, " : ""}{displayName} 👋
+          {showWelcome ? "Welcome, " : "Hello, "}{displayName} 👋
         </p>
 
         {/* ?? AI Recommended Care 移대뱶 ?? */}
@@ -593,6 +601,10 @@ export function Home() {
           const riskMeta = loadingRisk
             ? { text: "text-[#888]", label: "Updating", hex: "#9CA3AF" }
             : getRiskColor(topScore, riskLevel);
+          const isNormalRisk = riskMeta.label === "Normal";
+          const riskBadgeStyle = isNormalRisk
+            ? normalStatusBadge
+            : { background: `${riskMeta.hex}12`, border: `1px solid ${riskMeta.hex}35` };
           const comment = loadingRisk ? "Updating care risk score..." : getRiskComment(topScore, riskLevel);
           const scoreColor = loadingRisk ? "#9CA3AF" : getGaugeScoreColor(topScore, riskLevel);
           return (
@@ -604,8 +616,8 @@ export function Home() {
                 <div className="flex items-center justify-between gap-3">
                   <p className="font-['Pretendard:SemiBold',sans-serif] text-[13px] text-[#555]">Care Risk Score</p>
                   <span
-                    className={`font-['Pretendard:SemiBold',sans-serif] text-[11px] ${riskMeta.text} px-[10px] py-[4px] rounded-full shrink-0`}
-                    style={{ background: `${riskMeta.hex}12`, border: `1px solid ${riskMeta.hex}35` }}
+                    className={`inline-flex h-[24px] min-w-[64px] w-fit items-center justify-center rounded-full px-[11px] font-['Pretendard:SemiBold',sans-serif] text-[11px] ${isNormalRisk ? "" : riskMeta.text} shrink-0`}
+                    style={riskBadgeStyle}
                   >
                     {riskMeta.label}
                   </span>

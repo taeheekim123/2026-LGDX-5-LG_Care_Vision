@@ -4,6 +4,11 @@ import { ChevronLeft, Camera, Volume2, VolumeX, Lightbulb, Check, ArrowUp } from
 import { motion, AnimatePresence } from "motion/react";
 import { API_BASE_URL } from "../api/client";
 import arTitle from "../../imports/ar-title.svg";
+import arStep1Image from "../../imports/AR_step_1.png";
+import arStep2Image from "../../imports/AR_step_2.png";
+import arStep3Image from "../../imports/AR_step_3.png";
+import arStep4Image from "../../imports/AR_step_4.png";
+import arStep5Image from "../../imports/AR_step_5.png";
 import {
   getCaptureSizeFromDimensions,
   getObjectCoverTransform,
@@ -53,6 +58,7 @@ interface ARGuideLocationState {
   procedureType?: string;
   guideTitle?: string;
   guideSteps?: ARGuideStep[];
+  returnState?: Record<string, unknown>;
 }
 
 const defaultSteps: ARGuideStep[] = [
@@ -228,6 +234,14 @@ const getConfidenceThresholdForStep = (step: ARGuideStep | undefined) => {
   return DEFAULT_DETECTION_CONFIDENCE_THRESHOLD;
 };
 
+const filterCleaningGuideImages: Record<number, { src: string; alt: string }> = {
+  0: { src: arStep1Image, alt: "Turn off power guide" },
+  1: { src: arStep2Image, alt: "Open cover guide" },
+  2: { src: arStep3Image, alt: "Remove filter guide" },
+  3: { src: arStep4Image, alt: "Wash and dry filter guide" },
+  4: { src: arStep5Image, alt: "Reinstall filter guide" },
+};
+
 const resolveAudioUrl = (audioUrl: string) => {
   if (!audioUrl.startsWith("/")) return audioUrl;
   const apiOrigin = new URL(API_BASE_URL, window.location.origin).origin;
@@ -244,6 +258,7 @@ export function ARGuide() {
   const debugDetectionEnabled =
     queryParams.get("debugDetection") === "1" || queryParams.get("debug_detection") === "1";
   const from = routeState.from ?? "/self-care";
+  const returnState = routeState.returnState ?? (from === "/self-care" ? { tab: "ar" } : undefined);
   const procedureType = routeState.procedureType ?? queryProcedureType ?? "filter_cleaning";
   const [remoteGuideSteps, setRemoteGuideSteps] = useState<ARGuideStep[]>([]);
   const steps = routeState.guideSteps?.length
@@ -268,6 +283,7 @@ export function ARGuide() {
   const smoothedBoxRef = useRef<DetectionBox | null>(null);
   const lastDetectionAtRef = useRef(0);
   const currentStep = steps[current] ?? steps[0];
+  const filterCleaningGuideImage = procedureType === "filter_cleaning" ? filterCleaningGuideImages[current] : null;
 
   useEffect(() => {
     if (current >= steps.length) setCurrent(0);
@@ -467,6 +483,10 @@ export function ARGuide() {
       try {
         const detectionModelProfile = getModelProfileForProcedure(procedureType);
         const detectionConfidenceThreshold = getConfidenceThresholdForStep(currentStep);
+        const detectionTargetClasses =
+          procedureType === "filter_cleaning" && current === 0
+            ? ["aircon"]
+            : currentStep.targetClasses ?? ["aircon"];
         const response = await fetch(`${API_BASE_URL}/v1/ar/filter-detect`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -475,7 +495,7 @@ export function ARGuide() {
             image_width: width,
             image_height: height,
             confidence_threshold: detectionConfidenceThreshold,
-            target_classes: currentStep.targetClasses ?? ["aircon"],
+            target_classes: detectionTargetClasses,
             require_context_classes: currentStep.contextClasses ?? null,
             model_profile: detectionModelProfile,
             procedure_type: procedureType,
@@ -487,7 +507,7 @@ export function ARGuide() {
         const result = (await response.json()) as FilterDetectionResponse;
         setDetectionMode(result.mode);
         setDetectionDebug(debugDetectionEnabled ? result : null);
-        const detection = result.detections[0] ?? null;
+        const detection = result.detections.find((item) => detectionTargetClasses.includes(item.class_name)) ?? null;
         if (detection) {
           const smoothed = smoothBox(smoothedBoxRef.current, detection);
           smoothedBoxRef.current = smoothed;
@@ -563,7 +583,7 @@ export function ARGuide() {
     draw();
   }, [lastDetection]);
 
-  const goBack = () => navigate(from);
+  const goBack = () => navigate(from, { state: returnState });
   const handlePrev = () => {
     if (current > 0) setCurrent(current - 1);
   };
@@ -583,7 +603,7 @@ export function ARGuide() {
         };
         localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify([...messages, doneMsg]));
       }
-      navigate(from);
+      navigate(from, { state: returnState });
     }
   };
   return (
@@ -699,7 +719,15 @@ export function ARGuide() {
 
         <section className="flex min-h-[104px] shrink-0 items-center rounded-[18px] bg-white px-[16px] py-[13px] shadow-[0_14px_32px_rgba(31,69,61,0.075)]">
           <div className="flex h-[78px] w-[98px] shrink-0 items-center justify-center overflow-hidden rounded-[11px] bg-[#F1F8F5]">
-            <AirconIllustration className="h-[64px] w-[88px]" arrow />
+            {filterCleaningGuideImage ? (
+              <img
+                src={filterCleaningGuideImage.src}
+                alt={filterCleaningGuideImage.alt}
+                className="h-full w-full object-contain"
+              />
+            ) : (
+              <AirconIllustration className="h-[64px] w-[88px]" arrow />
+            )}
           </div>
           <div className="mx-[16px] h-[70px] border-l border-dashed border-[#DDE5E2]" />
           <div className="min-w-0 flex-1">
