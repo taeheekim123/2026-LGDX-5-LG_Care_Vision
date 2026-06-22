@@ -57,7 +57,7 @@ const chat = await readFile(chatSource, "utf8");
 const selfCare = await readFile(selfCareSource, "utf8");
 const staticContracts = [
   ["setInterval", "const interval = window.setInterval"],
-  ["600ms frame interval", "}, 600);"],
+  ["400ms frame interval", "}, 400);"],
   ["filter detect endpoint", "/v1/ar/filter-detect"],
   ["image_data_url payload", "image_data_url: imageDataUrl"],
   ["step confidence helper", "getConfidenceThresholdForStep"],
@@ -82,7 +82,7 @@ const staticContracts = [
   ["self AS outlet direct step", 'targetClasses: ["outlet"]'],
   ["mock fallback disabled", "mock_fallback: false"],
   ["jpeg quality", "toDataURL(\"image/jpeg\", DETECTION_JPEG_QUALITY)"],
-  ["detection hold", "DETECTION_HOLD_MS = 1100"],
+  ["detection hold", "DETECTION_HOLD_MS = 2000"],
   ["canvas overlay ref", "overlayRef"],
   ["smoothing call", "smoothBox(smoothedBoxRef.current, detection)"],
 ];
