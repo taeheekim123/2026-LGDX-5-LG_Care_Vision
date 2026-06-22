@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "motion/react";
 import careVisionLogo from "../../imports/care-vision-logo.svg";
@@ -22,12 +23,21 @@ const secondaryButtonStyle = {
 
 export function Welcome() {
   const navigate = useNavigate();
+  const [isLeaving, setIsLeaving] = useState(false);
+
+  const handleRouteChange = (path: string) => {
+    if (isLeaving) return;
+    setIsLeaving(true);
+    window.setTimeout(() => navigate(path), 360);
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div
+      <motion.div
         className="relative h-screen w-full max-w-[390px] overflow-hidden flex flex-col items-center justify-center px-[28px]"
         style={{ background: pageBackground }}
+        animate={isLeaving ? { opacity: 0, scale: 0.985, y: -10, filter: "blur(6px)" } : { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: isLeaving ? 0.36 : 0.42, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="flex flex-col items-center gap-4" style={{ transform: "translateY(-20px)" }}>
           <motion.img
@@ -69,21 +79,23 @@ export function Welcome() {
           className="absolute bottom-[52px] w-full px-[28px] flex flex-col gap-3"
         >
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => handleRouteChange("/login")}
+            disabled={isLeaving}
             className="w-full text-white rounded-[18px] py-[15px] font-['Pretendard:SemiBold',sans-serif] text-[15px] transition-opacity hover:opacity-90"
             style={primaryButtonStyle}
           >
             Log In
           </button>
           <button
-            onClick={() => navigate("/signup")}
+            onClick={() => handleRouteChange("/signup")}
+            disabled={isLeaving}
             className="w-full rounded-[18px] py-[15px] font-['Pretendard:SemiBold',sans-serif] text-[15px] transition-opacity hover:opacity-90"
             style={secondaryButtonStyle}
           >
             Sign Up
           </button>
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 }

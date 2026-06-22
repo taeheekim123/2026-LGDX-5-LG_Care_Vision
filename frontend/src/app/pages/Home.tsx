@@ -420,7 +420,7 @@ export function Home() {
     : displayLocation(profileLocation?.region, profileLocation?.city);
 
   return (
-    <div className="relative min-h-full w-full overflow-x-hidden bg-[#f7f9f8]">
+    <div className="relative min-h-full w-full overflow-x-hidden bg-[#f7f9f8] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       {/* 留ㅼ슦 ????Aurora Glow */}
       <div className="pointer-events-none absolute -top-24 -left-20 w-80 h-80 rounded-full"
         style={{ background: "rgba(61,220,151,0.10)", filter: "blur(90px)" }} />
@@ -445,8 +445,9 @@ export function Home() {
 
       <motion.div
         className="relative z-10 px-[18px] pt-[52px] pb-[14px] w-full max-w-[390px] mx-auto"
+        initial={{ opacity: 0, y: 14, scale: 0.985, filter: "blur(8px)" }}
         animate={isAiCareTransitioning ? { opacity: 0.82, filter: "blur(1.5px)" } : { opacity: 1, filter: "blur(0px)" }}
-        transition={{ duration: 0.24, ease: "easeOut" }}
+        transition={{ duration: isAiCareTransitioning ? 0.24 : 0.56, ease: isAiCareTransitioning ? "easeOut" : [0.22, 1, 0.36, 1] }}
       >
 
         {/* ?ㅻ뜑 */}

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "motion/react";
 import careVisionLogo from "../../imports/care-vision-logo.svg";
@@ -8,17 +8,24 @@ const pageBackground =
 
 export function Splash() {
   const navigate = useNavigate();
+  const [isLeaving, setIsLeaving] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => navigate("/", { replace: true }), 2200);
-    return () => window.clearTimeout(timer);
+    const leaveTimer = window.setTimeout(() => setIsLeaving(true), 1900);
+    const navigateTimer = window.setTimeout(() => navigate("/", { replace: true }), 2260);
+    return () => {
+      window.clearTimeout(leaveTimer);
+      window.clearTimeout(navigateTimer);
+    };
   }, [navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div
+      <motion.div
         className="relative h-screen w-full max-w-[390px] overflow-hidden flex flex-col items-center justify-center px-[28px]"
         style={{ background: pageBackground }}
+        animate={isLeaving ? { opacity: 0, scale: 0.985, y: -10, filter: "blur(6px)" } : { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: isLeaving ? 0.36 : 0.42, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="flex flex-col items-center gap-6">
           <motion.img
@@ -58,7 +65,7 @@ export function Splash() {
             />
           ))}
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 }

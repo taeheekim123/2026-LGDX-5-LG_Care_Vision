@@ -48,7 +48,7 @@ export function LanguageSettings() {
           </p>
         </div>
 
-        <p className="font-['Pretendard:Regular',sans-serif] text-[13px] text-[#888] mb-4 px-1">
+        <p className="font-['Pretendard:Regular',sans-serif] text-[13px] text-[#888] mb-6 px-1">
           The UI, manual/AR guide, and voice guidance will be provided in the selected language.
         </p>
 

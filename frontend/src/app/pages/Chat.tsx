@@ -779,7 +779,7 @@ export function Chat() {
             {uiPhase === "initial" && <>Hello!<br /><span style={{ color: "#5db88a" }}>How can I help you?</span></>}
             {uiPhase === "selecting" && <>Select a <span style={{ color: "#5db88a" }}>product</span></>}
             {uiPhase === "selecting-type" && <>Select a <span style={{ color: "#5db88a" }}>type</span></>}
-            {uiPhase === "pending-start" && <>Selection <span style={{ color: "#5db88a" }}>complete</span>!</>}
+            {uiPhase === "pending-start" && <>Selection <span style={{ color: "#5db88a" }}>complete!</span></>}
           </p>
         </div>
 

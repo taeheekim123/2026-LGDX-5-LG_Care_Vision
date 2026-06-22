@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
+import { motion } from "motion/react";
 import careVisionLogo from "../../imports/care-vision-logo.svg";
 import careVisionLogoIcon from "../../imports/care_vision_logo_icon.png";
 import { loginUser } from "../api/user";
@@ -55,8 +56,14 @@ export function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="relative h-screen w-full max-w-[390px] overflow-y-auto" style={{ background: airbrushBg }}>
+    <div className="flex items-center justify-center min-h-screen overflow-hidden bg-gray-100">
+      <motion.div
+        className="relative h-screen w-full max-w-[390px] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        style={{ background: airbrushBg }}
+        initial={{ opacity: 0, y: 14, scale: 0.985, filter: "blur(8px)" }}
+        animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+        transition={{ duration: 0.56, ease: [0.22, 1, 0.36, 1] }}
+      >
 
         <div className="relative z-10 px-[28px] pt-[72px] pb-[48px]">
           {/* 로고 */}
@@ -134,7 +141,7 @@ export function Login() {
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
