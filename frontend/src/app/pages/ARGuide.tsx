@@ -214,7 +214,7 @@ const DEFAULT_DETECTION_CONFIDENCE_THRESHOLD = 0.35;
 const AIRCON_DETECTION_CONFIDENCE_THRESHOLD = 0.35;
 const OUTLET_DETECTION_CONFIDENCE_THRESHOLD = 0.55;
 const DETECTION_JPEG_QUALITY = 0.85;
-const DETECTION_HOLD_MS = 1100;
+const DETECTION_HOLD_MS = 2000;
 
 const getDetectionLabel = (detection: DetectionBox) =>
   `${detectionLabelMap[detection.class_name] ?? detection.class_name} ${(
@@ -541,7 +541,7 @@ export function ARGuide() {
       } finally {
         busy = false;
       }
-    }, 600);
+    }, 400);
 
     return () => window.clearInterval(interval);
   }, [cameraState, current, steps, procedureType, debugDetectionEnabled]);
